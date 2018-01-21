@@ -15,101 +15,156 @@ struct render_camera
 	float3 up;
 	float2 resolution;
 	float2 fov;
+	float aperture_radius;
+	float focal_distance;
 };
 
 //used by openGL
 struct view_camera
 {
-	glm::vec4 up;
-	glm::vec4 target;
-	glm::vec4 eye;
+private:
+	glm::vec3 center;
+	
+	float yaw;
+	float pitch;
+	float radius;
+
+	float aperture_radius;
+	float focal_distance;
+
+public:
+
 	glm::vec2 resolution;
 	glm::vec2 fov;
 
-	void orbit_left(float value);
-	void orbit_right(float value);
-	void orbit_up(float value);
-	void orbit_down(float value);
+	view_camera();
 
-	void zoom_in(float value);
-	void zoom_out(float value);
-
-	void move(float x, float y);
-
+	void set_yaw(float delta);
+	void set_pitch(float delta);
+	void set_radius(float delta);
+	void set_pan(float x, float y);
+	void set_aperture_radius(float delta);
+	void set_focal_distance(float delta);
+	
+	void set_fov(float fov_x);
 	void set_resolution(float width, float height);
-	void set_fov_x(float fov);
 
 	void get_render_camera(render_camera* render_cam);
+
+private:
+
+	void clamp_yaw();
+	void clamp_pitch();
+	void clamp_radius();
+	void clamp_aperture_radius();
+	void clamp_focal_distance();
 };
 
-inline void view_camera::orbit_left(float value)
+inline view_camera::view_camera()
 {
-	glm::mat4 rotate_mat = glm::rotate(glm::mat4(1.0f), -1.0f * value, glm::vec3(up));
-	up = rotate_mat * up;
-	eye = rotate_mat * eye;
+	center = glm::vec3(0.0f, 0.0f, 0.0f);
+	yaw = 0.0f;
+	pitch = 0.3f;
+	radius = 4.0f;
+	aperture_radius = 0.1f;
+	focal_distance = 4.0f;
+
+	resolution = glm::vec2(640.0f, 640.0f);
+	fov = glm::vec2(45.0f, 45.0f);
 }
 
-inline void view_camera::orbit_right(float value)
+inline void view_camera::set_yaw(float delta)
 {
-	glm::mat4 rotate_mat = glm::rotate(glm::mat4(1.0f), 1.0f * value, glm::vec3(up));
-	up = rotate_mat * up;
-	eye = rotate_mat * eye;
+	yaw += delta;
+	clamp_yaw();
 }
 
-inline void view_camera::orbit_up(float value)
+inline void view_camera::set_pitch(float delta)
 {
-	glm::mat4 rotate_mat = glm::rotate(glm::mat4(1.0f), -1.0f * value, glm::cross(glm::vec3(eye), glm::vec3(up)));
-	up = rotate_mat * up;
-	eye = rotate_mat * eye;
+	pitch += delta;
+	clamp_pitch();
 }
 
-inline void view_camera::orbit_down(float value)
+inline void view_camera::set_radius(float scale)
 {
-	glm::mat4 rotate_mat = glm::rotate(glm::mat4(1.0f), 1.0f * value, glm::cross(glm::vec3(eye), glm::vec3(up)));
-	up = rotate_mat * up;
-	eye = rotate_mat * eye;
+	radius += radius * scale;
+	clamp_radius();
 }
 
-inline void view_camera::zoom_in(float value)
+inline void view_camera::set_pan(float x, float y)
 {
-	glm::vec3 view_dir = value * glm::vec3(glm::normalize(target - eye));
-	eye = eye + glm::vec4(view_dir, 0.0f);
+	center.x += x;
+	center.y += y;
 }
 
-inline void view_camera::zoom_out(float value)
+inline void view_camera::set_aperture_radius(float delta)
 {
-	glm::vec3 view_dir = -value * glm::vec3(glm::normalize(target - eye));
-	eye = eye + glm::vec4(view_dir, 0.0f);
+	aperture_radius += delta;
+	clamp_aperture_radius();
 }
 
-inline void view_camera::move(float x, float y)
+inline void view_camera::set_focal_distance(float delta)
 {
-	glm::vec3 direction = glm::vec3(glm::normalize(target - eye));
-	glm::vec4 horizontal = glm::vec4(glm::cross(direction, glm::vec3(up)), 0.0f);
-	eye = eye + horizontal * x + up * y;
-	target = target + horizontal * x + up * y;
+	focal_distance += delta;
+	clamp_focal_distance();
+}
+
+inline void view_camera::set_fov(float fov_x)
+{
+	fov.x = fov_x;
+	fov.y = math::radians_to_degrees(atan(tan(math::degrees_to_radians(fov_x) * 0.5f) * (resolution.y / resolution.x)) * 2.0f);
 }
 
 inline void view_camera::set_resolution(float width, float height)
 {
-	resolution = glm::vec2(width, height);
-	set_fov_x(fov.x);
-}
-
-inline void view_camera::set_fov_x(float fov_x)
-{
-	fov.x = fov_x;
-	fov.y = fov_x * (resolution.y / resolution.x);
+	resolution.x = width;
+	resolution.y = height;
 }
 
 inline void view_camera::get_render_camera(render_camera* render_cam)
 {
-	glm::vec3 direction = glm::vec3(glm::normalize(target - eye));
+	float x = sin(yaw) * cos(pitch);
+	float y = sin(pitch);
+	float z = cos(yaw) * cos(pitch);
+
+	glm::vec3 to_camera = glm::vec3(x, y, z);
+
+	glm::vec3 eye = center + to_camera * radius;
+	glm::vec3 view = -1.0f * to_camera;
+
 	render_cam->eye = make_float3(eye.x, eye.y, eye.z);
-	render_cam->view = make_float3(direction.x, direction.y, direction.z);
-	render_cam->up = make_float3(up.x, up.y, up.z);
+	render_cam->view = make_float3(view.x, view.y, view.z);
+	render_cam->up = make_float3(0.0f, 1.0f, 0.0f);
 	render_cam->resolution = make_float2(resolution.x, resolution.y);
 	render_cam->fov = make_float2(fov.x, fov.y);
+	render_cam->focal_distance = focal_distance;
+	render_cam->aperture_radius = aperture_radius;
+}
+
+inline void view_camera::clamp_yaw()
+{
+	yaw = math::mod(yaw, TWO_PI);
+}
+
+inline void view_camera::clamp_pitch()
+{
+	pitch = math::clamp(pitch, -HALF_PI + 0.02f, HALF_PI - 0.02f);
+}
+
+inline void view_camera::clamp_radius()
+{
+	radius = math::clamp(radius, 0.02f, 200.0f);
+	focal_distance = math::clamp(focal_distance, 0.0f, radius);
+}
+
+inline void view_camera::clamp_aperture_radius()
+{
+	aperture_radius = math::clamp(aperture_radius, 0.0f, 25.0f);
+}
+
+inline void view_camera::clamp_focal_distance()
+{
+	focal_distance = math::clamp(focal_distance, 0.0f, radius);
 }
 
 #endif // !__CAMERA__

@@ -9,7 +9,7 @@
 struct scattering
 {
 	color absorption_coefficient;
-	float reduced_scattering_coefficient;
+	color reduced_scattering_coefficient;
 };
 
 struct medium
@@ -37,7 +37,7 @@ inline material get_default_material()
 	mat.is_transparent = false;
 	mat.medium.refraction_index = AIR_REFRACTION_INDEX;
 	mat.medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);
-	mat.medium.scattering.reduced_scattering_coefficient = 0.0f;
+	mat.medium.scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);
 	return mat;
 }
 

@@ -46,7 +46,7 @@ struct is_negative_predicate
 #define GET_DEFAULT_SCATERRING_DEVICE(air_scattering)\
 {\
 	air_scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);\
-	air_scattering.reduced_scattering_coefficient = 0.0f;\
+	air_scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);\
 }\
 
 #define GET_DEFAULT_MEDIUM_DEVICE(air_medium)\
@@ -310,9 +310,11 @@ __global__ void init_data_kernel(
 __global__ void generate_ray_kernel(
 	float3 eye,							//in
 	float3 view,						//in
-	float3 up, 							//in
-	float2 fov, 						//in
-	float2 resolution, 					//in
+	float3 up,							//in
+	float2 resolution,					//in
+	float2 fov,							//in
+	float aperture_radius,				//in
+	float focal_distance,				//in
 	int pixel_count,					//in
 	ray* rays,							//in out
 	unsigned long seed
@@ -338,19 +340,41 @@ __global__ void generate_ray_kernel(
 		float distance = length(view);
 
 		float3 horizontal = normalize(cross(view, up));
-		float3 up = normalize(cross(horizontal, view));
+		float3 vertical = normalize(cross(horizontal, view));
 
 		float3 x_axis = horizontal * (distance * tan(fov.x * 0.5f * (PI / 180.0f)));
-		float3 y_axis = up * (distance * tan(-fov.y * 0.5f * (PI / 180.0f)));
+		float3 y_axis = vertical * (distance * tan(-fov.y * 0.5f * (PI / 180.0f)));
 		
 		float normalized_image_x = ((image_x + jitter_x) / (resolution.x - 1.0f)) * 2.0f - 1.0f;
 		float normalized_image_y = ((image_y + jitter_y) / (resolution.y - 1.0f)) * 2.0f - 1.0f;
 
-		float3 point = eye + view + normalized_image_x * x_axis + normalized_image_y * y_axis;
-		float3 direction = normalize(point - eye);
+		float3 point_on_canvas_plane = eye + view + normalized_image_x * x_axis + normalized_image_y * y_axis;
+		float3 point_on_image_plane = eye + (point_on_canvas_plane - eye) * focal_distance;
 
+		float3 point_on_aperture;
+		if (aperture_radius > 0.00001f)
+		{
+			//sample on convex
+			float rand1 = uniform_distribution(random_engine) + 0.5f;
+			float rand2 = uniform_distribution(random_engine) + 0.5f;
+
+			float angle = rand1 * TWO_PI;
+			float distance = aperture_radius * sqrt(rand2);
+
+			float aperture_x = cos(angle) * distance;
+			float aperture_y = sin(angle) * distance;
+
+			point_on_aperture = eye + aperture_x * horizontal + aperture_y * vertical;
+		}
+		else
+		{
+			point_on_aperture = eye;
+		}
+
+		float3 direction = normalize(point_on_image_plane - point_on_aperture);
+
+		rays[pixel_index].origin = point_on_aperture;
 		rays[pixel_index].direction = direction;
-		rays[pixel_index].origin = eye;
 	}
 }
 
@@ -417,12 +441,12 @@ __global__ void trace_ray_kernel(
 
 	scattering current_scattering = scatterings[pixel_index];
 
-	if (current_scattering.reduced_scattering_coefficient > 0.0f ||
-		dot(current_scattering.absorption_coefficient, current_scattering.absorption_coefficient) > SSS_THRESHOLD)
+	if (current_scattering.reduced_scattering_coefficient.x > 0.0f ||
+		length(current_scattering.absorption_coefficient) > SSS_THRESHOLD)
 	{
 		float rand = uniform_distribution(random_engine);
-		float scaterring_distance = -log(rand) / current_scattering.reduced_scattering_coefficient;
-
+		float scaterring_distance = -log(rand) / current_scattering.reduced_scattering_coefficient.x;
+		//TODO:isotropic scattering
 		if (scaterring_distance < min_t)
 		{
 			float rand1 = uniform_distribution(random_engine);
@@ -538,7 +562,7 @@ extern "C" void path_tracer_kernel(
 	int pixel_count, 					//in
 	color* pixels,						//in out
 	int pass_counter, 					//in out
-	render_camera* render_camera		//in
+	render_camera* render_cam			//in
 )
 {
 	int threads_num_per_block = BLOCK_SIZE;
@@ -567,12 +591,15 @@ extern "C" void path_tracer_kernel(
 		);
 
 	generate_ray_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
-		render_camera->eye, 
-		render_camera->view, 
-		render_camera->up, 
-		render_camera->fov, 
-		render_camera->resolution, 
-		pixel_count, rays,
+		render_cam->eye,
+		render_cam->view,
+		render_cam->up,
+		render_cam->resolution,
+		render_cam->fov,
+		render_cam->aperture_radius,
+		render_cam->focal_distance,
+		pixel_count, 
+		rays,
 		seed
 		);
 

@@ -139,21 +139,21 @@ inline void path_tracer::create_device_data()
 	marble.is_transparent = true;
 	marble.medium.refraction_index = 1.486f;
 	marble.medium.scattering.absorption_coefficient = make_float3(0.6f, 0.6f, 0.6f);
-	marble.medium.scattering.reduced_scattering_coefficient = 8.0f;
+	marble.medium.scattering.reduced_scattering_coefficient = make_float3(8.0f, 8.0f, 8.0f);
 
 	material something = get_default_material();
 	something.specular_color = make_float3(1.0f, 1.0f, 1.0f);
 	something.is_transparent = true;
 	something.medium.refraction_index = 1.333f;
 	something.medium.scattering.absorption_coefficient = make_float3(0.9f, 0.3f, 0.02f);
-	something.medium.scattering.reduced_scattering_coefficient = 2.0f;
+	something.medium.scattering.reduced_scattering_coefficient = make_float3(2.0f, 2.0f, 2.0f);
 
 	material ketchup = get_default_material();
 	ketchup.specular_color = make_float3(1.0f, 1.0f, 1.0f);
 	ketchup.is_transparent = true;
 	ketchup.medium.refraction_index = 1.35f;
 	ketchup.medium.scattering.absorption_coefficient = make_float3(0.02f, 5.1f, 5.7f);
-	ketchup.medium.scattering.reduced_scattering_coefficient = 9.0f;
+	ketchup.medium.scattering.reduced_scattering_coefficient = make_float3(9.0f, 9.0f, 9.0f);
 
 	material white = get_default_material();
 	white.diffuse_color = make_float3(0.9f, 0.9f, 0.9f);

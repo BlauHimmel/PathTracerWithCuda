@@ -1,68 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="核函数">
+    <Filter Include="Library">
+      <UniqueIdentifier>{6f4176c0-1b40-4968-8b87-d8d2ee5ccbce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel">
       <UniqueIdentifier>{26db24cf-0234-4986-b389-ca54bd608aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Library\tiny_obj_loader">
+      <UniqueIdentifier>{b085ba88-b53e-4825-90ae-02e8f3e3ee02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\lodepng">
+      <UniqueIdentifier>{86897923-294e-402b-a1e7-dfccb9555cf1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gpu_path_tracer.cpp">
-      <Filter>源文件</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="basic_math.cpp">
-      <Filter>源文件</Filter>
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\lodepng\lodepng.cpp">
+      <Filter>Library\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc">
+      <Filter>Library\tiny_obj_loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="cuda_math.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="utilities.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="sphere.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="ray.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="image.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="path_tracer_kernel.h">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="path_tracer.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="basic_math.h">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="material.hpp">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="fresnel.h">
-      <Filter>头文件</Filter>
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\lodepng\lodepng.h">
+      <Filter>Library\lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h">
+      <Filter>Library\tiny_obj_loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu">
-      <Filter>核函数</Filter>
+      <Filter>Kernel</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>
