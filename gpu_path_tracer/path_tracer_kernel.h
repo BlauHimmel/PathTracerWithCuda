@@ -7,6 +7,7 @@
 #include "image.hpp"
 #include "ray.hpp"
 #include "camera.hpp"
+#include "cube_map.hpp"
 
 extern "C" void path_tracer_kernel(
 	int sphere_num,							//in
@@ -14,7 +15,8 @@ extern "C" void path_tracer_kernel(
 	int pixel_count, 						//in
 	color* pixels,							//in out
 	int depth, 								//in
-	render_camera* render_camera			//in
+	render_camera* render_camera,			//in
+	cube_map* sky_cube_map					//in
 );
 
 #endif // !__PATH_TRACER_KERNEL__

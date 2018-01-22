@@ -66,8 +66,8 @@ inline view_camera::view_camera()
 	yaw = 0.0f;
 	pitch = 0.3f;
 	radius = 4.0f;
-	aperture_radius = 0.1f;
-	focal_distance = 4.0f;
+	aperture_radius = 0.0f;
+	focal_distance = radius;
 
 	resolution = glm::vec2(640.0f, 640.0f);
 	fov = glm::vec2(45.0f, 45.0f);

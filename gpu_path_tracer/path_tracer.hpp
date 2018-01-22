@@ -18,10 +18,13 @@
 #include "basic_math.h"
 #include "path_tracer_kernel.h"
 #include "material.hpp"
+#include "cube_map.hpp"
 
 class path_tracer
 {
 private:
+	cube_map_loader m_cube_map_loader;
+	cube_map* m_cube_map;
 	image* m_image;
 	int m_sphere_num;
 	sphere* m_spheres;
@@ -37,8 +40,8 @@ public:
 	void clear();
 
 private:
-	void create_device_data();
-	void release_device_data();
+	void create_scene_device_data();
+	void release_scene_device_data();
 };
 
 path_tracer::path_tracer()
@@ -54,7 +57,7 @@ inline path_tracer::~path_tracer()
 {
 	if (m_is_initiated)
 	{
-		release_device_data();
+		release_scene_device_data();
 		release_image(m_image);
 	}
 }
@@ -64,7 +67,7 @@ inline void path_tracer::init(render_camera* render_camera)
 	m_is_initiated = true;
 	m_render_camera = render_camera;
 	m_image = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
-	create_device_data();
+	create_scene_device_data();
 }
 
 inline image* path_tracer::render()
@@ -72,7 +75,7 @@ inline image* path_tracer::render()
 	if (m_is_initiated)
 	{
 		image* buffer = create_image(m_image->width, m_image->height);
-		path_tracer_kernel(m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera);
+		path_tracer_kernel(m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
 			m_image->pixels[i] += buffer->pixels[i];
@@ -96,10 +99,10 @@ inline void path_tracer::clear()
 	}
 }
 
-inline void path_tracer::create_device_data()
+inline void path_tracer::create_scene_device_data()
 {
 	//TODO:LOAD SCENE FROM FILE
-	m_sphere_num = 15;
+	m_sphere_num = 14;
 
 	sphere* temp_spheres = new sphere[m_sphere_num];
 
@@ -122,6 +125,11 @@ inline void path_tracer::create_device_data()
 	purple.diffuse_color = make_float3(0.5f, 0.1f, 0.9f);
 	purple.specular_color = make_float3(1.0f, 1.0f, 1.0f);
 	purple.medium.refraction_index = 1.491f;
+
+	material blue = get_default_material();
+	blue.diffuse_color = make_float3(0.4f, 0.6f, 0.8f);
+	blue.specular_color = make_float3(1.0f, 1.0f, 1.0f);
+	blue.medium.refraction_index = 1.491f;
 
 	material glass = get_default_material();
 	glass.specular_color = make_float3(1.0f, 1.0f, 1.0f);
@@ -167,79 +175,87 @@ inline void path_tracer::create_device_data()
 	steel.medium.refraction_index = 1000.0f;
 
 	material light = get_default_material();
-	light.emission_color = make_float3(13.0f, 13.0f, 11.0f);
+	light.emission_color = make_float3(9.0f, 9.0f, 7.0f);
 
 	temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
 	temp_spheres[0].radius = 0.8f;
-	temp_spheres[0].mat = something;
+	temp_spheres[0].mat = steel;
 
-	temp_spheres[1].center = make_float3(0.8f, 0.0f, -0.4f);
-	temp_spheres[1].radius = 0.8f;
-	temp_spheres[1].mat = ketchup;
+	temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
+	temp_spheres[1].radius = 0.3f;
+	temp_spheres[1].mat = green_glass;
 
 	temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
 	temp_spheres[2].radius = 0.4f;
-	temp_spheres[2].mat = marble;
+	temp_spheres[2].mat = blue;
 
-	temp_spheres[3].center = make_float3(1.5f, 1.6f, -2.3f);
-	temp_spheres[3].radius = 0.4f;
-	temp_spheres[3].mat = ketchup;
+	temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
+	temp_spheres[3].radius = 0.1f;
+	temp_spheres[3].mat = blue;
 
-	temp_spheres[4].center = make_float3(-1.0f, -0.7f, 1.2f);
+	temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
 	temp_spheres[4].radius = 0.1f;
-	temp_spheres[4].mat = marble;
+	temp_spheres[4].mat = blue;
 
-	temp_spheres[5].center = make_float3(-0.5f, -0.7f, 1.7f);
+	temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
 	temp_spheres[5].radius = 0.1f;
-	temp_spheres[5].mat = marble;
+	temp_spheres[5].mat = blue;
 
-	temp_spheres[6].center = make_float3(0.3f, -0.7f, 1.4f);
+	temp_spheres[6].center = make_float3(-0.1f, -0.7f, 0.1f);
 	temp_spheres[6].radius = 0.1f;
-	temp_spheres[6].mat = marble;
+	temp_spheres[6].mat = blue;
 
-	temp_spheres[7].center = make_float3(-0.1f, -0.7f, 0.1f);
-	temp_spheres[7].radius = 0.1f;
-	temp_spheres[7].mat = marble;
+	temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.55f);
+	temp_spheres[7].radius = 0.25f;
+	temp_spheres[7].mat = something;
 
-	temp_spheres[8].center = make_float3(0.9f, -0.5f, 1.3f);
-	temp_spheres[8].radius = 0.3f;
-	temp_spheres[8].mat = green_glass;
+	temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
+	temp_spheres[8].radius = 0.8f;
+	temp_spheres[8].mat = green;
 
-	temp_spheres[9].center = make_float3(0.2f, -0.55f, 0.7f);
-	temp_spheres[9].radius = 0.25f;
-	temp_spheres[9].mat = marble;
+	temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
+	temp_spheres[9].radius = 0.4f;
+	temp_spheres[9].mat = ketchup;
 
 	temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
 	temp_spheres[10].radius = 0.2f;
-	temp_spheres[10].mat = ketchup;
+	temp_spheres[10].mat = marble;
 
 	temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
 	temp_spheres[11].radius = 0.1f;
-	temp_spheres[11].mat = ketchup;
+	temp_spheres[11].mat = gold;
 
 	temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
 	temp_spheres[12].radius = 0.05f;
-	temp_spheres[12].mat = ketchup;
+	temp_spheres[12].mat = green;
 
 	temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
 	temp_spheres[13].radius = 0.025f;
-	temp_spheres[13].mat = ketchup;
-
-	temp_spheres[14].center = make_float3(-4.0f, 15.0, 0.0f);
-	temp_spheres[14].radius = 6.0f;
-	temp_spheres[14].mat = light;
+	temp_spheres[13].mat = green;
 
 	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
-
 	CUDA_CALL(cudaMemcpy(m_spheres, temp_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
-
 	SAFE_DELETE_ARRAY(temp_spheres);
+
+	m_cube_map_loader.load_data(
+		"res\\texture\\hexagon\\xpos.bmp",
+		"res\\texture\\hexagon\\xneg.bmp",
+		"res\\texture\\hexagon\\ypos.bmp",
+		"res\\texture\\hexagon\\yneg.bmp",
+		"res\\texture\\hexagon\\zpos.bmp",
+		"res\\texture\\hexagon\\zneg.bmp"
+	);
+
+	m_cube_map = m_cube_map_loader.create_cube_device_data();
 }
 
-inline void path_tracer::release_device_data()
+inline void path_tracer::release_scene_device_data()
 {
 	//TODO:Hardcode here
 	CUDA_CALL(cudaFree(m_spheres));
+	m_cube_map_loader.release_cube_device_data();
+	m_cube_map_loader.unload_data();
+	m_cube_map = nullptr;
 }
 
 #endif // !__PATH_TRACER__

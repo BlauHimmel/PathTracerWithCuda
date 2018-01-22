@@ -19,12 +19,15 @@
 #include "camera.hpp"
 #include "fresnel.h"
 #include "material.hpp"
+#include "cube_map.hpp"
 
 #define BLOCK_SIZE 1024
-#define MAX_TRACER_DEPTH 40
+#define MAX_TRACER_DEPTH 20
 #define VECTOR_BIAS_LENGTH 0.0001f
 #define ENERGY_EXIST_THRESHOLD 0.000001f
 #define SSS_THRESHOLD 0.000001f
+
+//TODO:LET MAX_TRACER_DEPTH BE A PARAMETER, WHICH CAN BE CONTROL IN THE APPLICATION
 
 enum class object_type
 {
@@ -41,8 +44,7 @@ struct is_negative_predicate
 	}
 };
 
-//using a function instead of macro will cause a weird bug, BOOOOOM!(memory access violation)
-
+//using a function instead of macro will cause a weird memory access violation bug, BOOOOOM!
 #define GET_DEFAULT_SCATERRING_DEVICE(air_scattering)\
 {\
 	air_scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);\
@@ -243,6 +245,7 @@ __host__ __device__ fresnel get_fresnel(
 	const float3& refraction_direction		//in
 )
 {
+	//using real fresnel equation
 	fresnel fresnel;
 
 	if (length(refraction_direction) <= 0.12345f || dot(normal, refraction_direction) > 0)
@@ -266,14 +269,35 @@ __host__ __device__ fresnel get_fresnel(
 }
 
 __host__ __device__ float3 get_background_color(
-	const float3& direction		//in
+	const float3& direction,		//in
+	cube_map* sky_cube_map			//in
 )
 {
-	//TODO:READ CUBE MAP HERE
-	float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
-	float3 a = make_float3(0.15f, 0.3f, 0.5f);
-	float3 b = make_float3(1.0f, 1.0f, 1.0f);
-	return ((1.0f - t) * a + t * b) * 1.0f;
+	//TODO:COULD SAMPLE CUBE MAP HERE
+	float u, v;
+	int index;
+	convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
+	int x_image = u * sky_cube_map->length;
+	int y_image = (1.0f - v) * sky_cube_map->length;
+
+	uchar* pixels;
+	if (index == 0) pixels = sky_cube_map->m_x_positive_map;
+	else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
+	else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
+	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
+	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
+	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
+
+	return make_float3(
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
+	);
+
+	//float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
+	//float3 a = make_float3(0.15f, 0.3f, 0.5f);
+	//float3 b = make_float3(1.0f, 1.0f, 1.0f);
+	//return ((1.0f - t) * a + t * b) * 1.0f;
 }
 
 __host__ __device__ float3 point_on_ray(
@@ -317,7 +341,7 @@ __global__ void generate_ray_kernel(
 	float focal_distance,				//in
 	int pixel_count,					//in
 	ray* rays,							//in out
-	unsigned long seed
+	int seed							//in
 )
 {
 	int block_x = blockIdx.x;
@@ -334,27 +358,31 @@ __global__ void generate_ray_kernel(
 		thrust::default_random_engine random_engine(rand_hash(seed) * rand_hash(seed) * rand_hash(pixel_index));
 		thrust::uniform_real_distribution<float> uniform_distribution(-0.5f, 0.5f);
 
+		//for anti-aliasing
 		float jitter_x = uniform_distribution(random_engine);
 		float jitter_y = uniform_distribution(random_engine);
 
 		float distance = length(view);
 
+		//vector base
 		float3 horizontal = normalize(cross(view, up));
 		float3 vertical = normalize(cross(horizontal, view));
 
+		//edge of canvas
 		float3 x_axis = horizontal * (distance * tan(fov.x * 0.5f * (PI / 180.0f)));
 		float3 y_axis = vertical * (distance * tan(-fov.y * 0.5f * (PI / 180.0f)));
 		
 		float normalized_image_x = ((image_x + jitter_x) / (resolution.x - 1.0f)) * 2.0f - 1.0f;
 		float normalized_image_y = ((image_y + jitter_y) / (resolution.y - 1.0f)) * 2.0f - 1.0f;
 
+		//for all the ray (cast from one point) refracted by the convex will be cast on one point finally(focal point)
 		float3 point_on_canvas_plane = eye + view + normalized_image_x * x_axis + normalized_image_y * y_axis;
 		float3 point_on_image_plane = eye + (point_on_canvas_plane - eye) * focal_distance;
 
 		float3 point_on_aperture;
 		if (aperture_radius > 0.00001f)
 		{
-			//sample on convex
+			//sample on convex, note that convex is not a plane
 			float rand1 = uniform_distribution(random_engine) + 0.5f;
 			float rand2 = uniform_distribution(random_engine) + 0.5f;
 
@@ -389,6 +417,7 @@ __global__ void trace_ray_kernel(
 	scattering* scatterings,				//in out
 	float3* not_absorbed_colors,			//in out
 	float3* accumulated_colors,				//in out
+	cube_map* sky_cube_map,					//in
 	int seed								//in
 )
 {
@@ -418,14 +447,15 @@ __global__ void trace_ray_kernel(
 	object_type min_type = object_type::none;
 	int min_sphere_index = -1;
 
-	//TODO:Hardcode here
-	if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
-	{
-		min_t = hit_t;
-		min_point = hit_point;
-		min_normal = hit_normal;
-		min_type = object_type::ground;
-	}
+	//intersect will primitives in scene
+	//if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
+	//{
+	//	//TODO:HARDCODE HERE
+	//	min_t = hit_t;
+	//	min_point = hit_point;
+	//	min_normal = hit_normal;
+	//	min_type = object_type::ground;
+	//}
 
 	for (int i = 0; i < sphere_num; i++)
 	{
@@ -439,6 +469,7 @@ __global__ void trace_ray_kernel(
 		}
 	}
 
+	//absorption and scattering of medium
 	scattering current_scattering = scatterings[pixel_index];
 
 	if (current_scattering.reduced_scattering_coefficient.x > 0.0f ||
@@ -446,9 +477,10 @@ __global__ void trace_ray_kernel(
 	{
 		float rand = uniform_distribution(random_engine);
 		float scaterring_distance = -log(rand) / current_scattering.reduced_scattering_coefficient.x;
-		//TODO:isotropic scattering
+		//TODO:ISOTROPIC SCATTERING
 		if (scaterring_distance < min_t)
 		{
+			//absorption and scattering
 			float rand1 = uniform_distribution(random_engine);
 			float rand2 = uniform_distribution(random_engine);
 
@@ -459,6 +491,7 @@ __global__ void trace_ray_kernel(
 
 			not_absorbed_colors[pixel_index] *= compute_absorption_through_medium(current_scattering.absorption_coefficient, scaterring_distance);
 
+			//kill the low energy ray
 			if (length(not_absorbed_colors[pixel_index]) <= ENERGY_EXIST_THRESHOLD)
 			{
 				energy_exist_pixels[energy_exist_pixel_index] = -1;
@@ -468,6 +501,7 @@ __global__ void trace_ray_kernel(
 		}
 		else
 		{
+			//absorption
 			not_absorbed_colors[pixel_index] *= compute_absorption_through_medium(current_scattering.absorption_coefficient, min_t);
 		}
 	}
@@ -477,7 +511,7 @@ __global__ void trace_ray_kernel(
 		material min_mat;
 		if (min_type == object_type::ground)
 		{
-			//TODO:Hardcode here
+			//TODO:HARDCODE HERE
 			GET_DEFAULT_MATERIAL_DEVICE(min_mat);
 			min_mat.diffuse_color = make_float3(0.455f, 0.43f, 0.39f);
 		}
@@ -513,6 +547,7 @@ __global__ void trace_ray_kernel(
 
 		if (min_mat.medium.refraction_index > 1.0f && rand < fresnel.reflection_index)
 		{
+			//reflection
 			not_absorbed_colors[pixel_index] *= min_mat.specular_color;
 
 			ray next_ray;
@@ -522,6 +557,8 @@ __global__ void trace_ray_kernel(
 		}
 		else if (min_mat.is_transparent)
 		{
+			//refraction
+			//transmitted into a new medium
 			scatterings[pixel_index] = out_medium.scattering;
 
 			ray next_ray;
@@ -531,6 +568,7 @@ __global__ void trace_ray_kernel(
 		}
 		else
 		{
+			//diffuse
 			accumulated_colors[pixel_index] += not_absorbed_colors[pixel_index] * min_mat.emission_color;
 			not_absorbed_colors[pixel_index] *= min_mat.diffuse_color;
 
@@ -543,6 +581,7 @@ __global__ void trace_ray_kernel(
 			rays[pixel_index] = next_ray;
 		}
 
+		//kill the low energy ray
 		if (length(not_absorbed_colors[pixel_index]) <= ENERGY_EXIST_THRESHOLD)
 		{
 			energy_exist_pixels[energy_exist_pixel_index] = -1;
@@ -550,8 +589,9 @@ __global__ void trace_ray_kernel(
 	}
 	else
 	{
-		float3 background_color = get_background_color(tracing_ray.direction);
+		float3 background_color = get_background_color(tracing_ray.direction, sky_cube_map);
 		accumulated_colors[pixel_index] += not_absorbed_colors[pixel_index] * background_color;
+		//kill the low ray because it has left the scene
 		energy_exist_pixels[energy_exist_pixel_index] = -1;
 	}
 }
@@ -562,7 +602,8 @@ extern "C" void path_tracer_kernel(
 	int pixel_count, 					//in
 	color* pixels,						//in out
 	int pass_counter, 					//in out
-	render_camera* render_cam			//in
+	render_camera* render_cam,			//in
+	cube_map* sky_cube_map				//in
 )
 {
 	int threads_num_per_block = BLOCK_SIZE;
@@ -623,6 +664,7 @@ extern "C" void path_tracer_kernel(
 			scatterings,
 			not_absorbed_colors, 
 			accumulated_colors, 
+			sky_cube_map,
 			seed
 			);
 		
@@ -633,7 +675,7 @@ extern "C" void path_tracer_kernel(
 			is_negative_predicate()
 		);
 		
-		energy_exist_pixels_count = thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels;
+		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels);
 	}
 
 	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors, pixel_count * sizeof(color), cudaMemcpyDeviceToHost));

@@ -25,6 +25,15 @@
     <Filter Include="Library\lodepng">
       <UniqueIdentifier>{86897923-294e-402b-a1e7-dfccb9555cf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{86655a82-67e7-4c36-ae98-6068ee1e3ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\texture">
+      <UniqueIdentifier>{9bec58a6-a29b-4835-97b3-43bd17798b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\texture\sky">
+      <UniqueIdentifier>{92690efd-2f2a-4f8a-991e-565f9ec3b98d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gpu_path_tracer.cpp">
@@ -80,10 +89,36 @@
     <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h">
       <Filter>Library\tiny_obj_loader</Filter>
     </ClInclude>
+    <ClInclude Include="cube_map.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texture\sky\lobby_sphere.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyxneg.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyxpos.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyyneg.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyypos.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyzneg.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
+    <Image Include="res\texture\sky\lobbyzpos.bmp">
+      <Filter>Resource\texture\sky</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -41,6 +41,87 @@ inline float rsqrtf(float x)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// others
+////////////////////////////////////////////////////////////////////////////////
+
+inline __host__ __device__ bool equal(float a, float b)
+{
+	return abs(a - b) <= 0.00001f;
+}
+
+inline __host__ __device__ void convert_xyz_to_cube_uv(float x, float y, float z, int& index, float& u, float& v)
+{
+	float absX = fabs(x);
+	float absY = fabs(y);
+	float absZ = fabs(z);
+
+	int isXPositive = x > 0 ? 1 : 0;
+	int isYPositive = y > 0 ? 1 : 0;
+	int isZPositive = z > 0 ? 1 : 0;
+
+	float maxAxis, uc, vc;
+
+	// POSITIVE X
+	if (isXPositive && absX >= absY && absX >= absZ) {
+		// u (0 to 1) goes from +z to -z
+		// v (0 to 1) goes from -y to +y
+		maxAxis = absX;
+		uc = -z;
+		vc = y;
+		index = 0;
+	}
+	// NEGATIVE X
+	if (!isXPositive && absX >= absY && absX >= absZ) {
+		// u (0 to 1) goes from -z to +z
+		// v (0 to 1) goes from -y to +y
+		maxAxis = absX;
+		uc = z;
+		vc = y;
+		index = 1;
+	}
+	// POSITIVE Y
+	if (isYPositive && absY >= absX && absY >= absZ) {
+		// u (0 to 1) goes from -x to +x
+		// v (0 to 1) goes from +z to -z
+		maxAxis = absY;
+		uc = x;
+		vc = -z;
+		index = 2;
+	}
+	// NEGATIVE Y
+	if (!isYPositive && absY >= absX && absY >= absZ) {
+		// u (0 to 1) goes from -x to +x
+		// v (0 to 1) goes from -z to +z
+		maxAxis = absY;
+		uc = x;
+		vc = z;
+		index = 3;
+	}
+	// POSITIVE Z
+	if (isZPositive && absZ >= absX && absZ >= absY) {
+		// u (0 to 1) goes from -x to +x
+		// v (0 to 1) goes from -y to +y
+		maxAxis = absZ;
+		uc = x;
+		vc = y;
+		index = 4;
+	}
+	// NEGATIVE Z
+	if (!isZPositive && absZ >= absX && absZ >= absY) {
+		// u (0 to 1) goes from +x to -x
+		// v (0 to 1) goes from -y to +y
+		maxAxis = absZ;
+		uc = -x;
+		vc = y;
+		index = 5;
+	}
+
+	// Convert range from -1 to 1 to 0 to 1
+	u = 0.5f * (uc / maxAxis + 1.0f);
+	v = 0.5f * (vc / maxAxis + 1.0f);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // constructors
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1092,6 +1173,14 @@ inline __host__ __device__ uint4 min(uint4 a, uint4 b)
 	return make_uint4(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z), min(a.w, b.w));
 }
 
+inline __host__ __device__ float min(float a, float b, float c)
+{
+	float min = a;
+	min = b < min ? b : min;
+	min = c < min ? c : min;
+	return min;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // max
 ////////////////////////////////////////////////////////////////////////////////
@@ -1139,6 +1228,14 @@ inline __host__ __device__ uint3 max(uint3 a, uint3 b)
 inline __host__ __device__ uint4 max(uint4 a, uint4 b)
 {
 	return make_uint4(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z), max(a.w, b.w));
+}
+
+inline __host__ __device__ float max(float a, float b, float c)
+{
+	float max = a;
+	max = b > max ? b : max;
+	max = c > max ? c : max;
+	return max;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
