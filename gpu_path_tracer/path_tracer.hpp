@@ -19,6 +19,7 @@
 #include "path_tracer_kernel.h"
 #include "material.hpp"
 #include "cube_map.hpp"
+#include "triangle_mesh.hpp"
 
 class path_tracer
 {
@@ -26,6 +27,9 @@ private:
 	cube_map_loader m_cube_map_loader;
 	cube_map* m_cube_map;
 	image* m_image;
+	triangle_mesh m_triangle_mesh;
+	int m_triangle_num;
+	triangle* m_triangles;
 	int m_sphere_num;
 	sphere* m_spheres;
 	render_camera* m_render_camera;
@@ -75,7 +79,7 @@ inline image* path_tracer::render()
 	if (m_is_initiated)
 	{
 		image* buffer = create_image(m_image->width, m_image->height);
-		path_tracer_kernel(m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
+		path_tracer_kernel(m_triangle_num, m_triangles ,m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
 			m_image->pixels[i] += buffer->pixels[i];
@@ -102,7 +106,7 @@ inline void path_tracer::clear()
 inline void path_tracer::create_scene_device_data()
 {
 	//TODO:LOAD SCENE FROM FILE
-	m_sphere_num = 14;
+	m_sphere_num = 2;
 
 	sphere* temp_spheres = new sphere[m_sphere_num];
 
@@ -129,12 +133,12 @@ inline void path_tracer::create_scene_device_data()
 	material blue = get_default_material();
 	blue.diffuse_color = make_float3(0.4f, 0.6f, 0.8f);
 	blue.specular_color = make_float3(1.0f, 1.0f, 1.0f);
-	blue.medium.refraction_index = 1.491f;
+	blue.medium.refraction_index = 1.2f;
 
 	material glass = get_default_material();
 	glass.specular_color = make_float3(1.0f, 1.0f, 1.0f);
 	glass.is_transparent = true;
-	glass.medium.refraction_index = 1.62f;
+	glass.medium.refraction_index = 2.42f;
 
 	material green_glass = get_default_material();
 	green_glass.specular_color = make_float3(1.0f, 1.0f, 1.0f);
@@ -175,78 +179,92 @@ inline void path_tracer::create_scene_device_data()
 	steel.medium.refraction_index = 1000.0f;
 
 	material light = get_default_material();
-	light.emission_color = make_float3(9.0f, 9.0f, 7.0f);
+	light.emission_color = make_float3(8.0f, 8.0f, 7.0f);
 
-	temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
-	temp_spheres[0].radius = 0.8f;
-	temp_spheres[0].mat = steel;
+	//temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
+	//temp_spheres[0].radius = 0.8f;
+	//temp_spheres[0].mat = steel;
 
-	temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
-	temp_spheres[1].radius = 0.3f;
-	temp_spheres[1].mat = green_glass;
+	//temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
+	//temp_spheres[1].radius = 0.3f;
+	//temp_spheres[1].mat = green_glass;
 
-	temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
-	temp_spheres[2].radius = 0.4f;
-	temp_spheres[2].mat = blue;
+	//temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
+	//temp_spheres[2].radius = 0.4f;
+	//temp_spheres[2].mat = blue;
 
-	temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
-	temp_spheres[3].radius = 0.1f;
-	temp_spheres[3].mat = blue;
+	//temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
+	//temp_spheres[3].radius = 0.1f;
+	//temp_spheres[3].mat = blue;
 
-	temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
-	temp_spheres[4].radius = 0.1f;
-	temp_spheres[4].mat = blue;
+	//temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
+	//temp_spheres[4].radius = 0.1f;
+	//temp_spheres[4].mat = blue;
 
-	temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
-	temp_spheres[5].radius = 0.1f;
-	temp_spheres[5].mat = blue;
+	//temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
+	//temp_spheres[5].radius = 0.1f;
+	//temp_spheres[5].mat = blue;
 
-	temp_spheres[6].center = make_float3(-0.1f, -0.7f, 0.1f);
-	temp_spheres[6].radius = 0.1f;
-	temp_spheres[6].mat = blue;
+	//temp_spheres[6].center = make_float3(0.1f, -0.7f, 0.1f);
+	//temp_spheres[6].radius = 0.1f;
+	//temp_spheres[6].mat = blue;
 
-	temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.55f);
-	temp_spheres[7].radius = 0.25f;
-	temp_spheres[7].mat = something;
+	//temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.7f);
+	//temp_spheres[7].radius = 0.25f;
+	//temp_spheres[7].mat = blue;
 
-	temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
-	temp_spheres[8].radius = 0.8f;
-	temp_spheres[8].mat = green;
+	//temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
+	//temp_spheres[8].radius = 0.8f;
+	//temp_spheres[8].mat = green;
 
-	temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
-	temp_spheres[9].radius = 0.4f;
-	temp_spheres[9].mat = ketchup;
+	//temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
+	//temp_spheres[9].radius = 0.4f;
+	//temp_spheres[9].mat = green;
 
-	temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
-	temp_spheres[10].radius = 0.2f;
-	temp_spheres[10].mat = marble;
+	//temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
+	//temp_spheres[10].radius = 0.2f;
+	//temp_spheres[10].mat = green;
 
-	temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
-	temp_spheres[11].radius = 0.1f;
-	temp_spheres[11].mat = gold;
+	//temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
+	//temp_spheres[11].radius = 0.1f;
+	//temp_spheres[11].mat = green;
 
-	temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
-	temp_spheres[12].radius = 0.05f;
-	temp_spheres[12].mat = green;
+	//temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
+	//temp_spheres[12].radius = 0.05f;
+	//temp_spheres[12].mat = green;
 
-	temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
-	temp_spheres[13].radius = 0.025f;
-	temp_spheres[13].mat = green;
+	//temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
+	//temp_spheres[13].radius = 0.025f;
+	//temp_spheres[13].mat = green;
+
+	//temp_spheres[14].center = make_float3(2.0f, 1.8f, 2.0f);
+	//temp_spheres[14].radius = 0.75f;
+	//temp_spheres[14].mat = red;
+
+	temp_spheres[0].center = make_float3(-4.0, 55.0, 0.0);
+	temp_spheres[0].radius = 5.0f;
+	temp_spheres[0].mat = light;
 
 	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
 	CUDA_CALL(cudaMemcpy(m_spheres, temp_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
 	SAFE_DELETE_ARRAY(temp_spheres);
 
 	m_cube_map_loader.load_data(
-		"res\\texture\\hexagon\\xpos.bmp",
-		"res\\texture\\hexagon\\xneg.bmp",
-		"res\\texture\\hexagon\\ypos.bmp",
-		"res\\texture\\hexagon\\yneg.bmp",
-		"res\\texture\\hexagon\\zpos.bmp",
-		"res\\texture\\hexagon\\zneg.bmp"
+		"res\\texture\\lobby\\xpos.bmp",
+		"res\\texture\\lobby\\xneg.bmp",
+		"res\\texture\\lobby\\ypos.bmp",
+		"res\\texture\\lobby\\yneg.bmp",
+		"res\\texture\\lobby\\zpos.bmp",
+		"res\\texture\\lobby\\zneg.bmp"
 	);
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
+
+	m_triangle_mesh.load_obj("res\\obj\\cow.obj");
+	m_triangle_mesh.set_material(glass);
+	m_triangle_mesh.set_position(make_float3(0.0f, 0.2f, 2.0f));
+	m_triangles = m_triangle_mesh.create_mesh_device_data();
+	m_triangle_num = m_triangle_mesh.get_triangle_num();
 }
 
 inline void path_tracer::release_scene_device_data()

@@ -20,6 +20,7 @@
 #include "fresnel.h"
 #include "material.hpp"
 #include "cube_map.hpp"
+#include "triangle_mesh.hpp"
 
 #define BLOCK_SIZE 1024
 #define MAX_TRACER_DEPTH 20
@@ -33,7 +34,8 @@ enum class object_type
 {
 	none,
 	sphere,
-	ground
+	ground,
+	triangle
 };
 
 struct is_negative_predicate
@@ -125,6 +127,44 @@ __host__ __device__  bool intersect_sphere(
 	hit_point = ray.origin + ray.direction * hit_t;
 	hit_normal = normalize(hit_point - sphere.center);
 	return true;
+}
+
+__host__ __device__ bool intersect_triangle(
+	const triangle& triangle,
+	const ray& ray,
+	float3& hit_point,
+	float3& hit_normal,
+	float& hit_t
+)
+{
+	float3 edge1 = triangle.vertex1 - triangle.vertex0;
+	float3 edge2 = triangle.vertex2 - triangle.vertex0;
+
+	float3 p_vec = cross(ray.direction, edge2);
+	float det = dot(edge1, p_vec);
+
+	if (det == 0.0f)
+	{
+		return false;
+	}
+
+	float inverse_det = 1.0f / det;
+	float3 t_vec = ray.origin - triangle.vertex0;
+	float3 q_vec = cross(t_vec, edge1);
+
+	float t1 = dot(t_vec, p_vec) * inverse_det;
+	float t2 = dot(ray.direction, q_vec) * inverse_det;
+	float t= dot(edge2, q_vec) * inverse_det;
+
+	if (t1 >= 0.0f && t2 >= 0.0f && t1 + t2 <= 1.0f)
+	{
+		hit_t = t;
+		hit_normal = triangle.normal;
+		hit_point = ray.origin + ray.direction * t;
+		return true;
+	}
+
+	return false;
 }
 
 __host__ __device__ float3 sample_on_hemisphere(
@@ -273,31 +313,30 @@ __host__ __device__ float3 get_background_color(
 	cube_map* sky_cube_map			//in
 )
 {
-	//TODO:COULD SAMPLE CUBE MAP HERE
-	float u, v;
-	int index;
-	convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
-	int x_image = u * sky_cube_map->length;
-	int y_image = (1.0f - v) * sky_cube_map->length;
+	//float u, v;
+	//int index;
+	//convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
+	//int x_image = (int)(u * sky_cube_map->length);
+	//int y_image = (int)((1.0f - v) * sky_cube_map->length);
 
-	uchar* pixels;
-	if (index == 0) pixels = sky_cube_map->m_x_positive_map;
-	else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
-	else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
-	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
-	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
-	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
+	//uchar* pixels;
+	//if (index == 0) pixels = sky_cube_map->m_x_positive_map;
+	//else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
+	//else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
+	//else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
+	//else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
+	//else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
 
-	return make_float3(
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
-	);
+	//return make_float3(
+	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
+	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
+	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
+	//);
 
-	//float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
-	//float3 a = make_float3(0.15f, 0.3f, 0.5f);
-	//float3 b = make_float3(1.0f, 1.0f, 1.0f);
-	//return ((1.0f - t) * a + t * b) * 1.0f;
+	float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
+	float3 a = make_float3(0.15f, 0.3f, 0.5f);
+	float3 b = make_float3(1.0f, 1.0f, 1.0f);
+	return ((1.0f - t) * a + t * b) * 1.0f;
 }
 
 __host__ __device__ float3 point_on_ray(
@@ -407,6 +446,8 @@ __global__ void generate_ray_kernel(
 }
 
 __global__ void trace_ray_kernel(
+	int triangle_num,						//in
+	triangle* triangles,					//in
 	int sphere_num,							//in
 	sphere* spheres,						//in
 	int pixel_count,						//in
@@ -446,16 +487,17 @@ __global__ void trace_ray_kernel(
 	float3 min_normal = make_float3(0.0f, 0.0f, 0.0f);
 	object_type min_type = object_type::none;
 	int min_sphere_index = -1;
+	int min_triangle_index = -1;
 
-	//intersect will primitives in scene
-	//if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
-	//{
-	//	//TODO:HARDCODE HERE
-	//	min_t = hit_t;
-	//	min_point = hit_point;
-	//	min_normal = hit_normal;
-	//	min_type = object_type::ground;
-	//}
+	//intersect with primitives in scene
+	if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
+	{
+		//TODO:HARDCODE HERE
+		min_t = hit_t;
+		min_point = hit_point;
+		min_normal = hit_normal;
+		min_type = object_type::ground;
+	}
 
 	for (int i = 0; i < sphere_num; i++)
 	{
@@ -466,6 +508,19 @@ __global__ void trace_ray_kernel(
 			min_normal = hit_normal;
 			min_sphere_index = i;
 			min_type = object_type::sphere;
+		}
+	}
+
+	//TODO:USE SPATIAL STRUCTURE TO ACCELERATE THIS PROCESS
+	for (int i = 0; i < triangle_num; i++)
+	{
+		if (intersect_triangle(triangles[i], tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
+		{
+			min_t = hit_t;
+			min_point = hit_point;
+			min_normal = hit_normal;
+			min_triangle_index = i;
+			min_type = object_type::triangle;
 		}
 	}
 
@@ -518,6 +573,10 @@ __global__ void trace_ray_kernel(
 		else if (min_type == object_type::sphere)
 		{
 			min_mat = spheres[min_sphere_index].mat;
+		}
+		else if (min_type == object_type::triangle)
+		{
+			min_mat = triangles[min_triangle_index].mat;
 		}
 
 		float3 in_direction = tracing_ray.direction;
@@ -597,6 +656,8 @@ __global__ void trace_ray_kernel(
 }
 
 extern "C" void path_tracer_kernel(
+	int triangle_num,					//in
+	triangle* triangles,				//in
 	int sphere_num,						//in
 	sphere* spheres, 					//in
 	int pixel_count, 					//in
@@ -622,6 +683,8 @@ extern "C" void path_tracer_kernel(
 	CUDA_CALL(cudaMalloc((void**)&rays, pixel_count * sizeof(ray)));
 	CUDA_CALL(cudaMalloc((void**)&energy_exist_pixels, pixel_count * sizeof(int)));
 	CUDA_CALL(cudaMalloc((void**)&scatterings, pixel_count * sizeof(scattering)));
+
+	//TODO:BUILD SPATIAL STRUCTURE HERE
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
@@ -654,6 +717,8 @@ extern "C" void path_tracer_kernel(
 		int used_blocks_num_per_gird = (energy_exist_pixels_count + threads_num_per_block - 1) / threads_num_per_block;
 
 		trace_ray_kernel <<<used_blocks_num_per_gird, threads_num_per_block>>> (
+			triangle_num,
+			triangles,
 			sphere_num, 
 			spheres, 
 			pixel_count, 

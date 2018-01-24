@@ -8,8 +8,11 @@
 #include "ray.hpp"
 #include "camera.hpp"
 #include "cube_map.hpp"
+#include "triangle_mesh.hpp"
 
 extern "C" void path_tracer_kernel(
+	int triangle_num,						//in
+	triangle* triangles,					//in
 	int sphere_num,							//in
 	sphere* spheres, 						//in
 	int pixel_count, 						//in

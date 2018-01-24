@@ -186,6 +186,7 @@
     <ClInclude Include="path_tracer_kernel.h" />
     <ClInclude Include="ray.hpp" />
     <ClInclude Include="sphere.hpp" />
+    <ClInclude Include="triangle_mesh.hpp" />
     <ClInclude Include="utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
