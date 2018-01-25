@@ -31,8 +31,17 @@
     <Filter Include="Resource\texture">
       <UniqueIdentifier>{9bec58a6-a29b-4835-97b3-43bd17798b0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\texture\sky">
+    <Filter Include="Resource\texture\lobby">
       <UniqueIdentifier>{92690efd-2f2a-4f8a-991e-565f9ec3b98d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\texture\lake">
+      <UniqueIdentifier>{58f30adb-319e-4955-a767-7b5d9d2f8c95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\texture\hexagon">
+      <UniqueIdentifier>{5e44a41b-52fd-4d0d-9a6d-405f2af40f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\obj">
+      <UniqueIdentifier>{fd1dea33-eb15-4f81-a576-1a9a0d1994c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,25 +115,84 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\texture\sky\lobby_sphere.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyxneg.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyxpos.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyyneg.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyypos.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyzneg.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
     <Image Include="res\texture\sky\lobbyzpos.bmp">
-      <Filter>Resource\texture\sky</Filter>
+      <Filter>Resource\texture\lobby</Filter>
     </Image>
+    <Image Include="res\texture\lake\xneg.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\lake\xpos.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\lake\yneg.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\lake\ypos.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\lake\zneg.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\lake\zpos.bmp">
+      <Filter>Resource\texture\lake</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\xneg.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\xpos.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\yneg.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\ypos.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\zneg.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+    <Image Include="res\texture\hexagon\zpos.bmp">
+      <Filter>Resource\texture\hexagon</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\obj\cow.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\cube.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\diamond.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\dinosaur.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\human.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\monkey.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
+    <Object Include="res\obj\teapot.obj">
+      <Filter>Resource\obj</Filter>
+    </Object>
   </ItemGroup>
 </Project>

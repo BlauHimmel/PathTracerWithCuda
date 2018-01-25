@@ -194,6 +194,18 @@
     <CudaCompile Include="path_tracer_kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\texture\hexagon\xneg.bmp" />
+    <Image Include="res\texture\hexagon\xpos.bmp" />
+    <Image Include="res\texture\hexagon\yneg.bmp" />
+    <Image Include="res\texture\hexagon\ypos.bmp" />
+    <Image Include="res\texture\hexagon\zneg.bmp" />
+    <Image Include="res\texture\hexagon\zpos.bmp" />
+    <Image Include="res\texture\lake\xneg.bmp" />
+    <Image Include="res\texture\lake\xpos.bmp" />
+    <Image Include="res\texture\lake\yneg.bmp" />
+    <Image Include="res\texture\lake\ypos.bmp" />
+    <Image Include="res\texture\lake\zneg.bmp" />
+    <Image Include="res\texture\lake\zpos.bmp" />
     <Image Include="res\texture\sky\lobbyxneg.bmp" />
     <Image Include="res\texture\sky\lobbyxpos.bmp" />
     <Image Include="res\texture\sky\lobbyyneg.bmp" />
@@ -201,6 +213,15 @@
     <Image Include="res\texture\sky\lobbyzneg.bmp" />
     <Image Include="res\texture\sky\lobbyzpos.bmp" />
     <Image Include="res\texture\sky\lobby_sphere.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\obj\cow.obj" />
+    <Object Include="res\obj\cube.obj" />
+    <Object Include="res\obj\diamond.obj" />
+    <Object Include="res\obj\dinosaur.obj" />
+    <Object Include="res\obj\human.obj" />
+    <Object Include="res\obj\monkey.obj" />
+    <Object Include="res\obj\teapot.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
