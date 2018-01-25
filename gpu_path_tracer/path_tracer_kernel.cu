@@ -28,6 +28,9 @@
 #define ENERGY_EXIST_THRESHOLD 0.000001f
 #define SSS_THRESHOLD 0.000001f
 
+//#define USE_SKY_BOX
+#define USE_GROUND
+
 //TODO:LET MAX_TRACER_DEPTH BE A PARAMETER, WHICH CAN BE CONTROL IN THE APPLICATION
 
 enum class object_type
@@ -313,30 +316,35 @@ __host__ __device__ float3 get_background_color(
 	cube_map* sky_cube_map			//in
 )
 {
-	//float u, v;
-	//int index;
-	//convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
-	//int x_image = (int)(u * sky_cube_map->length);
-	//int y_image = (int)((1.0f - v) * sky_cube_map->length);
+#ifdef USE_SKY_BOX
+	float u, v;
+	int index;
+	convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
+	int x_image = (int)(u * sky_cube_map->length);
+	int y_image = (int)((1.0f - v) * sky_cube_map->length);
 
-	//uchar* pixels;
-	//if (index == 0) pixels = sky_cube_map->m_x_positive_map;
-	//else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
-	//else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
-	//else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
-	//else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
-	//else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
+	uchar* pixels;
+	if (index == 0) pixels = sky_cube_map->m_x_positive_map;
+	else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
+	else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
+	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
+	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
+	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
 
-	//return make_float3(
-	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
-	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
-	//	pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
-	//);
+	return make_float3(
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
+		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
+	);
+#endif // USE_SKY_BOX
 
+
+#ifdef USE_GROUND
 	float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
 	float3 a = make_float3(0.15f, 0.3f, 0.5f);
 	float3 b = make_float3(1.0f, 1.0f, 1.0f);
 	return ((1.0f - t) * a + t * b) * 1.0f;
+#endif // USE_GROUND
 }
 
 __host__ __device__ float3 point_on_ray(
@@ -490,6 +498,7 @@ __global__ void trace_ray_kernel(
 	int min_triangle_index = -1;
 
 	//intersect with primitives in scene
+#ifdef USE_GROUND
 	if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
 	{
 		//TODO:HARDCODE HERE
@@ -498,6 +507,7 @@ __global__ void trace_ray_kernel(
 		min_normal = hit_normal;
 		min_type = object_type::ground;
 	}
+#endif // USE_GROUND
 
 	for (int i = 0; i < sphere_num; i++)
 	{
