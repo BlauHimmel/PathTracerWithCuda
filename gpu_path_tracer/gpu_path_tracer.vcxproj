@@ -173,6 +173,7 @@
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bvh.hpp" />
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="basic_math.h" />
     <ClInclude Include="cube_map.hpp" />

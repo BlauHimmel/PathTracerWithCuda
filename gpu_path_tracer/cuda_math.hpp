@@ -44,6 +44,14 @@ inline float rsqrtf(float x)
 // others
 ////////////////////////////////////////////////////////////////////////////////
 
+inline __host__ __device__ float get(const float3& vec, int index)
+{
+	if (index == 0) return vec.x;
+	if (index == 1) return vec.y;
+	if (index == 2) return vec.z;
+	return vec.x;
+}
+
 inline __host__ __device__ bool equal(float a, float b)
 {
 	return abs(a - b) <= 0.00001f;

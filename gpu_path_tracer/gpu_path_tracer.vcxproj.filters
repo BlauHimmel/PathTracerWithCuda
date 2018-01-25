@@ -95,6 +95,9 @@
     <ClInclude Include="triangle_mesh.hpp">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="bvh.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu">

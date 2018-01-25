@@ -55,7 +55,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 
 	if (!error.empty())
 	{
-		std::cout << "error: " << error << std::endl;
+		std::cout << "error: " << error;
 	}
 
 	if (!is_success)
