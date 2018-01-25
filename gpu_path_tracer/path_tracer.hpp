@@ -20,6 +20,7 @@
 #include "material.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
+#include "bvh.hpp"
 
 class path_tracer
 {
@@ -30,6 +31,7 @@ private:
 	triangle_mesh m_triangle_mesh;
 	int m_triangle_num;
 	triangle* m_triangles;
+	bvh_node_device* m_bvh_nodes;
 	int m_sphere_num;
 	sphere* m_spheres;
 	render_camera* m_render_camera;
@@ -79,7 +81,7 @@ inline image* path_tracer::render()
 	if (m_is_initiated)
 	{
 		image* buffer = create_image(m_image->width, m_image->height);
-		path_tracer_kernel(m_triangle_num, m_triangles ,m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
+		path_tracer_kernel(m_triangle_num, m_bvh_nodes, m_triangles ,m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
 			m_image->pixels[i] += buffer->pixels[i];
@@ -265,6 +267,7 @@ inline void path_tracer::create_scene_device_data()
 	m_triangle_mesh.set_position(make_float3(0.0f, 0.2f, 2.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
+	m_bvh_nodes = build_bvh_device_data(build_bvh(m_triangles, m_triangle_num));
 }
 
 inline void path_tracer::release_scene_device_data()

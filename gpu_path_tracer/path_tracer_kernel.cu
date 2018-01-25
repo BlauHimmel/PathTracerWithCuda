@@ -21,6 +21,7 @@
 #include "material.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
+#include "bvh.hpp"
 
 #define BLOCK_SIZE 1024
 #define MAX_TRACER_DEPTH 20
@@ -133,11 +134,11 @@ __host__ __device__  bool intersect_sphere(
 }
 
 __host__ __device__ bool intersect_triangle(
-	const triangle& triangle,
-	const ray& ray,
-	float3& hit_point,
-	float3& hit_normal,
-	float& hit_t
+	const triangle& triangle,		//in
+	const ray& ray,					//in
+	float3& hit_point,				//out	
+	float3& hit_normal,				//out	
+	float& hit_t					//out	
 )
 {
 	float3 edge1 = triangle.vertex1 - triangle.vertex0;
@@ -168,6 +169,107 @@ __host__ __device__ bool intersect_triangle(
 	}
 
 	return false;
+}
+
+__host__ __device__ bool intersect_bounding_box(
+	const bounding_box& box,		//in
+	const ray& ray					//in
+)
+{
+	float3 inverse_direction = 1.0f / ray.direction;
+
+	float t_x1 = (box.left_bottom.x - ray.origin.x) * inverse_direction.x;
+	float t_x2 = (box.right_top.x - ray.origin.x) * inverse_direction.x;
+
+	float t_y1 = (box.left_bottom.y - ray.origin.y) * inverse_direction.y;
+	float t_y2 = (box.right_top.y - ray.origin.y) * inverse_direction.y;
+
+	float t_z1 = (box.left_bottom.z - ray.origin.z) * inverse_direction.z;
+	float t_z2 = (box.right_top.z - ray.origin.z) * inverse_direction.z;
+
+	float t_min = fmaxf(fmaxf(fminf(t_x1, t_x2), fminf(t_y1, t_y2)), fminf(t_z1, t_z2));
+	float t_max = fminf(fminf(fmaxf(t_x1, t_x2), fmaxf(t_y1, t_y2)), fmaxf(t_z1, t_z2));
+
+	bool is_hit = t_max >= t_min;
+	return is_hit;
+}
+
+__host__ __device__ bool intersect_triangle_mesh_bvh(
+	triangle* triangles,			//in	
+	bvh_node_device* bvh_nodes,		//in	
+	int triangle_num,				//in	
+	const ray& ray,					//in
+	float3& hit_point,				//out	
+	float3& hit_normal,				//out	
+	float& hit_t,					//out	
+	int& hit_triangle_index			//out
+)
+{
+	if (triangle_num == 0)
+	{
+		return;
+	}
+
+	float min_t = INFINITY;
+	float3 min_normal;
+	float3 min_point;
+	float min_triangle_index;
+
+	float current_t = INFINITY;
+	float3 current_normal;
+	float3 current_point;
+
+	bool is_hit = false;
+
+	int traversal_position = 0;
+	while (traversal_position != -1)
+	{
+		bvh_node_device current_node = bvh_nodes[traversal_position];
+
+		//if hit the box them check if it is leaf node, otherwise check stop traversing on this branch
+		if (intersect_bounding_box(current_node.box, ray))
+		{
+			if (current_node.is_leaf)
+			{
+				//intersect with each triangles in the leaf node and update the relevant minimal parameters
+				for (auto i = 0; i < 6; i++)
+				{
+					int triangle_index = current_node.triangle_indices[i];
+					if (triangle_index != -1)
+					{
+						if (intersect_triangle(triangles[triangle_index], ray, current_point, current_normal, current_t) && current_t > 0.0f && current_t < min_t)
+						{
+							min_t = current_t;
+							min_point = current_point;
+							min_normal = current_normal;
+							min_triangle_index = triangle_index;
+							is_hit = true;
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			traversal_position++;
+		}
+		else
+		{
+			traversal_position = current_node.next_node_index;
+		}
+	}
+
+	if (is_hit)
+	{
+		hit_t = min_t;
+		hit_point = min_point;
+		hit_normal = min_normal;
+		hit_triangle_index = min_triangle_index;
+	}
+
+	return is_hit;
 }
 
 __host__ __device__ float3 sample_on_hemisphere(
@@ -455,6 +557,7 @@ __global__ void generate_ray_kernel(
 
 __global__ void trace_ray_kernel(
 	int triangle_num,						//in
+	bvh_node_device* bvh_nodes,				//in
 	triangle* triangles,					//in
 	int sphere_num,							//in
 	sphere* spheres,						//in
@@ -520,18 +623,13 @@ __global__ void trace_ray_kernel(
 			min_type = object_type::sphere;
 		}
 	}
-
-	//TODO:USE SPATIAL STRUCTURE TO ACCELERATE THIS PROCESS
-	for (int i = 0; i < triangle_num; i++)
+	
+	if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, triangle_num, tracing_ray, hit_point, hit_normal, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 	{
-		if (intersect_triangle(triangles[i], tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
-		{
-			min_t = hit_t;
-			min_point = hit_point;
-			min_normal = hit_normal;
-			min_triangle_index = i;
-			min_type = object_type::triangle;
-		}
+		min_t = hit_t;
+		min_point = hit_point;
+		min_normal = hit_normal;
+		min_type = object_type::triangle;
 	}
 
 	//absorption and scattering of medium
@@ -665,8 +763,11 @@ __global__ void trace_ray_kernel(
 	}
 }
 
+//TODO:BUILD SPATIAL STRUCTURE ON GPU
+
 extern "C" void path_tracer_kernel(
 	int triangle_num,					//in
+	bvh_node_device* bvh_nodes,			//in
 	triangle* triangles,				//in
 	int sphere_num,						//in
 	sphere* spheres, 					//in
@@ -693,8 +794,6 @@ extern "C" void path_tracer_kernel(
 	CUDA_CALL(cudaMalloc((void**)&rays, pixel_count * sizeof(ray)));
 	CUDA_CALL(cudaMalloc((void**)&energy_exist_pixels, pixel_count * sizeof(int)));
 	CUDA_CALL(cudaMalloc((void**)&scatterings, pixel_count * sizeof(scattering)));
-
-	//TODO:BUILD SPATIAL STRUCTURE HERE
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
@@ -728,6 +827,7 @@ extern "C" void path_tracer_kernel(
 
 		trace_ray_kernel <<<used_blocks_num_per_gird, threads_num_per_block>>> (
 			triangle_num,
+			bvh_nodes,
 			triangles,
 			sphere_num, 
 			spheres, 

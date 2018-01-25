@@ -9,9 +9,11 @@
 #include "camera.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
+#include "bvh.hpp"
 
 extern "C" void path_tracer_kernel(
 	int triangle_num,						//in
+	bvh_node_device* bvh_nodes,				//in
 	triangle* triangles,					//in
 	int sphere_num,							//in
 	sphere* spheres, 						//in
