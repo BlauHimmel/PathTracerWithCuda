@@ -35,6 +35,7 @@ public:
 	void set_material(const material& mat);
 
 	int get_triangle_num();
+	std::vector<triangle> get_triangles();
 
 	triangle* create_mesh_device_data();
 	void release_mesh_device_data();
@@ -149,6 +150,11 @@ inline void triangle_mesh::set_material(const material& mat)
 inline int triangle_mesh::get_triangle_num()
 {
 	return m_triangle_num;
+}
+
+inline std::vector<triangle> triangle_mesh::get_triangles()
+{
+	return m_triangles;
 }
 
 inline triangle* triangle_mesh::create_mesh_device_data()

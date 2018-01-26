@@ -167,7 +167,6 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basic_math.cpp" />
     <ClCompile Include="gpu_path_tracer.cpp" />
     <ClCompile Include="lib\lodepng\lodepng.cpp" />
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
@@ -213,15 +212,6 @@
     <Image Include="res\texture\sky\lobbyzneg.bmp" />
     <Image Include="res\texture\sky\lobbyzpos.bmp" />
     <Image Include="res\texture\sky\lobby_sphere.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="res\obj\cow.obj" />
-    <Object Include="res\obj\cube.obj" />
-    <Object Include="res\obj\diamond.obj" />
-    <Object Include="res\obj\dinosaur.obj" />
-    <Object Include="res\obj\human.obj" />
-    <Object Include="res\obj\monkey.obj" />
-    <Object Include="res\obj\teapot.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

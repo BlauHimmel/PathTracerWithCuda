@@ -262,12 +262,19 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\diamond.obj");
-	m_triangle_mesh.set_material(glass);
+	m_triangle_mesh.load_obj("res\\obj\\monkey.obj");
+	m_triangle_mesh.set_material(ketchup);
 	m_triangle_mesh.set_position(make_float3(0.0f, 0.2f, 2.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
-	m_bvh_nodes = build_bvh_device_data(build_bvh(m_triangles, m_triangle_num));
+
+	printf("constructing bvh...\n");
+	time_t start_time, end_time;
+	time(&start_time);
+	m_bvh_nodes = build_bvh_device_data(build_bvh(m_triangle_mesh.get_triangles()));
+	time(&end_time);
+	double build_bvh_time = difftime(end_time, start_time) * 1000.0;
+	printf("bvh constructed, time consuming: %.4f ms\n", build_bvh_time);
 }
 
 inline void path_tracer::release_scene_device_data()

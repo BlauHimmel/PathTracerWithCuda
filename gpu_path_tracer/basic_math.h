@@ -23,38 +23,116 @@ using uchar = unsigned char;
 namespace math
 {
 	//Math function
-	extern unsigned int mod(int x, int y);
+	inline unsigned int mod(int x, int y)
+	{
+		int result = x % y;
+		if (result < 0)
+		{
+			result += y;
+		}
+		return result;
+	}
 
-	extern float mod(float x, float y);
+	inline float mod(float x, float y)
+	{
+		return x - y * std::floor(x / y);
+	}
 
-	extern float radians_to_degrees(float radians);
+	inline float radians_to_degrees(float radians)
+	{
+		return radians * 180.0f / PI;
+	}
 
-	extern float degrees_to_radians(float degrees);
+	inline float degrees_to_radians(float degrees)
+	{
+		return degrees / 180.0f * PI;
+	}
 
-	extern float average(float n1, float n2);
+	inline float average(float n1, float n2)
+	{
+		return (n1 + n2) * 0.5f;
+	}
 
-	extern float round(float n);
+	inline float round(float n)
+	{
+		return std::floor(n + 0.5f);
+	}
 
-	extern float square(float n);
+	inline float square(float n)
+	{
+		return n * n;
+	}
 
-	extern float log2(float n);
+	inline float log2(float n)
+	{
+		return std::log(n) / std::log(2.0f);
+	}
 
-	extern bool is_nan(float n);
+	inline bool is_nan(float n)
+	{
+		return n != n;
+	}
 
-	extern float clamp(float n, float min, float max);
+	inline float clamp(float n, float min, float max)
+	{
+		return n < min ? min : (n > max ? max : n);
+	}
 
-	extern float repeat(float n, float modulus);
+	inline float repeat(float n, float modulus)
+	{
+		return n - modulus * std::floor(n / modulus);
+	}
 
-	extern int sign(float n);
+	inline int sign(float n)
+	{
+		return n >= 0 ? 1 : -1;
+	}
 
-	extern int positive_characteristic(float n);
+	inline int positive_characteristic(float n)
+	{
+		return n > 0 ? 1 : 0;
+	}
 
-	extern void swap(float& a, float& b);
+	inline void swap(float& a, float& b)
+	{
+		float temp = a;
+		a = b;
+		b = temp;
+	}
 
 	//Utility Function
-	extern color gamma_correct(const color& primitive_color);
+	inline color gamma_correct(const color& primitive_color)
+	{
+		float gamma = 2.2f;
+		float inverse_gamma = 1.0f / gamma;
+		color corrected_color;
+		corrected_color.x = std::powf(primitive_color.x, inverse_gamma);
+		corrected_color.y = std::powf(primitive_color.y, inverse_gamma);
+		corrected_color.z = std::powf(primitive_color.z, inverse_gamma);
+		return corrected_color;
+	}
 
-	extern uchar3 float_to_8bit(const color& primitive_color, bool is_corrected = false);
+	inline uchar3 float_to_8bit(const color& primitive_color, bool is_corrected = false)
+	{
+		color color;
+		if (!is_corrected)
+		{
+			color = gamma_correct(primitive_color);
+		}
+		else
+		{
+			color = primitive_color;
+		}
+
+		float x = clamp(color.x * 255.0f, 0.0f, 255.0f);
+		float y = clamp(color.y * 255.0f, 0.0f, 255.0f);
+		float z = clamp(color.z * 255.0f, 0.0f, 255.0f);
+		uchar3 color_8bit;
+		color_8bit.x = static_cast<uchar>(x);
+		color_8bit.y = static_cast<uchar>(y);
+		color_8bit.z = static_cast<uchar>(z);
+		return color_8bit;
+	}
 }
 
 #endif // !__MATH__

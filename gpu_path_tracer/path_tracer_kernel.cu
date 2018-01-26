@@ -23,14 +23,14 @@
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
 
-#define BLOCK_SIZE 1024
+#define BLOCK_SIZE 768
 #define MAX_TRACER_DEPTH 20
 #define VECTOR_BIAS_LENGTH 0.0001f
 #define ENERGY_EXIST_THRESHOLD 0.000001f
 #define SSS_THRESHOLD 0.000001f
 
-//#define USE_SKY_BOX
-#define USE_GROUND
+#define USE_SKY_BOX
+//#define USE_GROUND
 
 //TODO:LET MAX_TRACER_DEPTH BE A PARAMETER, WHICH CAN BE CONTROL IN THE APPLICATION
 
@@ -136,8 +136,6 @@ __host__ __device__  bool intersect_sphere(
 __host__ __device__ bool intersect_triangle(
 	const triangle& triangle,		//in
 	const ray& ray,					//in
-	float3& hit_point,				//out	
-	float3& hit_normal,				//out	
 	float& hit_t					//out	
 )
 {
@@ -163,8 +161,6 @@ __host__ __device__ bool intersect_triangle(
 	if (t1 >= 0.0f && t2 >= 0.0f && t1 + t2 <= 1.0f)
 	{
 		hit_t = t;
-		hit_normal = triangle.normal;
-		hit_point = ray.origin + ray.direction * t;
 		return true;
 	}
 
@@ -199,30 +195,26 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	bvh_node_device* bvh_nodes,		//in	
 	int triangle_num,				//in	
 	const ray& ray,					//in
-	float3& hit_point,				//out	
-	float3& hit_normal,				//out	
 	float& hit_t,					//out	
 	int& hit_triangle_index			//out
 )
 {
 	if (triangle_num == 0)
 	{
-		return;
+		return false;
 	}
 
+	int node_num = bvh_nodes[0].next_node_index;
+
 	float min_t = INFINITY;
-	float3 min_normal;
-	float3 min_point;
-	float min_triangle_index;
+	int min_triangle_index;
 
 	float current_t = INFINITY;
-	float3 current_normal;
-	float3 current_point;
 
 	bool is_hit = false;
 
 	int traversal_position = 0;
-	while (traversal_position != -1)
+	while (traversal_position != node_num)
 	{
 		bvh_node_device current_node = bvh_nodes[traversal_position];
 
@@ -237,11 +229,9 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
 					{
-						if (intersect_triangle(triangles[triangle_index], ray, current_point, current_normal, current_t) && current_t > 0.0f && current_t < min_t)
+						if (intersect_triangle(triangles[triangle_index], ray, current_t) && current_t > 0.0f && current_t < min_t)
 						{
 							min_t = current_t;
-							min_point = current_point;
-							min_normal = current_normal;
 							min_triangle_index = triangle_index;
 							is_hit = true;
 						}
@@ -264,8 +254,6 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	if (is_hit)
 	{
 		hit_t = min_t;
-		hit_point = min_point;
-		hit_normal = min_normal;
 		hit_triangle_index = min_triangle_index;
 	}
 
@@ -624,11 +612,11 @@ __global__ void trace_ray_kernel(
 		}
 	}
 	
-	if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, triangle_num, tracing_ray, hit_point, hit_normal, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+	if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, triangle_num, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 	{
 		min_t = hit_t;
-		min_point = hit_point;
-		min_normal = hit_normal;
+		min_point = point_on_ray(tracing_ray, hit_t);
+		min_normal = triangles[min_triangle_index].normal;
 		min_type = object_type::triangle;
 	}
 

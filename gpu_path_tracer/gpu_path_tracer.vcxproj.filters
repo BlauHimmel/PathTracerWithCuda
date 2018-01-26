@@ -40,15 +40,9 @@
     <Filter Include="Resource\texture\hexagon">
       <UniqueIdentifier>{5e44a41b-52fd-4d0d-9a6d-405f2af40f6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\obj">
-      <UniqueIdentifier>{fd1dea33-eb15-4f81-a576-1a9a0d1994c4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gpu_path_tracer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="basic_math.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -171,28 +165,5 @@
     <Image Include="res\texture\hexagon\zpos.bmp">
       <Filter>Resource\texture\hexagon</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="res\obj\cow.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\cube.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\diamond.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\dinosaur.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\human.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\monkey.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
-    <Object Include="res\obj\teapot.obj">
-      <Filter>Resource\obj</Filter>
-    </Object>
   </ItemGroup>
 </Project>
