@@ -116,7 +116,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 	m_is_loaded = true;
 	m_triangle_num = static_cast<int>(m_triangles.size());
 
-	std::cout << "load file " << filename << " succeeded." << std::endl;
+	std::cout << "load file " << filename << " succeeded. vertices : " << attrib.vertices.size() / 3 << std::endl;
 
 	return true;
 }

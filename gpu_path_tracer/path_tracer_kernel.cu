@@ -23,14 +23,14 @@
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
 
-#define BLOCK_SIZE 768
+#define BLOCK_SIZE 1024
 #define MAX_TRACER_DEPTH 20
 #define VECTOR_BIAS_LENGTH 0.0001f
 #define ENERGY_EXIST_THRESHOLD 0.000001f
 #define SSS_THRESHOLD 0.000001f
 
-#define USE_SKY_BOX
-//#define USE_GROUND
+//#define USE_SKY_BOX
+#define USE_GROUND
 
 //TODO:LET MAX_TRACER_DEPTH BE A PARAMETER, WHICH CAN BE CONTROL IN THE APPLICATION
 
@@ -489,8 +489,8 @@ __global__ void generate_ray_kernel(
 
 	if (is_index_valid)
 	{
-		int image_y = (int)(pixel_index / resolution.y);
-		int image_x = pixel_index - (image_y * resolution.y);
+		int image_y = (int)(pixel_index / resolution.x);
+		int image_x = pixel_index - (image_y * resolution.x);
 
 		thrust::default_random_engine random_engine(rand_hash(seed) * rand_hash(seed) * rand_hash(pixel_index));
 		thrust::uniform_real_distribution<float> uniform_distribution(-0.5f, 0.5f);

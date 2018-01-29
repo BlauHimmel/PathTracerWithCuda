@@ -153,7 +153,7 @@ inline void view_camera::clamp_pitch()
 
 inline void view_camera::clamp_radius()
 {
-	radius = math::clamp(radius, 0.02f, 200.0f);
+	radius = math::clamp(radius, 0.02f, 400.0f);
 	focal_distance = math::clamp(focal_distance, 0.0f, radius);
 }
 
