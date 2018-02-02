@@ -106,15 +106,7 @@ inline bvh_node_device get_bvh_node_device(bvh_node* node)
 	bvh_node_device node_device;
 	node_device.box = node->box;
 	node_device.is_leaf = node->is_leaf;
-	if (node->is_leaf)
-	{
-		CUDA_CALL(cudaMalloc((void**)&node_device.triangle_indices, node->triangle_indices.size() * sizeof(int)));
-		CUDA_CALL(cudaMemcpy(node_device.triangle_indices, node->triangle_indices.data(), node->triangle_indices.size() * sizeof(int), cudaMemcpyHostToDevice));
-	}
-	else
-	{
-		node_device.triangle_indices = nullptr;
-	}
+	node_device.triangle_indices = nullptr;
 	node_device.next_node_index = -1;
 	return node_device;
 }
@@ -286,6 +278,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 inline bvh_node* build_bvh(std::vector<triangle> triangles)
 {
 	int triangle_num = static_cast<int>(triangles.size());
+
 	if (triangle_num == 0)
 	{
 		return nullptr;
@@ -322,11 +315,10 @@ inline bvh_node* build_bvh(std::vector<triangle> triangles)
 
 inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 {
-	int traversal_index = 0;
-	std::vector<bvh_node_device> bvh_nodes_vec_device;
 	std::stack<bvh_node*> stack;
+	std::vector<int> bvh_left_node_triangles_index_vec_device;
+	int traversal_index = 0;
 	int node_num = 0;
-
 	stack.push(root);
 	while (!stack.empty())
 	{
@@ -336,6 +328,12 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 
 		current_node->traversal_index = traversal_index;
 		traversal_index++;
+
+		if (current_node->is_leaf)
+		{
+			bvh_left_node_triangles_index_vec_device.insert(bvh_left_node_triangles_index_vec_device.end(), 
+				current_node->triangle_indices.begin(), current_node->triangle_indices.end());
+		}
 
 		if (current_node->right != nullptr)
 		{
@@ -348,13 +346,28 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 		}
 	}
 
+	int* leaf_node_triangle_indices;
+	CUDA_CALL(cudaMalloc((void**)&leaf_node_triangle_indices, bvh_left_node_triangles_index_vec_device.size() * sizeof(int)));
+	CUDA_CALL(cudaMemcpy(leaf_node_triangle_indices, bvh_left_node_triangles_index_vec_device.data(), bvh_left_node_triangles_index_vec_device.size() * sizeof(int), cudaMemcpyHostToDevice));
+
+	std::vector<bvh_node_device> bvh_nodes_vec_device(node_num);
+	traversal_index = -1;
+	int leaf_node_index = 0;
 	stack.push(root);
 	while (!stack.empty())
 	{
 		bvh_node* current_node = stack.top();
 		stack.pop();
+		traversal_index++;
 
 		bvh_node_device node_device = get_bvh_node_device(current_node);
+
+		if (current_node->is_leaf)
+		{
+			node_device.triangle_indices = leaf_node_triangle_indices + leaf_node_index * 6;
+			leaf_node_index++;
+		}
+
 		if (stack.empty())
 		{
 			node_device.next_node_index = node_num;
@@ -363,7 +376,7 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 		{
 			node_device.next_node_index = stack.top()->traversal_index;
 		}
-		bvh_nodes_vec_device.push_back(node_device);
+		bvh_nodes_vec_device[traversal_index] = node_device;
 
 		if (current_node->right != nullptr)
 		{

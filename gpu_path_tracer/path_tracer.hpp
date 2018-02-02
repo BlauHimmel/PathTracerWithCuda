@@ -108,7 +108,7 @@ inline void path_tracer::clear()
 inline void path_tracer::create_scene_device_data()
 {
 	//TODO:LOAD SCENE FROM FILE
-	m_sphere_num = 16;
+	m_sphere_num = 1;
 
 	sphere* temp_spheres = new sphere[m_sphere_num];
 
@@ -183,100 +183,106 @@ inline void path_tracer::create_scene_device_data()
 	material light = get_default_material();
 	light.emission_color = make_float3(8.0f, 8.0f, 7.0f);
 
-	temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
-	temp_spheres[0].radius = 0.8f;
-	temp_spheres[0].mat = steel;
+	//temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
+	//temp_spheres[0].radius = 0.8f;
+	//temp_spheres[0].mat = steel;
 
-	temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
-	temp_spheres[1].radius = 0.3f;
-	temp_spheres[1].mat = green_glass;
+	//temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
+	//temp_spheres[1].radius = 0.3f;
+	//temp_spheres[1].mat = green_glass;
 
-	temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
-	temp_spheres[2].radius = 0.4f;
-	temp_spheres[2].mat = steel;
+	//temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
+	//temp_spheres[2].radius = 0.4f;
+	//temp_spheres[2].mat = steel;
 
-	temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
-	temp_spheres[3].radius = 0.1f;
-	temp_spheres[3].mat = blue;
+	//temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
+	//temp_spheres[3].radius = 0.1f;
+	//temp_spheres[3].mat = blue;
 
-	temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
-	temp_spheres[4].radius = 0.1f;
-	temp_spheres[4].mat = red;
+	//temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
+	//temp_spheres[4].radius = 0.1f;
+	//temp_spheres[4].mat = red;
 
-	temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
-	temp_spheres[5].radius = 0.1f;
-	temp_spheres[5].mat = blue;
+	//temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
+	//temp_spheres[5].radius = 0.1f;
+	//temp_spheres[5].mat = blue;
 
-	temp_spheres[6].center = make_float3(0.1f, -0.7f, 0.1f);
-	temp_spheres[6].radius = 0.1f;
-	temp_spheres[6].mat = blue;
+	//temp_spheres[6].center = make_float3(0.1f, -0.7f, 0.1f);
+	//temp_spheres[6].radius = 0.1f;
+	//temp_spheres[6].mat = blue;
 
-	temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.7f);
-	temp_spheres[7].radius = 0.25f;
-	temp_spheres[7].mat = glass;
+	//temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.7f);
+	//temp_spheres[7].radius = 0.25f;
+	//temp_spheres[7].mat = glass;
 
-	temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
-	temp_spheres[8].radius = 0.8f;
-	temp_spheres[8].mat = green;
+	//temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
+	//temp_spheres[8].radius = 0.8f;
+	//temp_spheres[8].mat = green;
 
-	temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
-	temp_spheres[9].radius = 0.4f;
-	temp_spheres[9].mat = purple;
+	//temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
+	//temp_spheres[9].radius = 0.4f;
+	//temp_spheres[9].mat = purple;
 
-	temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
-	temp_spheres[10].radius = 0.2f;
-	temp_spheres[10].mat = marble;
+	//temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
+	//temp_spheres[10].radius = 0.2f;
+	//temp_spheres[10].mat = marble;
 
-	temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
-	temp_spheres[11].radius = 0.1f;
-	temp_spheres[11].mat = red;
+	//temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
+	//temp_spheres[11].radius = 0.1f;
+	//temp_spheres[11].mat = red;
 
-	temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
-	temp_spheres[12].radius = 0.05f;
-	temp_spheres[12].mat = green;
+	//temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
+	//temp_spheres[12].radius = 0.05f;
+	//temp_spheres[12].mat = green;
 
-	temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
-	temp_spheres[13].radius = 0.025f;
-	temp_spheres[13].mat = green;
+	//temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
+	//temp_spheres[13].radius = 0.025f;
+	//temp_spheres[13].mat = green;
 
-	temp_spheres[14].center = make_float3(2.0f, -0.05f, 2.0f);
-	temp_spheres[14].radius = 0.75f;
-	temp_spheres[14].mat = something;
+	//temp_spheres[14].center = make_float3(2.0f, -0.05f, 2.0f);
+	//temp_spheres[14].radius = 0.75f;
+	//temp_spheres[14].mat = something;
 
-	temp_spheres[15].center = make_float3(-8.0, 20.0, -5.0);
-	temp_spheres[15].radius = 5.0f;
-	temp_spheres[15].mat = light;
+	temp_spheres[0].center = make_float3(-8.0, 20.0, -5.0);
+	temp_spheres[0].radius = 5.0f;
+	temp_spheres[0].mat = light;
 
 	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
 	CUDA_CALL(cudaMemcpy(m_spheres, temp_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
 	SAFE_DELETE_ARRAY(temp_spheres);
 
 	m_cube_map_loader.load_data(
-		"res\\texture\\hexagon\\xpos.bmp",
-		"res\\texture\\hexagon\\xneg.bmp",
-		"res\\texture\\hexagon\\ypos.bmp",
-		"res\\texture\\hexagon\\yneg.bmp",
-		"res\\texture\\hexagon\\zpos.bmp",
-		"res\\texture\\hexagon\\zneg.bmp"
+		"res\\texture\\yokohama\\xpos.bmp",
+		"res\\texture\\yokohama\\xneg.bmp",
+		"res\\texture\\yokohama\\ypos.bmp",
+		"res\\texture\\yokohama\\yneg.bmp",
+		"res\\texture\\yokohama\\zpos.bmp",
+		"res\\texture\\yokohama\\zneg.bmp"
 	);
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\buddaha.15k.obj");
-	m_triangle_mesh.set_material(steel);
-	m_triangle_mesh.set_position(make_float3(0.0f, -0.8f, 2.5f));
+	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
+	m_triangle_mesh.set_material(something);
+	m_triangle_mesh.set_position(make_float3(0.0f, -0.8f, 0.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 
+	clock_t start_time, end_time;
+
 	printf("constructing bvh...\n");
-	time_t start_time, end_time;
-	time(&start_time);
+	start_time = clock();
 	bvh_node* root = build_bvh(m_triangle_mesh.get_triangles());
+	end_time = clock();
+	double build_bvh_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC * 1000.0;
+	printf("bvh constructed on CPU, time consuming: %.4f ms\n", build_bvh_time);
+
 	printf("copying bvh data to GPU...\n");
+	start_time = clock();
 	m_bvh_nodes = build_bvh_device_data(root);
-	time(&end_time);
-	double build_bvh_time = difftime(end_time, start_time) * 1000.0;
-	printf("bvh constructed, time consuming: %.4f ms\n", build_bvh_time);
+	end_time = clock();
+	double copy_bvh_time = static_cast<double>(end_time - start_time) / CLOCKS_PER_SEC * 1000.0;
+	printf("bvh constructed on GPU, time consuming: %.4f ms\n", copy_bvh_time);
 }
 
 inline void path_tracer::release_scene_device_data()
