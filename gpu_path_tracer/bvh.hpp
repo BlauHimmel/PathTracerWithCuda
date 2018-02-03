@@ -145,10 +145,8 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 				is_box_init[i] = false;
 			}
 
-			for (size_t i = 0; i < current_node->triangle_indices.size(); i++)
+			for (auto triangle_index : current_node->triangle_indices)
 			{
-				int triangle_index = current_node->triangle_indices[i];
-
 				int internal_index = static_cast<int>((get(boxes[triangle_index].centroid, axis) - get(current_node->box.left_bottom, axis)) / internal_length);
 				internal_index = internal_index >= divide_internal_num ? (divide_internal_num - 1) : (internal_index < 0 ? 0 : internal_index);
 

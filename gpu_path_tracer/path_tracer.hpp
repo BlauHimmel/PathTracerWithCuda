@@ -252,12 +252,12 @@ inline void path_tracer::create_scene_device_data()
 	SAFE_DELETE_ARRAY(temp_spheres);
 
 	m_cube_map_loader.load_data(
-		"res\\texture\\yokohama\\xpos.bmp",
-		"res\\texture\\yokohama\\xneg.bmp",
-		"res\\texture\\yokohama\\ypos.bmp",
-		"res\\texture\\yokohama\\yneg.bmp",
-		"res\\texture\\yokohama\\zpos.bmp",
-		"res\\texture\\yokohama\\zneg.bmp"
+		"res\\texture\\lancellotti_chapel\\xpos.bmp",
+		"res\\texture\\lancellotti_chapel\\xneg.bmp",
+		"res\\texture\\lancellotti_chapel\\ypos.bmp",
+		"res\\texture\\lancellotti_chapel\\yneg.bmp",
+		"res\\texture\\lancellotti_chapel\\zpos.bmp",
+		"res\\texture\\lancellotti_chapel\\zneg.bmp"
 	);
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();

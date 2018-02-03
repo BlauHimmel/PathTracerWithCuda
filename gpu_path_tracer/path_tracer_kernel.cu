@@ -261,7 +261,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	return is_hit;
 }
 
-__host__ __device__ float3 sample_on_hemisphere(
+__host__ __device__ float3 sample_on_hemisphere_cosine_weight(
 	const float3& normal,	//in
 	float rand1,			//in
 	float rand2				//in
@@ -273,6 +273,37 @@ __host__ __device__ float3 sample_on_hemisphere(
 	float phi = rand2 * TWO_PI;
 
 	//find orthogonal base
+	float3 any_direction;
+	if (abs(normal.x) < SQRT_ONE_THIRD)
+	{
+		any_direction = make_float3(1.0f, 0.0f, 0.0f);
+	}
+	else if (abs(normal.y) < SQRT_ONE_THIRD)
+	{
+		any_direction = make_float3(0.0f, 1.0f, 0.0f);
+	}
+	else if (abs(normal.z) < SQRT_ONE_THIRD)
+	{
+		any_direction = make_float3(0.0f, 0.0f, 1.0f);
+	}
+	float3 vec_i = normalize(cross(normal, any_direction));
+	float3 vec_j = cross(normal, vec_i);
+
+	return cos_theta * normal + cos(phi) * sin_theta * vec_i + sin(phi) * sin_theta * vec_j;
+}
+
+__host__ __device__ float3 sample_on_hemisphere_ggx_weight(
+	const float3& normal,	//in
+	float roughness,		//in
+	float rand1,			//in
+	float rand2				//in
+)
+{
+	float theta = atanf(roughness * sqrtf(rand1) / sqrtf(1.0f - rand1));
+	float phi = rand2 * TWO_PI;
+	float cos_theta = cosf(theta);
+	float sin_theta = sinf(theta);
+
 	float3 any_direction;
 	if (abs(normal.x) < SQRT_ONE_THIRD)
 	{
@@ -316,6 +347,33 @@ __host__ __device__ color compute_absorption_through_medium(
 		pow(E, -1.0f * absorption_coefficient.y * scaterring_distance),
 		pow(E, -1.0f * absorption_coefficient.z * scaterring_distance)
 	);
+}
+
+__host__ __device__ float compute_ggx_shadowing_masking(
+	float roughness,				//in
+	const float3& macro_normal,		//in
+	const float3& micro_normal,		//in
+	const float3& ray_direction		//in
+)
+{
+	float3 v = -1.0f * ray_direction;
+	float v_dot_n = dot(v, macro_normal);
+	float v_dot_m = dot(v, micro_normal);
+	float roughness_square = roughness * roughness;
+	
+	float cos_v_square = v_dot_n * v_dot_n;
+	float tan_v_square = (1 - cos_v_square) / cos_v_square;
+	
+	float positive_value = (v_dot_m / v_dot_n) > 0.0f ? 1.0f : 0.0f;
+
+	if (positive_value == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return 2.0f / (1.0f + sqrtf(1.0f + roughness_square * tan_v_square));
+	}
 }
 
 __host__ __device__ int rand_hash(
@@ -794,7 +852,7 @@ __global__ void trace_ray_kernel(
 
 			ray next_ray;
 			next_ray.origin = min_point + bias_vector;
-			next_ray.direction = sample_on_hemisphere(min_normal, rand1, rand2);
+			next_ray.direction = sample_on_hemisphere_cosine_weight(min_normal, rand1, rand2);
 			rays[pixel_index] = next_ray;
 		}
 
