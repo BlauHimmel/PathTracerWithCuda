@@ -273,7 +273,7 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\horse.obj");
+	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
 	m_triangle_mesh.set_material(copper);
 	m_triangle_mesh.set_position(make_float3(0.0f, 0.0f, 0.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
