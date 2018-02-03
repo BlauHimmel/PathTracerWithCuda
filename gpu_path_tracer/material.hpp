@@ -6,6 +6,11 @@
 #include <cuda_runtime.h>
 #include "basic_math.h"
 
+//for conductors(e.g. metals like aluminum or copper) extinction is set to be greater than zero, otherwise it is considered as dielectrics
+//note : 
+//1> metal do not have diffuse color, and its specular color can be white or others, but for dielectrics the specular color can only be 
+//set to white(i.e. its r,g,b channels are equal).
+
 struct scattering
 {
 	color absorption_coefficient;
@@ -15,6 +20,7 @@ struct scattering
 struct medium
 {
 	float refraction_index;
+	float extinction_coefficient;
 	scattering scattering;
 };
 
@@ -36,6 +42,7 @@ inline material get_default_material()
 	mat.specular_color = make_float3(0.0f, 0.0f, 0.0f);
 	mat.is_transparent = false;
 	mat.medium.refraction_index = AIR_REFRACTION_INDEX;
+	mat.medium.extinction_coefficient = 0.0f;
 	mat.medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);
 	mat.medium.scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);
 	return mat;

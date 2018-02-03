@@ -428,7 +428,7 @@ __host__ __device__ float3 get_refraction_direction(
 	}
 }
 
-__host__ __device__ fresnel get_fresnel(
+__host__ __device__ fresnel get_fresnel_dielectrics(
 	const float3& normal,					//in
 	const float3& in_direction,				//in
 	float in_refraction_index,				//in
@@ -452,6 +452,34 @@ __host__ __device__ fresnel get_fresnel(
 
 	float reflection_coef_s_polarized = pow((in_refraction_index * cos_theta_in - out_refraction_index * cos_theta_out) / (in_refraction_index * cos_theta_in + out_refraction_index * cos_theta_out), 2.0f);
 	float reflection_coef_p_polarized = pow((in_refraction_index * cos_theta_out - out_refraction_index * cos_theta_in) / (in_refraction_index * cos_theta_out + out_refraction_index * cos_theta_in), 2.0f);
+
+	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
+
+	fresnel.reflection_index = reflection_coef_unpolarized;
+	fresnel.refractive_index = 1 - fresnel.reflection_index;
+	return fresnel;
+}
+
+__host__ __device__ fresnel get_fresnel_conductors(
+	const float3& normal,					//in
+	const float3& in_direction,				//in
+	float refraction_index,					//in
+	float extinction_coefficient,			//in
+	const float3& reflection_direction		//in
+)
+{
+	//using real fresnel equation
+	fresnel fresnel;
+
+	float cos_theta_in = dot(normal, in_direction * -1.0f);
+	float refraction_index_square = refraction_index * refraction_index;
+	float extinction_coefficient_square = extinction_coefficient * extinction_coefficient;
+	float refraction_extinction_square_add = refraction_index_square + extinction_coefficient_square;
+	float cos_theta_in_square = cos_theta_in * cos_theta_in;
+	float two_refraction_cos_theta_in = 2 * refraction_index * cos_theta_in;
+
+	float reflection_coef_s_polarized = (refraction_extinction_square_add * cos_theta_in_square - two_refraction_cos_theta_in + 1.0f) / (refraction_extinction_square_add * cos_theta_in_square + two_refraction_cos_theta_in + 1.0f);
+	float reflection_coef_p_polarized = (refraction_extinction_square_add - two_refraction_cos_theta_in + cos_theta_in_square) / (refraction_extinction_square_add + two_refraction_cos_theta_in + cos_theta_in_square);
 
 	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
 
@@ -816,11 +844,19 @@ __global__ void trace_ray_kernel(
 		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);//may be nan
 		float3 bias_vector = VECTOR_BIAS_LENGTH * min_normal;
 
-		fresnel fresnel = get_fresnel(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index, reflection_direction, refraction_direction);
-
+		fresnel fresnel;
+		if (min_mat.medium.extinction_coefficient == 0)
+		{
+			fresnel = get_fresnel_dielectrics(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index, reflection_direction, refraction_direction);
+		}
+		else
+		{
+			fresnel = get_fresnel_conductors(min_normal, in_direction, out_medium.refraction_index, out_medium.extinction_coefficient, reflection_direction);
+		}
+		
 		float rand = uniform_distribution(random_engine);
 
-		if (min_mat.medium.refraction_index > 1.0f && rand < fresnel.reflection_index)
+		if (/*min_mat.medium.refraction_index > 1.0f &&*/ rand < fresnel.reflection_index)
 		{
 			//reflection
 			not_absorbed_colors[pixel_index] *= min_mat.specular_color;

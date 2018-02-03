@@ -172,9 +172,20 @@ inline void path_tracer::create_scene_device_data()
 	material white = get_default_material();
 	white.diffuse_color = make_float3(0.9f, 0.9f, 0.9f);
 
-	material gold = get_default_material();
-	gold.specular_color = make_float3(0.869f, 0.621f, 0.027f);
-	gold.medium.refraction_index = 1000.0f;
+	material iron = get_default_material();
+	iron.specular_color = make_float3(0.56f, 0.57f, 0.58f);
+	iron.medium.refraction_index = 2.5845f;
+	iron.medium.extinction_coefficient = 2.767f;
+
+	material copper = get_default_material();
+	copper.specular_color = make_float3(0.95f, 0.64f, 0.54f);
+	copper.medium.refraction_index = 1.3164f;
+	copper.medium.extinction_coefficient = 2.2921f;
+
+	material silver = get_default_material();
+	silver.specular_color = make_float3(0.95f, 0.93f, 0.88f);
+	silver.medium.refraction_index = 0.13547f;
+	silver.medium.extinction_coefficient = 2.3808f;
 
 	material steel = get_default_material();
 	steel.specular_color = make_float3(0.89f, 0.89f, 0.89f);
@@ -184,7 +195,7 @@ inline void path_tracer::create_scene_device_data()
 	light.emission_color = make_float3(8.0f, 8.0f, 7.0f);
 
 	//temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
-	//temp_spheres[0].radius = 0.8f;
+	//temp_spheres[0].radius = 0.2f;
 	//temp_spheres[0].mat = steel;
 
 	//temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
@@ -244,7 +255,7 @@ inline void path_tracer::create_scene_device_data()
 	//temp_spheres[14].mat = something;
 
 	temp_spheres[0].center = make_float3(-8.0, 20.0, -5.0);
-	temp_spheres[0].radius = 5.0f;
+	temp_spheres[0].radius = 1.0f;
 	temp_spheres[0].mat = light;
 
 	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
@@ -262,9 +273,9 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
-	m_triangle_mesh.set_material(something);
-	m_triangle_mesh.set_position(make_float3(0.0f, -0.8f, 0.0f));
+	m_triangle_mesh.load_obj("res\\obj\\horse.obj");
+	m_triangle_mesh.set_material(copper);
+	m_triangle_mesh.set_position(make_float3(0.0f, 0.0f, 0.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 
