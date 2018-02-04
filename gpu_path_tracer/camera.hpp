@@ -93,8 +93,12 @@ inline void view_camera::set_radius(float scale)
 
 inline void view_camera::set_pan(float x, float y)
 {
-	center.x += x;
-	center.y += y;
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 view = glm::vec3(-sin(yaw) * cos(pitch), -sin(pitch), -cos(yaw) * cos(pitch));
+	glm::vec3 horizontal = normalize(cross(view, up));
+	up = normalize(cross(horizontal, view));
+
+	center += (up * y + horizontal * x);
 }
 
 inline void view_camera::set_aperture_radius(float delta)
