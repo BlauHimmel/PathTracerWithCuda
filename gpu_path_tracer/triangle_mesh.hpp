@@ -26,6 +26,9 @@ private:
 	int m_triangle_num = 0;
 	bool m_is_loaded = false;
 	triangle* m_mesh_device = nullptr;
+	int m_vertex_num = 0;
+	material m_mat;
+	float3 m_position;
 
 public:
 	bool load_obj(const std::string& filename);
@@ -34,8 +37,11 @@ public:
 	void set_position(const float3& position);
 	void set_material(const material& mat);
 
-	int get_triangle_num();
-	std::vector<triangle> get_triangles();
+	float3 get_position() const;
+	material get_material() const;
+	int get_triangle_num() const;
+	int get_vertex_num() const;
+	std::vector<triangle> get_triangles() const;
 
 	triangle* create_mesh_device_data();
 	void release_mesh_device_data();
@@ -47,7 +53,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 {
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	tinyobj::attrib_t attrib;
+	tinyobj::attrib_t attrib; 
 	std::string error;
 
 	std::cout << "loading file " << filename << "...." << std::endl;
@@ -115,8 +121,9 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 
 	m_is_loaded = true;
 	m_triangle_num = static_cast<int>(m_triangles.size());
+	m_vertex_num = static_cast<int>(attrib.vertices.size() / 3);
 
-	std::cout << "load file " << filename << " succeeded. vertices : " << attrib.vertices.size() / 3 << std::endl;
+	std::cout << "load file " << filename << " succeeded. vertices : " << m_vertex_num << std::endl;
 
 	return true;
 }
@@ -145,14 +152,30 @@ inline void triangle_mesh::set_material(const material& mat)
 	{
 		m_triangles[i].mat = mat;
 	}
+	m_mat = mat;
 }
 
-inline int triangle_mesh::get_triangle_num()
+inline float3 triangle_mesh::get_position() const
+{
+	return m_position;
+}
+
+inline material triangle_mesh::get_material() const
+{
+	return m_mat;
+}
+
+inline int triangle_mesh::get_triangle_num() const
 {
 	return m_triangle_num;
 }
 
-inline std::vector<triangle> triangle_mesh::get_triangles()
+inline int triangle_mesh::get_vertex_num() const
+{
+	return m_vertex_num;
+}
+
+inline std::vector<triangle> triangle_mesh::get_triangles() const
 {
 	return m_triangles;
 }

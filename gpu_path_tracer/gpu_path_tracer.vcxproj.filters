@@ -40,6 +40,9 @@
     <Filter Include="Resource\texture\hexagon">
       <UniqueIdentifier>{5e44a41b-52fd-4d0d-9a6d-405f2af40f6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\imgui">
+      <UniqueIdentifier>{00216340-cfa8-4b4f-bf8d-905daaa6c3a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gpu_path_tracer.cpp">
@@ -50,6 +53,18 @@
     </ClCompile>
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc">
       <Filter>Library\tiny_obj_loader</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_demo.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_draw.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp">
+      <Filter>Library\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +115,27 @@
     </ClInclude>
     <ClInclude Include="bvh.hpp">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imconfig.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui_internal.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_rect_pack.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_textedit.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_truetype.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui_impl_glfw_gl3.h">
+      <Filter>Library\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,8 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
+#define MAX_APERTURE_RADIUS 1.0f
+
 //used by the path tracer
 struct render_camera
 {
@@ -39,17 +41,24 @@ public:
 
 	view_camera();
 
-	void set_yaw(float delta);
-	void set_pitch(float delta);
-	void set_radius(float delta);
-	void set_pan(float x, float y);
-	void set_aperture_radius(float delta);
-	void set_focal_distance(float delta);
+	void modify_yaw(float delta);
+	void modify_pitch(float delta);
+	void modify_radius(float delta);
+	void modify_pan(float x, float y);
+
+	void modify_aperture_radius(float delta);
+	void modify_focal_distance(float delta);
 	
 	void set_fov(float fov_x);
 	void set_resolution(float width, float height);
+	void set_aperture_radius(float value);
+	void set_focal_distance(float value);
 
-	void get_render_camera(render_camera* render_cam);
+	void get_render_camera(render_camera* render_cam) const;
+	float get_max_aperture_radius() const;
+	float get_max_focal_distance() const;
+	float get_aperture_radius();
+	float get_focal_distance();
 
 private:
 
@@ -73,25 +82,25 @@ inline view_camera::view_camera()
 	fov = glm::vec2(45.0f, 45.0f);
 }
 
-inline void view_camera::set_yaw(float delta)
+inline void view_camera::modify_yaw(float delta)
 {
 	yaw += delta;
 	clamp_yaw();
 }
 
-inline void view_camera::set_pitch(float delta)
+inline void view_camera::modify_pitch(float delta)
 {
 	pitch += delta;
 	clamp_pitch();
 }
 
-inline void view_camera::set_radius(float scale)
+inline void view_camera::modify_radius(float scale)
 {
 	radius += radius * scale;
 	clamp_radius();
 }
 
-inline void view_camera::set_pan(float x, float y)
+inline void view_camera::modify_pan(float x, float y)
 {
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::vec3 view = glm::vec3(-sin(yaw) * cos(pitch), -sin(pitch), -cos(yaw) * cos(pitch));
@@ -101,13 +110,13 @@ inline void view_camera::set_pan(float x, float y)
 	center += (up * y + horizontal * x);
 }
 
-inline void view_camera::set_aperture_radius(float delta)
+inline void view_camera::modify_aperture_radius(float delta)
 {
 	aperture_radius += delta;
 	clamp_aperture_radius();
 }
 
-inline void view_camera::set_focal_distance(float delta)
+inline void view_camera::modify_focal_distance(float delta)
 {
 	focal_distance += delta;
 	clamp_focal_distance();
@@ -125,7 +134,19 @@ inline void view_camera::set_resolution(float width, float height)
 	resolution.y = height;
 }
 
-inline void view_camera::get_render_camera(render_camera* render_cam)
+inline void view_camera::set_aperture_radius(float value)
+{
+	aperture_radius = value;
+	clamp_aperture_radius();
+}
+
+inline void view_camera::set_focal_distance(float value)
+{
+	focal_distance = value;
+	clamp_focal_distance();
+}
+
+inline void view_camera::get_render_camera(render_camera* render_cam) const
 {
 	float x = sin(yaw) * cos(pitch);
 	float y = sin(pitch);
@@ -143,6 +164,26 @@ inline void view_camera::get_render_camera(render_camera* render_cam)
 	render_cam->fov = make_float2(fov.x, fov.y);
 	render_cam->focal_distance = focal_distance;
 	render_cam->aperture_radius = aperture_radius;
+}
+
+inline float view_camera::get_max_aperture_radius() const
+{
+	return MAX_APERTURE_RADIUS;
+}
+
+inline float view_camera::get_max_focal_distance() const
+{
+	return radius;
+}
+
+inline float view_camera::get_aperture_radius()
+{
+	return aperture_radius;
+}
+
+inline float view_camera::get_focal_distance()
+{
+	return focal_distance;
 }
 
 inline void view_camera::clamp_yaw()
@@ -163,7 +204,7 @@ inline void view_camera::clamp_radius()
 
 inline void view_camera::clamp_aperture_radius()
 {
-	aperture_radius = math::clamp(aperture_radius, 0.0f, 25.0f);
+	aperture_radius = math::clamp(aperture_radius, 0.0f, MAX_APERTURE_RADIUS);
 }
 
 inline void view_camera::clamp_focal_distance()

@@ -12,9 +12,6 @@ struct sphere
 	float3 center;
 	float radius;
 
-	color diffuse_color;
-	color emission_color;
-
 	material mat;
 };
 

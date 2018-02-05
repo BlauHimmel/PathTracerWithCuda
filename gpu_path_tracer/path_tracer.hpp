@@ -22,19 +22,27 @@
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
 
+#include "lib\imgui\imgui.h"
+#include "lib\imgui\imgui_impl_glfw_gl3.h"
+
 class path_tracer
 {
 private:
 	cube_map_loader m_cube_map_loader;
 	cube_map* m_cube_map;
 	image* m_image;
+
 	triangle_mesh m_triangle_mesh;
 	int m_triangle_num;
-	triangle* m_triangles;
+	triangle* m_triangles_device;
 	bvh_node_device* m_bvh_nodes;
+
 	int m_sphere_num;
+	sphere* m_spheres_device;
 	sphere* m_spheres;
+
 	render_camera* m_render_camera;
+
 	bool m_is_initiated;
 
 public:
@@ -44,6 +52,8 @@ public:
 	void init(render_camera* render_camera);
 	image* render();
 	void clear();
+
+	void render_ui();
 
 private:
 	void create_scene_device_data();
@@ -81,7 +91,7 @@ inline image* path_tracer::render()
 	if (m_is_initiated)
 	{
 		image* buffer = create_image(m_image->width, m_image->height);
-		path_tracer_kernel(m_triangle_num, m_bvh_nodes, m_triangles ,m_sphere_num, m_spheres, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
+		path_tracer_kernel(m_triangle_num, m_bvh_nodes, m_triangles_device,m_sphere_num, m_spheres_device, buffer->pixel_count, buffer->pixels, m_image->pass_counter, m_render_camera, m_cube_map);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
 			m_image->pixels[i] += buffer->pixels[i];
@@ -105,12 +115,123 @@ inline void path_tracer::clear()
 	}
 }
 
+inline void path_tracer::render_ui()
+{
+	char buffer[2048];
+
+	ImGui::Text("Scene");
+
+	if (ImGui::TreeNode("Sphere"))
+	{
+		for (auto i = 0; i < m_sphere_num; i++)
+		{
+			sprintf(buffer, "Sphere-%d", i + 1);
+			if (ImGui::TreeNode(buffer))
+			{
+				ImGui::Separator();
+
+				sphere sphere = m_spheres[i];
+
+				float position[3] = { sphere.center.x, sphere.center.y ,sphere.center.z };
+				float radius = sphere.radius;
+				
+				ImGui::Text("Base:");
+				ImGui::InputFloat3("Position", position);
+				ImGui::InputFloat("Radius", &radius);
+
+				ImGui::Separator();
+
+				material mat = sphere.mat;
+
+				float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
+				float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
+				float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
+				bool is_transparent = mat.is_transparent;
+				float roughness = mat.roughness;
+
+				ImGui::Text("Material:");
+				ImGui::ColorEdit3("Diffuse", diffuse);
+				ImGui::ColorEdit3("Specular", specular);
+				ImGui::ColorEdit3("Emission", emission);
+				ImGui::Checkbox("Transparent", &is_transparent);
+				ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
+
+				float refraction_index = mat.medium.refraction_index;
+				float extinction_coefficient = mat.medium.extinction_coefficient;
+
+				ImGui::InputFloat("Refraction Index", &refraction_index);
+				ImGui::InputFloat("Extinction Coefficient", &extinction_coefficient);
+
+				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
+				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
+
+				ImGui::InputFloat3("Absorption Coefficient", absorption_coefficient);
+				ImGui::InputFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient);
+
+				ImGui::Separator();
+
+				ImGui::TreePop();
+			}
+		}
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Triangle Mesh"))
+	{
+		ImGui::Separator();
+
+		float3 position = m_triangle_mesh.get_position();
+		float positions[3] = { position.x, position.y, position.z };
+
+		ImGui::Text("Base:");
+		sprintf(buffer, "Vertices: %d", m_triangle_mesh.get_vertex_num());
+		ImGui::Text(buffer);
+		sprintf(buffer, "Facets: %d", m_triangle_mesh.get_triangle_num());
+		ImGui::Text(buffer);
+		ImGui::InputFloat3("Position", positions);
+
+		ImGui::Separator();
+
+		material mat = m_triangle_mesh.get_material();
+
+		float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
+		float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
+		float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
+		bool is_transparent = mat.is_transparent;
+		float roughness = mat.roughness;
+
+		ImGui::Text("Material:");
+		ImGui::ColorEdit3("Diffuse", diffuse);
+		ImGui::ColorEdit3("Specular", specular);
+		ImGui::ColorEdit3("Emission", emission);
+		ImGui::Checkbox("Transparent", &is_transparent);
+		ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
+
+		float refraction_index = mat.medium.refraction_index;
+		float extinction_coefficient = mat.medium.extinction_coefficient;
+
+		ImGui::InputFloat("Refraction Index", &refraction_index);
+		ImGui::InputFloat("Extinction Coefficient", &extinction_coefficient);
+
+		float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
+		float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
+
+		ImGui::InputFloat3("Absorption Coefficient", absorption_coefficient);
+		ImGui::InputFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient);
+
+		ImGui::Separator();
+
+		ImGui::TreePop();
+	}
+}
+
 inline void path_tracer::create_scene_device_data()
 {
 	//TODO:LOAD SCENE FROM FILE
 	m_sphere_num = 2;
 
-	sphere* temp_spheres = new sphere[m_sphere_num];
+	m_spheres = new sphere[m_sphere_num];
 
 	material red = get_default_material();
 	red.diffuse_color = make_float3(0.87f, 0.15f, 0.15f);
@@ -195,73 +316,72 @@ inline void path_tracer::create_scene_device_data()
 	material light = get_default_material();
 	light.emission_color = make_float3(18.0f, 18.0f, 15.0f);
 
-	temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
-	temp_spheres[0].radius = 0.5f;
-	temp_spheres[0].mat = glass;
+	m_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
+	m_spheres[0].radius = 0.5f;
+	m_spheres[0].mat = glass;
 
-	//temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
-	//temp_spheres[1].radius = 0.3f;
-	//temp_spheres[1].mat = green_glass;
+	//m_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
+	//m_spheres[1].radius = 0.3f;
+	//m_spheres[1].mat = green_glass;
 
-	//temp_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
-	//temp_spheres[2].radius = 0.4f;
-	//temp_spheres[2].mat = steel;
+	//m_spheres[2].center = make_float3(-0.5f, -0.4f, 1.0f);
+	//m_spheres[2].radius = 0.4f;
+	//m_spheres[2].mat = steel;
 
-	//temp_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
-	//temp_spheres[3].radius = 0.1f;
-	//temp_spheres[3].mat = blue;
+	//m_spheres[3].center = make_float3(-1.0f, -0.7f, 1.2f);
+	//m_spheres[3].radius = 0.1f;
+	//m_spheres[3].mat = blue;
 
-	//temp_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
-	//temp_spheres[4].radius = 0.1f;
-	//temp_spheres[4].mat = red;
+	//m_spheres[4].center = make_float3(-0.5f, -0.7f, 1.7f);
+	//m_spheres[4].radius = 0.1f;
+	//m_spheres[4].mat = red;
 
-	//temp_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
-	//temp_spheres[5].radius = 0.1f;
-	//temp_spheres[5].mat = blue;
+	//m_spheres[5].center = make_float3(0.3f, -0.7f, 1.4f);
+	//m_spheres[5].radius = 0.1f;
+	//m_spheres[5].mat = blue;
 
-	//temp_spheres[6].center = make_float3(0.1f, -0.7f, 0.1f);
-	//temp_spheres[6].radius = 0.1f;
-	//temp_spheres[6].mat = blue;
+	//m_spheres[6].center = make_float3(0.1f, -0.7f, 0.1f);
+	//m_spheres[6].radius = 0.1f;
+	//m_spheres[6].mat = blue;
+	  
+	//m_spheres[7].center = make_float3(0.2f, -0.55f, 0.7f);
+	//m_spheres[7].radius = 0.25f;
+	//m_spheres[7].mat = glass;
+	  
+	//m_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
+	//m_spheres[8].radius = 0.8f;
+	//m_spheres[8].mat = green;
+	  
+	//m_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
+	//m_spheres[9].radius = 0.4f;
+	//m_spheres[9].mat = purple;
+	  
+	//m_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
+	//m_spheres[10].radius = 0.2f;
+	//m_spheres[10].mat = marble;
+	  
+	//m_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
+	//m_spheres[11].radius = 0.1f;
+	//m_spheres[11].mat = red;
+	  
+	//m_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
+	//m_spheres[12].radius = 0.05f;
+	//m_spheres[12].mat = green;
+	  
+	//m_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
+	//m_spheres[13].radius = 0.025f;
+	//m_spheres[13].mat = green;
+	 
+	//m_spheres[14].center = make_float3(2.0f, -0.05f, 2.0f);
+	//m_spheres[14].radius = 0.75f;
+	//m_spheres[14].mat = something;
 
-	//temp_spheres[7].center = make_float3(0.2f, -0.55f, 0.7f);
-	//temp_spheres[7].radius = 0.25f;
-	//temp_spheres[7].mat = glass;
+	m_spheres[1].center = make_float3(-8.0, 50.0, -5.0);
+	m_spheres[1].radius = 10.0f;
+	m_spheres[1].mat = light;
 
-	//temp_spheres[8].center = make_float3(0.8f, 0.0f, -0.4f);
-	//temp_spheres[8].radius = 0.8f;
-	//temp_spheres[8].mat = green;
-
-	//temp_spheres[9].center = make_float3(0.8f, 1.2f, -0.4f);
-	//temp_spheres[9].radius = 0.4f;
-	//temp_spheres[9].mat = purple;
-
-	//temp_spheres[10].center = make_float3(0.8f, 1.8f, -0.4f);
-	//temp_spheres[10].radius = 0.2f;
-	//temp_spheres[10].mat = marble;
-
-	//temp_spheres[11].center = make_float3(0.8f, 2.1f, -0.4f);
-	//temp_spheres[11].radius = 0.1f;
-	//temp_spheres[11].mat = red;
-
-	//temp_spheres[12].center = make_float3(0.8f, 2.25f, -0.4f);
-	//temp_spheres[12].radius = 0.05f;
-	//temp_spheres[12].mat = green;
-
-	//temp_spheres[13].center = make_float3(0.8f, 2.325f, -0.4f);
-	//temp_spheres[13].radius = 0.025f;
-	//temp_spheres[13].mat = green;
-
-	//temp_spheres[14].center = make_float3(2.0f, -0.05f, 2.0f);
-	//temp_spheres[14].radius = 0.75f;
-	//temp_spheres[14].mat = something;
-
-	temp_spheres[1].center = make_float3(-8.0, 50.0, -5.0);
-	temp_spheres[1].radius = 10.0f;
-	temp_spheres[1].mat = light;
-
-	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
-	CUDA_CALL(cudaMemcpy(m_spheres, temp_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
-	SAFE_DELETE_ARRAY(temp_spheres);
+	CUDA_CALL(cudaMalloc((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
+	CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
 
 	m_cube_map_loader.load_data(
 		"res\\texture\\lancellotti_chapel\\xpos.bmp",
@@ -277,7 +397,7 @@ inline void path_tracer::create_scene_device_data()
 	m_triangle_mesh.load_obj("res\\obj\\cube.obj");
 	m_triangle_mesh.set_material(copper);
 	m_triangle_mesh.set_position(make_float3(0.0f, 110.0f, 0.0f));
-	m_triangles = m_triangle_mesh.create_mesh_device_data();
+	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 
 	clock_t start_time, end_time;
@@ -300,7 +420,8 @@ inline void path_tracer::create_scene_device_data()
 inline void path_tracer::release_scene_device_data()
 {
 	//TODO:Hardcode here
-	CUDA_CALL(cudaFree(m_spheres));
+	CUDA_CALL(cudaFree(m_spheres_device));
+	SAFE_DELETE_ARRAY(m_spheres);
 	m_cube_map_loader.release_cube_device_data();
 	m_cube_map_loader.unload_data();
 	m_cube_map = nullptr;
