@@ -316,7 +316,7 @@ inline void path_tracer::create_scene_device_data()
 	material light = get_default_material();
 	light.emission_color = make_float3(18.0f, 18.0f, 15.0f);
 
-	m_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
+	m_spheres[0].center = make_float3(-0.9f, 2.0f, -0.9f);
 	m_spheres[0].radius = 0.5f;
 	m_spheres[0].mat = glass;
 
@@ -394,9 +394,9 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\cube.obj");
+	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
 	m_triangle_mesh.set_material(copper);
-	m_triangle_mesh.set_position(make_float3(0.0f, 110.0f, 0.0f));
+	m_triangle_mesh.set_position(make_float3(0.0f, 0.0f, 0.0f));
 	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 

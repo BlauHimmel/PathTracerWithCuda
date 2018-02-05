@@ -173,7 +173,7 @@ inline float view_camera::get_max_aperture_radius() const
 
 inline float view_camera::get_max_focal_distance() const
 {
-	return radius;
+	return 2.0f * radius;
 }
 
 inline float view_camera::get_aperture_radius()
@@ -209,7 +209,7 @@ inline void view_camera::clamp_aperture_radius()
 
 inline void view_camera::clamp_focal_distance()
 {
-	focal_distance = math::clamp(focal_distance, 0.0f, radius);
+	focal_distance = math::clamp(focal_distance, 0.0f, 2.0f * radius);
 }
 
 #endif // !__CAMERA__
