@@ -30,6 +30,7 @@ struct material
 	color emission_color;
 	color specular_color;
 	bool is_transparent;
+	float roughness;
 	
 	medium medium;
 };
@@ -41,6 +42,7 @@ inline material get_default_material()
 	mat.emission_color = make_float3(0.0f, 0.0f, 0.0f);
 	mat.specular_color = make_float3(0.0f, 0.0f, 0.0f);
 	mat.is_transparent = false;
+	mat.roughness = 0.0f;
 	mat.medium.refraction_index = AIR_REFRACTION_INDEX;
 	mat.medium.extinction_coefficient = 0.0f;
 	mat.medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);

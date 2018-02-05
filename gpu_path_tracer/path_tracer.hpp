@@ -108,7 +108,7 @@ inline void path_tracer::clear()
 inline void path_tracer::create_scene_device_data()
 {
 	//TODO:LOAD SCENE FROM FILE
-	m_sphere_num = 1;
+	m_sphere_num = 2;
 
 	sphere* temp_spheres = new sphere[m_sphere_num];
 
@@ -140,6 +140,7 @@ inline void path_tracer::create_scene_device_data()
 	material glass = get_default_material();
 	glass.specular_color = make_float3(1.0f, 1.0f, 1.0f);
 	glass.is_transparent = true;
+	glass.roughness = 0.75f;
 	glass.medium.refraction_index = 2.42f;
 
 	material green_glass = get_default_material();
@@ -192,11 +193,11 @@ inline void path_tracer::create_scene_device_data()
 	steel.medium.refraction_index = 1000.0f;
 
 	material light = get_default_material();
-	light.emission_color = make_float3(8.0f, 8.0f, 7.0f);
+	light.emission_color = make_float3(18.0f, 18.0f, 15.0f);
 
-	//temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
-	//temp_spheres[0].radius = 0.2f;
-	//temp_spheres[0].mat = steel;
+	temp_spheres[0].center = make_float3(-0.9f, 0.0f, -0.9f);
+	temp_spheres[0].radius = 0.5f;
+	temp_spheres[0].mat = glass;
 
 	//temp_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
 	//temp_spheres[1].radius = 0.3f;
@@ -254,9 +255,9 @@ inline void path_tracer::create_scene_device_data()
 	//temp_spheres[14].radius = 0.75f;
 	//temp_spheres[14].mat = something;
 
-	temp_spheres[0].center = make_float3(-8.0, 20.0, -5.0);
-	temp_spheres[0].radius = 1.0f;
-	temp_spheres[0].mat = light;
+	temp_spheres[1].center = make_float3(-8.0, 50.0, -5.0);
+	temp_spheres[1].radius = 10.0f;
+	temp_spheres[1].mat = light;
 
 	CUDA_CALL(cudaMalloc((void**)&m_spheres, m_sphere_num * sizeof(sphere)));
 	CUDA_CALL(cudaMemcpy(m_spheres, temp_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
@@ -273,9 +274,9 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
+	m_triangle_mesh.load_obj("res\\obj\\cube.obj");
 	m_triangle_mesh.set_material(copper);
-	m_triangle_mesh.set_position(make_float3(0.0f, 0.0f, 0.0f));
+	m_triangle_mesh.set_position(make_float3(0.0f, 110.0f, 0.0f));
 	m_triangles = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 

@@ -23,7 +23,7 @@
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
 
-#define BLOCK_SIZE 1024
+#define BLOCK_SIZE 768
 #define MAX_TRACER_DEPTH 20
 #define VECTOR_BIAS_LENGTH 0.0001f
 #define ENERGY_EXIST_THRESHOLD 0.000001f
@@ -366,9 +366,9 @@ __host__ __device__ float compute_ggx_shadowing_masking(
 	
 	float positive_value = (v_dot_m / v_dot_n) > 0.0f ? 1.0f : 0.0f;
 
-	if (positive_value == 0)
+	if (positive_value == 0.0f)
 	{
-		return 0;
+		return 0.0f;
 	}
 	else
 	{
@@ -520,11 +520,6 @@ __host__ __device__ float3 get_background_color(
 	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
 	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
 	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
-
-	if (u < 0.0025f || v < 0.0025f || u > 0.9975f || v > 0.9975f)
-	{
-		//printf("(%d,%d)(%d,%d)(%d,%d)(%d,%d)\n", x_images[0], y_images[0], x_images[1], y_images[1], x_images[2], y_images[2], x_images[3], y_images[3]);
-	}
 
 	float3 sample_colors[4] = {
 		make_float3(
@@ -861,10 +856,21 @@ __global__ void trace_ray_kernel(
 			//reflection
 			not_absorbed_colors[pixel_index] *= min_mat.specular_color;
 
-			ray next_ray;
-			next_ray.origin = min_point + bias_vector;
-			next_ray.direction = reflection_direction;
-			rays[pixel_index] = next_ray;
+			float rand1 = uniform_distribution(random_engine);
+			float rand2 = uniform_distribution(random_engine);
+			
+			float remap_roughness = powf(min_mat.roughness, 2.0f) / 2.0f;
+			float3 micro_normal = sample_on_hemisphere_ggx_weight(min_normal, remap_roughness, rand1, rand2);
+			float self_shadowing = compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, tracing_ray.direction);
+
+			float rand = uniform_distribution(random_engine);
+			if (rand < self_shadowing)
+			{
+				ray next_ray;
+				next_ray.origin = min_point + bias_vector;
+				next_ray.direction = get_reflection_direction(micro_normal, in_direction);
+				rays[pixel_index] = next_ray;
+			}
 		}
 		else if (min_mat.is_transparent)
 		{
