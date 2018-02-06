@@ -851,7 +851,7 @@ __global__ void trace_ray_kernel(
 		
 		float rand = uniform_distribution(random_engine);
 
-		if (/*min_mat.medium.refraction_index > 1.0f &&*/ rand < fresnel.reflection_index)
+		if (rand < fresnel.reflection_index)
 		{
 			//reflection
 			not_absorbed_colors[pixel_index] *= min_mat.specular_color;
