@@ -50,7 +50,7 @@ struct bvh_node_device
 	int next_node_index = -1;
 };
 
-inline bounding_box::bounding_box()
+inline bounding_box::bounding_box() 
 {
 
 }
@@ -116,6 +116,12 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 	std::stack<bvh_node*> stack;
 	stack.push(node);
 
+	bvh_node* internals[3];
+	internals[0] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+	internals[1] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+	internals[2] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+	bool* is_box_init = new bool[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+
 	while (!stack.empty())
 	{
 		bvh_node* current_node = stack.top();
@@ -126,7 +132,6 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 		bounding_box split_box_left, split_box_right;
 		int split_triangle_num_left, split_triangle_num_right;
 		int split_divide_internal_num;
-		bvh_node* internals[3];
 
 		float min_cost = INFINITY;
 
@@ -138,11 +143,10 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 			int divide_internal_num = min(static_cast<int>(BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM), static_cast<int>(current_node->triangle_indices.size()));
 			float internal_length = axis_length / static_cast<float>(divide_internal_num);
 
-			internals[axis] = new bvh_node[divide_internal_num];
-			bool* is_box_init = new bool[divide_internal_num];
 			for (auto i = 0; i < divide_internal_num; i++)
 			{
 				is_box_init[i] = false;
+				internals[axis][i].triangle_indices.clear();
 			}
 
 			for (auto triangle_index : current_node->triangle_indices)
@@ -220,8 +224,6 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 					split_divide_internal_num = divide_internal_num;
 				}
 			}
-
-			SAFE_DELETE_ARRAY(is_box_init);
 		}
 
 		//build the subnode of current node
@@ -266,11 +268,12 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 			}
 			current_node->right = right;
 		}
-
-		SAFE_DELETE_ARRAY(internals[0]);
-		SAFE_DELETE_ARRAY(internals[1]);
-		SAFE_DELETE_ARRAY(internals[2]);
 	}
+
+	SAFE_DELETE_ARRAY(internals[0]);
+	SAFE_DELETE_ARRAY(internals[1]);
+	SAFE_DELETE_ARRAY(internals[2]);
+	SAFE_DELETE_ARRAY(is_box_init);
 }
 
 inline bvh_node* build_bvh(std::vector<triangle> triangles)
