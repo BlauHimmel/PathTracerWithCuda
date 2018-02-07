@@ -13,6 +13,7 @@
 #include "image.hpp"
 #include "ray.hpp"
 #include "camera.hpp"
+#include "material.hpp"
 #include "cuda_math.hpp"
 #include "utilities.hpp"
 #include "basic_math.h"
@@ -358,34 +359,14 @@ inline void path_tracer::create_scene_device_data()
 	ketchup.medium.scattering.absorption_coefficient = make_float3(0.02f, 5.1f, 5.7f);
 	ketchup.medium.scattering.reduced_scattering_coefficient = make_float3(9.0f, 9.0f, 9.0f);
 
-	material white = get_default_material();
-	white.diffuse_color = make_float3(0.9f, 0.9f, 0.9f);
 
-	material iron = get_default_material();
-	iron.specular_color = make_float3(0.56f, 0.57f, 0.58f);
-	iron.medium.refraction_index = 2.5845f;
-	iron.medium.extinction_coefficient = 2.767f;
-
-	material copper = get_default_material();
-	copper.specular_color = make_float3(0.95f, 0.64f, 0.54f);
-	copper.medium.refraction_index = 1.3164f;
-	copper.medium.extinction_coefficient = 2.2921f;
-
-	material silver = get_default_material();
-	silver.specular_color = make_float3(0.95f, 0.93f, 0.88f);
-	silver.medium.refraction_index = 0.13547f;
-	silver.medium.extinction_coefficient = 2.3808f;
-
-	material steel = get_default_material();
-	steel.specular_color = make_float3(0.89f, 0.89f, 0.89f);
-	steel.medium.refraction_index = 1000.0f;
 
 	material light = get_default_material();
 	light.emission_color = make_float3(18.0f, 18.0f, 15.0f);
 
 	m_spheres[0].center = make_float3(-0.9f, 2.0f, -0.9f);
 	m_spheres[0].radius = 1.0f;
-	m_spheres[0].mat = copper;
+	m_spheres[0].mat = material_data::metal::gold();
 
 	//m_spheres[1].center = make_float3(0.9f, -0.5f, 1.3f);
 	//m_spheres[1].radius = 0.3f;
@@ -461,9 +442,9 @@ inline void path_tracer::create_scene_device_data()
 
 	m_cube_map = m_cube_map_loader.create_cube_device_data();
 
-	m_triangle_mesh.load_obj("res\\obj\\dragon.obj");
-	m_triangle_mesh.set_material(red);
-	m_triangle_mesh.set_position(make_float3(0.0f, 0.0f, 0.0f));
+	m_triangle_mesh.load_obj("res\\obj\\diamond.obj");
+	m_triangle_mesh.set_material(material_data::dielectric::diamond());
+	m_triangle_mesh.set_position(make_float3(3.0f, 0.0f, 0.0f));
 	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
 	m_triangle_num = m_triangle_mesh.get_triangle_num();
 

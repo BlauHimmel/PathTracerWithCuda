@@ -440,15 +440,23 @@ __host__ __device__ fresnel get_fresnel_dielectrics(
 	//using real fresnel equation
 	fresnel fresnel;
 
-	if (length(refraction_direction) <= 0.12345f || dot(normal, refraction_direction) > 0)
+	float cos_theta_in = dot(normal, in_direction * -1.0f);
+	float cos_theta_out = dot(-1.0f * normal, refraction_direction);
+
+	//total internal reflection
+	if (in_refraction_index > out_refraction_index && acosf(cos_theta_in) >= asinf(out_refraction_index / in_refraction_index))
 	{
 		fresnel.reflection_index = 1.0f;
 		fresnel.refractive_index = 0.0f;
 		return fresnel;
 	}
 
-	float cos_theta_in = dot(normal, in_direction * -1.0f);
-	float cos_theta_out = dot(-1.0f * normal, refraction_direction);
+	if (length(refraction_direction) <= 0.12345f || cos_theta_out < 0)
+	{
+		fresnel.reflection_index = 1.0f;
+		fresnel.refractive_index = 0.0f;
+		return fresnel;
+	}
 
 	float reflection_coef_s_polarized = pow((in_refraction_index * cos_theta_in - out_refraction_index * cos_theta_out) / (in_refraction_index * cos_theta_in + out_refraction_index * cos_theta_out), 2.0f);
 	float reflection_coef_p_polarized = pow((in_refraction_index * cos_theta_out - out_refraction_index * cos_theta_in) / (in_refraction_index * cos_theta_out + out_refraction_index * cos_theta_in), 2.0f);
