@@ -191,39 +191,42 @@
     <ClInclude Include="lib\imgui\stb_rect_pack.h" />
     <ClInclude Include="lib\imgui\stb_textedit.h" />
     <ClInclude Include="lib\imgui\stb_truetype.h" />
+    <ClInclude Include="lib\json\adl_serializer.hpp" />
+    <ClInclude Include="lib\json\detail\conversions\from_json.hpp" />
+    <ClInclude Include="lib\json\detail\conversions\to_json.hpp" />
+    <ClInclude Include="lib\json\detail\exceptions.hpp" />
+    <ClInclude Include="lib\json\detail\iterators\internal_iterator.hpp" />
+    <ClInclude Include="lib\json\detail\iterators\iteration_proxy.hpp" />
+    <ClInclude Include="lib\json\detail\iterators\iter_impl.hpp" />
+    <ClInclude Include="lib\json\detail\iterators\json_reverse_iterator.hpp" />
+    <ClInclude Include="lib\json\detail\iterators\primitive_iterator.hpp" />
+    <ClInclude Include="lib\json\detail\json_ref.hpp" />
+    <ClInclude Include="lib\json\detail\macro_scope.hpp" />
+    <ClInclude Include="lib\json\detail\macro_unscope.hpp" />
+    <ClInclude Include="lib\json\detail\meta.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\binary_reader.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\binary_writer.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\input_adapters.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\lexer.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\output_adapters.hpp" />
+    <ClInclude Include="lib\json\detail\parsing\parser.hpp" />
+    <ClInclude Include="lib\json\detail\serializer.hpp" />
+    <ClInclude Include="lib\json\detail\value_t.hpp" />
+    <ClInclude Include="lib\json\json.hpp" />
+    <ClInclude Include="lib\json\json_fwd.hpp" />
     <ClInclude Include="lib\lodepng\lodepng.h" />
     <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h" />
     <ClInclude Include="material.hpp" />
     <ClInclude Include="path_tracer.hpp" />
     <ClInclude Include="path_tracer_kernel.h" />
     <ClInclude Include="ray.hpp" />
+    <ClInclude Include="scene_parser.hpp" />
     <ClInclude Include="sphere.hpp" />
     <ClInclude Include="triangle_mesh.hpp" />
     <ClInclude Include="utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\texture\hexagon\xneg.bmp" />
-    <Image Include="res\texture\hexagon\xpos.bmp" />
-    <Image Include="res\texture\hexagon\yneg.bmp" />
-    <Image Include="res\texture\hexagon\ypos.bmp" />
-    <Image Include="res\texture\hexagon\zneg.bmp" />
-    <Image Include="res\texture\hexagon\zpos.bmp" />
-    <Image Include="res\texture\lake\xneg.bmp" />
-    <Image Include="res\texture\lake\xpos.bmp" />
-    <Image Include="res\texture\lake\yneg.bmp" />
-    <Image Include="res\texture\lake\ypos.bmp" />
-    <Image Include="res\texture\lake\zneg.bmp" />
-    <Image Include="res\texture\lake\zpos.bmp" />
-    <Image Include="res\texture\sky\lobbyxneg.bmp" />
-    <Image Include="res\texture\sky\lobbyxpos.bmp" />
-    <Image Include="res\texture\sky\lobbyyneg.bmp" />
-    <Image Include="res\texture\sky\lobbyypos.bmp" />
-    <Image Include="res\texture\sky\lobbyzneg.bmp" />
-    <Image Include="res\texture\sky\lobbyzpos.bmp" />
-    <Image Include="res\texture\sky\lobby_sphere.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

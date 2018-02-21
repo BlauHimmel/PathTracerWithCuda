@@ -25,23 +25,23 @@
     <Filter Include="Library\lodepng">
       <UniqueIdentifier>{86897923-294e-402b-a1e7-dfccb9555cf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{86655a82-67e7-4c36-ae98-6068ee1e3ccf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\texture">
-      <UniqueIdentifier>{9bec58a6-a29b-4835-97b3-43bd17798b0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\texture\lobby">
-      <UniqueIdentifier>{92690efd-2f2a-4f8a-991e-565f9ec3b98d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\texture\lake">
-      <UniqueIdentifier>{58f30adb-319e-4955-a767-7b5d9d2f8c95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\texture\hexagon">
-      <UniqueIdentifier>{5e44a41b-52fd-4d0d-9a6d-405f2af40f6c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\imgui">
       <UniqueIdentifier>{00216340-cfa8-4b4f-bf8d-905daaa6c3a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json">
+      <UniqueIdentifier>{88a4d66c-241d-46f4-9292-a8cf8631e5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail">
+      <UniqueIdentifier>{a5394efd-8280-44fd-afd9-f2c8525ab668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\conversions">
+      <UniqueIdentifier>{15e686ad-6aa9-4528-a849-759f53a19cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\iterators">
+      <UniqueIdentifier>{c8f28355-aa1a-419c-8fb0-6d8b4b0601b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\parsing">
+      <UniqueIdentifier>{10495630-d926-426e-8b07-f60cf5270e41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,69 +137,82 @@
     <ClInclude Include="lib\imgui\imgui_impl_glfw_gl3.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="scene_parser.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\adl_serializer.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\json.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\json_fwd.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\exceptions.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\json_ref.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_scope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_unscope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\meta.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\serializer.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\value_t.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\from_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\to_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\internal_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iter_impl.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iteration_proxy.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\json_reverse_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\primitive_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_reader.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_writer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\input_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\lexer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\output_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\parser.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\texture\sky\lobby_sphere.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyxneg.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyxpos.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyyneg.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyypos.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyzneg.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\sky\lobbyzpos.bmp">
-      <Filter>Resource\texture\lobby</Filter>
-    </Image>
-    <Image Include="res\texture\lake\xneg.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\lake\xpos.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\lake\yneg.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\lake\ypos.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\lake\zneg.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\lake\zpos.bmp">
-      <Filter>Resource\texture\lake</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\xneg.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\xpos.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\yneg.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\ypos.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\zneg.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
-    <Image Include="res\texture\hexagon\zpos.bmp">
-      <Filter>Resource\texture\hexagon</Filter>
-    </Image>
   </ItemGroup>
 </Project>

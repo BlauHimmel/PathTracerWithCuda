@@ -8,7 +8,7 @@
 	cudaError error = Statement;\
 	if (error != cudaSuccess)\
 	{\
-		fprintf(stderr, "Cuda error in file '%s' in line %i : %s.\n",\
+		fprintf(stderr, "[Cuda]Error in file '%s' in line %i : %s.\n",\
 			__FILE__, __LINE__, cudaGetErrorString(error));\
 	}\
 }\
@@ -30,6 +30,19 @@
 		ArrayPtr = nullptr;\
 	}\
 }\
+
+#define TIME_COUNT_CALL_START()\
+{\
+clock_t __start_time, __end_time;\
+__start_time = clock();\
+
+#define TIME_COUNT_CALL_END(Time)\
+__end_time = clock();\
+Time = static_cast<double>(__end_time - __start_time) / CLOCKS_PER_SEC * 1000.0;\
+}\
+
+
+
 
 
 #endif // !__UTILITIES__

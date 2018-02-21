@@ -56,18 +56,18 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 	tinyobj::attrib_t attrib; 
 	std::string error;
 
-	std::cout << "loading file " << filename << "...." << std::endl;
+	std::cout << "[Info]Loading file " << filename << "...." << std::endl;
 
 	bool is_success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, filename.c_str());
 
 	if (!error.empty())
 	{
-		std::cout << "error: " << error;
+		std::cout << "[TinyObj]\n" << error << "============================" << std::endl;
 	}
 
 	if (!is_success)
 	{
-		std::cout << "load file " << filename << "failed." << std::endl;
+		std::cout << "[Info]Load file " << filename << "failed." << std::endl;
 		return false;
 	}
 
@@ -77,7 +77,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 		{
 			if (num != 3)
 			{
-				std::cout << filename << " is not a triangle mesh." << std::endl;
+				std::cout << "[Error]" <<  filename << " is not a triangle mesh." << std::endl;
 				return false;
 			}
 		}
@@ -123,7 +123,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 	m_triangle_num = static_cast<int>(m_triangles.size());
 	m_vertex_num = static_cast<int>(attrib.vertices.size() / 3);
 
-	std::cout << "load file " << filename << " succeeded. vertices : " << m_vertex_num << std::endl;
+	std::cout << "[Info]Load file " << filename << " succeeded. vertices : " << m_vertex_num << std::endl;
 
 	return true;
 }

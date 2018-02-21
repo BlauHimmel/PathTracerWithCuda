@@ -324,6 +324,177 @@ namespace material_data
 				}
 			};
 		}
+
+		static material red()
+		{
+			return material{
+				make_float3(0.87f, 0.15f, 0.15f),			//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+				{
+					1.491f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material green()
+		{
+			return material{
+				make_float3(0.15f, 0.87f, 0.15f),			//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+				{
+					1.491f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material orange()
+		{
+			return material{
+				make_float3(0.93f, 0.33f, 0.04f),			//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+				{
+					1.491f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material purple()
+		{
+			return material{
+				make_float3(0.5f, 0.1f, 0.9f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+				{
+					1.491f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material blue()
+		{
+			return material{
+				make_float3(0.4f, 0.6f, 0.8f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+				{
+					1.491f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material marble()
+		{
+			return material{
+				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				true,										//transparent
+				0.01f,										//roughness
+				{
+					1.486f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.6f, 0.6f, 0.6f),		//absorption coefficient
+						make_float3(8.0f, 8.0f, 8.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material something_blue()
+		{
+			return material{
+				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				true,										//transparent
+				0.01f,										//roughness
+				{
+					1.333f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.9f, 0.3f, 0.02f),		//absorption coefficient
+						make_float3(2.0f, 2.0f, 2.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material something_red()
+		{
+			return material{
+				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(1.0f, 1.0f, 1.0f),				//specular
+				true,										//transparent
+				0.01f,										//roughness
+				{
+					1.35f,									//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.02f, 5.1f, 5.7f),		//absorption coefficient
+						make_float3(9.0f, 9.0f, 9.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
+
+		static material light()
+		{
+			return material{
+				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
+				make_float3(18.0f, 18.0f, 18.0f),			//emission
+				make_float3(0.0f, 0.0f, 0.0f),				//specular
+				true,										//transparent
+				0.01f,										//roughness
+				{
+					AIR_REFRACTION_INDEX,					//refraction index
+					0.0f,									//extinction coefficient
+					{
+						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+					}
+				}
+			};
+		}
 	};
 }
 
