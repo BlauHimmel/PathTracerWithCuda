@@ -4,10 +4,11 @@
 #define __TRIANGLE_MESH__
 
 #include <cuda_runtime.h>
+#include <iostream>
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
 #include "material.hpp"
 #include "utilities.hpp"
-#include <iostream>
+#include "cuda_math.hpp"
 
 struct triangle
 {
