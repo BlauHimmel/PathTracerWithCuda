@@ -225,7 +225,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 			if (current_node.is_leaf)
 			{
 				//intersect with each triangles in the leaf node and update the relevant minimal parameters
-				for (auto i = 0; i < 6; i++)
+				for (auto i = 0; i < BVH_LEAF_NODE_TRIANGLE_NUM; i++)
 				{
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
