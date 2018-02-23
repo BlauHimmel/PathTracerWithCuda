@@ -82,12 +82,15 @@
 	],
 
 	-- optional --
-	"Mesh" : 
-	{
-		"Material" : "XXXX",							-- name of material(user declared or built-in material)
-		"Path" : "XXXX\\YYYY",
-		"Position" : "0.0 0.0 0.0"
-	}
+	"Mesh" :
+	[
+		{
+			"Material" : "XXXX",							-- name of material(user declared or built-in material)
+			"Path" : "XXXX\\YYYY",
+			"Position" : "0.0 0.0 0.0"
+		},
+		...
+	]
 }
 */
 
@@ -104,14 +107,10 @@ class scene_parser
 private:
 	nlohmann::json json_parser;
 
-	std::map<std::string, material> m_materials;
-
 	cube_map_loader m_cube_map_loader;
 	cube_map* m_cube_map_device = nullptr;
 
 	triangle_mesh m_triangle_mesh;
-	int m_triangle_num = 0;
-	int m_vertices_num = 0;
 	triangle* m_triangles_device = nullptr;
 
 	bvh_node_device* m_bvh_nodes_device = nullptr;
@@ -135,21 +134,23 @@ public:
 	triangle* get_triangles_device_ptr();
 	bvh_node_device* get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
-	int get_mesh_triangle_num();
-	int get_mesh_vertices_num();
-	int get_sphere_num();
-	float3 get_mesh_position();
-	material get_mesh_material();
-	sphere get_sphere(int index);
+	int get_mesh_num() const;
+	int get_triangles_num() const;
+	int get_mesh_triangle_num(int index) const;
+	int get_mesh_vertices_num(int index) const;
+	int get_sphere_num() const;
+	float3 get_mesh_position(int index) const;
+	material get_mesh_material(int index) const;
+	sphere get_sphere(int index) const;
 
 	void set_sphere(int index, const sphere& sphere);
-	void set_mesh_material(const material& material);
+	void set_mesh_material(int index, const material& material);
 
 	void update_sphere_device_data();
 	void update_triangles_device_data();
 
 private:
-	void init_default_material();
+	void init_default_material(std::map<std::string, material>& materials);
 
 	float3 parse_float3(std::string text);
 	float parse_float(std::string text);
@@ -169,18 +170,22 @@ inline bool scene_parser::load_scene(const std::string& filename)
 		return false;
 	}
 
-	init_default_material();
 
 	std::ifstream scene_file(filename, std::ios::in);
 	scene_file >> json_parser;
 
 	std::vector<std::string> cubemap_pathes(6);
+
 	std::map<std::string, material> materials;
+
 	std::vector<sphere> spheres;
 	std::vector<std::string> spheres_mat;
-	std::string mesh_path;
-	std::string mesh_mat;
-	float3 mesh_position;
+
+	std::vector<std::string> meshes_path;
+	std::vector<std::string> meshes_mat;
+	std::vector<float3> meshes_position;
+
+	init_default_material(materials);
 
 	//Step.1 Load data from file
 
@@ -258,6 +263,11 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			std::string absorption_coef_str = absorption_coef;
 			std::string reduced_scattering_coef_str = reduced_scattering_coef;
 
+			if (materials.find(name_str) != materials.end())
+			{
+				std::cout << "[Warning]Built-in materail <" << name_str << "> is overlapped!" << std::endl;
+			}
+
 			material mat = material{
 				parse_float3(diffuse_str),
 				parse_float3(emission_str),
@@ -273,7 +283,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 					}
 				}
 			};
-			
+
 			materials[name_str] = mat;
 		}
 	}
@@ -306,23 +316,26 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	}
 
 	//Mesh
-	if (!mesh_object.is_null() && mesh_object.size() > 0)
+	if (!mesh_object.is_null())
 	{
-		auto path = mesh_object[TOKEN_OBJECT_MESH_PATH];
-		auto material = mesh_object[TOKEN_OBJECT_MESH_MATERIAL];
-		auto position = mesh_object[TOKEN_OBJECT_MESH_POSITION];
+		for (auto mesh_element : mesh_object)
+		{
+			auto path = mesh_element[TOKEN_OBJECT_MESH_PATH];
+			auto material = mesh_element[TOKEN_OBJECT_MESH_MATERIAL];
+			auto position = mesh_element[TOKEN_OBJECT_MESH_POSITION];
 
-		CHECK_PROPERTY(Mesh, path, TOKEN_OBJECT_MESH_PATH);
-		CHECK_PROPERTY(Mesh, material, TOKEN_OBJECT_MESH_MATERIAL);
-		CHECK_PROPERTY(Mesh, position, TOKEN_OBJECT_MESH_MATERIAL);
+			CHECK_PROPERTY(Mesh, path, TOKEN_OBJECT_MESH_PATH);
+			CHECK_PROPERTY(Mesh, material, TOKEN_OBJECT_MESH_MATERIAL);
+			CHECK_PROPERTY(Mesh, position, TOKEN_OBJECT_MESH_MATERIAL);
 
-		std::string path_str = path;
-		std::string material_str = material;
-		std::string position_str = position;
+			std::string path_str = path;
+			std::string material_str = material;
+			std::string position_str = position;
 
-		mesh_path = path_str;
-		mesh_mat = material_str;
-		mesh_position = parse_float3(position_str);
+			meshes_path.push_back(path_str);
+			meshes_mat.push_back(material_str);
+			meshes_position.push_back(parse_float3(position_str));
+		}
 	}
 
 	//Step.2 Check data and create scene on cpu
@@ -346,58 +359,50 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	}
 
 	//Material
-	for (auto mat : materials)
-	{
-		if (m_materials.find(mat.first) != m_materials.end())
-		{
-			std::cout << "[Warning]Built-in materail <" << mat.first << "> is overlapped!" << std::endl;
-		}
-
-		m_materials[mat.first] = mat.second;
-	}
-
 	for (auto sphere_mat : spheres_mat)
 	{
-		if (m_materials.find(sphere_mat) == m_materials.end())
+		if (materials.find(sphere_mat) == materials.end())
 		{
 			std::cout << "[Error]Material <" << sphere_mat << "> not found!" << std::endl;
 			error = true;
 		}
 	}
 
-	if (m_materials.find(mesh_mat) == m_materials.end())
+	for (auto mesh_mat : meshes_mat)
 	{
-		std::cout << "[Error]Material <" << mesh_mat << "> not found!" << std::endl;
-		error = true;
+		if (materials.find(mesh_mat) == materials.end())
+		{
+			std::cout << "[Error]Material <" << mesh_mat << "> not found!" << std::endl;
+			error = true;
+		}
 	}
-	
+
 	if (error)
 	{
-		m_materials.clear();
 		m_cube_map_loader.unload_data();
 		return false;
 	}
 
 	//Mesh
-	error = !m_triangle_mesh.load_obj(mesh_path);
-
-	if (error)
+	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		m_materials.clear();
-		m_cube_map_loader.unload_data();
-		m_triangle_mesh.unload_obj();
-		return false;
-	}
+		error = !m_triangle_mesh.load_obj(meshes_path[i]);
 
-	m_triangle_mesh.set_material(m_materials[mesh_mat]);
-	m_triangle_mesh.set_position(mesh_position);
-	m_triangle_num = m_triangle_mesh.get_triangle_num();
-	m_vertices_num = m_triangle_mesh.get_vertex_num();
+		if (error)
+		{
+			m_cube_map_loader.unload_data();
+			m_triangle_mesh.unload_obj();
+			return false;
+		}
+
+		m_triangle_mesh.set_material(i, materials[meshes_mat[i]]);
+		m_triangle_mesh.set_position(i, meshes_position[i]);
+	}
 
 	//Sphere
 	for (auto i = 0; i < spheres.size(); i++)
 	{
-		spheres[i].mat = m_materials[spheres_mat[i]];
+		spheres[i].mat = materials[spheres_mat[i]];
 	}
 
 	m_sphere_num = static_cast<int>(spheres.size());
@@ -417,8 +422,6 @@ inline void scene_parser::unload_scene()
 		SAFE_DELETE_ARRAY(m_spheres);
 		m_cube_map_loader.unload_data();
 		m_triangle_mesh.unload_obj();
-		m_vertices_num = 0;
-		m_triangle_num = 0;
 		m_sphere_num = 0;
 	}
 }
@@ -498,32 +501,42 @@ inline sphere* scene_parser::get_sphere_device_ptr()
 	return m_spheres_device;
 }
 
-inline int scene_parser::get_mesh_triangle_num()
+inline int scene_parser::get_mesh_num() const
 {
-	return m_triangle_num;
+	return m_triangle_mesh.get_mesh_num();
 }
 
-inline int scene_parser::get_mesh_vertices_num()
+inline int scene_parser::get_triangles_num() const
 {
-	return m_vertices_num;
+	return static_cast<int>(m_triangle_mesh.get_triangles().size());
 }
 
-inline int scene_parser::get_sphere_num()
+inline int scene_parser::get_mesh_triangle_num(int index) const
+{
+	return m_triangle_mesh.get_triangle_num(index);
+}
+
+inline int scene_parser::get_mesh_vertices_num(int index) const
+{
+	return m_triangle_mesh.get_vertex_num(index);
+}
+
+inline int scene_parser::get_sphere_num() const
 {
 	return m_sphere_num;
 }
 
-inline float3 scene_parser::get_mesh_position()
+inline float3 scene_parser::get_mesh_position(int index) const
 {
-	return m_triangle_mesh.get_position();
+	return m_triangle_mesh.get_position(index);
 }
 
-inline material scene_parser::get_mesh_material()
+inline material scene_parser::get_mesh_material(int index) const
 {
-	return m_triangle_mesh.get_material();
+	return m_triangle_mesh.get_material(index);
 }
 
-inline sphere scene_parser::get_sphere(int index)
+inline sphere scene_parser::get_sphere(int index) const
 {
 	return m_spheres[index];
 }
@@ -533,9 +546,9 @@ inline void scene_parser::set_sphere(int index, const sphere& sphere)
 	m_spheres[index] = sphere;
 }
 
-inline void scene_parser::set_mesh_material(const material& material)
+inline void scene_parser::set_mesh_material(int index, const material& material)
 {
-	m_triangle_mesh.set_material(material);
+	m_triangle_mesh.set_material(index, material);
 }
 
 inline void scene_parser::update_sphere_device_data()
@@ -556,35 +569,35 @@ inline void scene_parser::update_triangles_device_data()
 	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
 }
 
-void scene_parser::init_default_material()
+void scene_parser::init_default_material(std::map<std::string, material>& materials)
 {
-	m_materials.clear();
+	materials.clear();
 
-	m_materials.insert(std::make_pair("titanium",		material_data::metal::titanium()));
-	m_materials.insert(std::make_pair("chromium",		material_data::metal::chromium()));
-	m_materials.insert(std::make_pair("iron",			material_data::metal::iron()));
-	m_materials.insert(std::make_pair("nickel",			material_data::metal::nickel()));
-	m_materials.insert(std::make_pair("platinum",		material_data::metal::platinum()));
-	m_materials.insert(std::make_pair("copper",			material_data::metal::copper()));
-	m_materials.insert(std::make_pair("palladium",		material_data::metal::palladium()));
-	m_materials.insert(std::make_pair("zinc",			material_data::metal::zinc()));
-	m_materials.insert(std::make_pair("gold",			material_data::metal::gold()));
-	m_materials.insert(std::make_pair("aluminum",		material_data::metal::aluminum()));
-	m_materials.insert(std::make_pair("silver",			material_data::metal::silver()));
+	materials.insert(std::make_pair("titanium",			material_data::metal::titanium()));
+	materials.insert(std::make_pair("chromium",			material_data::metal::chromium()));
+	materials.insert(std::make_pair("iron",				material_data::metal::iron()));
+	materials.insert(std::make_pair("nickel",			material_data::metal::nickel()));
+	materials.insert(std::make_pair("platinum",			material_data::metal::platinum()));
+	materials.insert(std::make_pair("copper",			material_data::metal::copper()));
+	materials.insert(std::make_pair("palladium",		material_data::metal::palladium()));
+	materials.insert(std::make_pair("zinc",				material_data::metal::zinc()));
+	materials.insert(std::make_pair("gold",				material_data::metal::gold()));
+	materials.insert(std::make_pair("aluminum",			material_data::metal::aluminum()));
+	materials.insert(std::make_pair("silver",			material_data::metal::silver()));
 
-	m_materials.insert(std::make_pair("glass",			material_data::dielectric::glass()));
-	m_materials.insert(std::make_pair("green_glass",	material_data::dielectric::green_glass()));
-	m_materials.insert(std::make_pair("diamond",		material_data::dielectric::diamond()));
-	m_materials.insert(std::make_pair("red",			material_data::dielectric::red()));
-	m_materials.insert(std::make_pair("green",			material_data::dielectric::green()));
-	m_materials.insert(std::make_pair("orange",			material_data::dielectric::orange()));
-	m_materials.insert(std::make_pair("purple",			material_data::dielectric::purple()));
-	m_materials.insert(std::make_pair("blue",			material_data::dielectric::blue()));
-	m_materials.insert(std::make_pair("marble",			material_data::dielectric::marble()));
-	m_materials.insert(std::make_pair("something_blue", material_data::dielectric::something_blue()));
-	m_materials.insert(std::make_pair("something_red",	material_data::dielectric::something_red()));
+	materials.insert(std::make_pair("glass",			material_data::dielectric::glass()));
+	materials.insert(std::make_pair("green_glass",		material_data::dielectric::green_glass()));
+	materials.insert(std::make_pair("diamond",			material_data::dielectric::diamond()));
+	materials.insert(std::make_pair("red",				material_data::dielectric::red()));
+	materials.insert(std::make_pair("green",			material_data::dielectric::green()));
+	materials.insert(std::make_pair("orange",			material_data::dielectric::orange()));
+	materials.insert(std::make_pair("purple",			material_data::dielectric::purple()));
+	materials.insert(std::make_pair("blue",				material_data::dielectric::blue()));
+	materials.insert(std::make_pair("marble",			material_data::dielectric::marble()));
+	materials.insert(std::make_pair("something_blue",	material_data::dielectric::something_blue()));
+	materials.insert(std::make_pair("something_red",	material_data::dielectric::something_red()));
 
-	m_materials.insert(std::make_pair("light",			material_data::dielectric::light()));
+	materials.insert(std::make_pair("light",			material_data::dielectric::light()));
 }
 
 inline float3 scene_parser::parse_float3(std::string text)

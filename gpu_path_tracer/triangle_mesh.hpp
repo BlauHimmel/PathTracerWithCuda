@@ -23,24 +23,31 @@ class triangle_mesh
 {
 private:
 	std::vector<triangle> m_triangles;
-	int m_triangle_num = 0;
+
+	std::vector<int> m_mesh_triangles_num;
+	std::vector<int> m_mesh_vertices_num;
+
+	std::vector<float3> m_mesh_position;
+	std::vector<material> m_mesh_material;
+
+	int m_mesh_num = 0;
+
 	bool m_is_loaded = false;
+
 	triangle* m_mesh_device = nullptr;
-	int m_vertex_num = 0;
-	material m_mat;
-	float3 m_position;
 
 public:
 	bool load_obj(const std::string& filename);
 	void unload_obj();
 
-	void set_position(const float3& position);
-	void set_material(const material& mat);
+	void set_position(int index, const float3& position);
+	void set_material(int index, const material& mat);
 
-	float3 get_position() const;
-	material get_material() const;
-	int get_triangle_num() const;
-	int get_vertex_num() const;
+	int get_mesh_num() const;
+	float3 get_position(int index) const;
+	material get_material(int index) const;
+	int get_triangle_num(int index) const;
+	int get_vertex_num(int index) const;
 	std::vector<triangle> get_triangles() const;
 
 	triangle* create_mesh_device_data();
@@ -56,13 +63,15 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 	tinyobj::attrib_t attrib; 
 	std::string error;
 
+	int triangle_num = 0;
+
 	std::cout << "[Info]Loading file " << filename << "...." << std::endl;
 
 	bool is_success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, filename.c_str());
 
 	if (!error.empty())
 	{
-		std::cout << "[TinyObj]\n" << error << "============================" << std::endl;
+		std::cout << "[TinyObj]\n" << error.substr(0, error.find_last_of('\n')) << std::endl;
 	}
 
 	if (!is_success)
@@ -116,14 +125,22 @@ inline bool triangle_mesh::load_obj(const std::string& filename)
 			triangle.normal = normalize(cross(vertex[1] - vertex[0], vertex[2] - vertex[0]));
 			triangle.mat = get_default_material();
 			m_triangles.push_back(triangle);
+
+			triangle_num++;
 		}
 	}
 
 	m_is_loaded = true;
-	m_triangle_num = static_cast<int>(m_triangles.size());
-	m_vertex_num = static_cast<int>(attrib.vertices.size() / 3);
+	m_mesh_num++;
 
-	std::cout << "[Info]Load file " << filename << " succeeded. vertices : " << m_vertex_num << std::endl;
+	int vertices_num = static_cast<int>(attrib.vertices.size() / 3);
+
+	m_mesh_triangles_num.push_back(triangle_num);
+	m_mesh_vertices_num.push_back(vertices_num);
+	m_mesh_position.push_back(make_float3(0.0f, 0.0f, 0.0f));
+	m_mesh_material.push_back(get_default_material());
+
+	std::cout << "[Info]Load file " << filename << " succeeded. vertices : " << vertices_num << std::endl;
 
 	return true;
 }
@@ -132,47 +149,75 @@ inline void triangle_mesh::unload_obj()
 {
 	m_triangles.clear();
 	m_triangles.shrink_to_fit();
-	m_triangle_num = 0;
+	m_mesh_triangles_num.clear();
+	m_mesh_triangles_num.shrink_to_fit();
+	m_mesh_vertices_num.clear();
+	m_mesh_vertices_num.shrink_to_fit();
+	m_mesh_position.clear();
+	m_mesh_position.shrink_to_fit();
+	m_mesh_material.clear();
+	m_mesh_material.shrink_to_fit();
+
 	m_is_loaded = false;
 }
 
-inline void triangle_mesh::set_position(const float3& position)
+inline void triangle_mesh::set_position(int index, const float3& position)
 {
-	for (auto i = 0; i < m_triangles.size(); i++)
+	int triangle_start_index = 0;
+	for (auto i = 0; i < index; i++)
 	{
-		m_triangles[i].vertex0 += position;
-		m_triangles[i].vertex1 += position;
-		m_triangles[i].vertex2 += position;
+		triangle_start_index += m_mesh_triangles_num[i];
 	}
-}
 
-inline void triangle_mesh::set_material(const material& mat)
-{
-	for (auto i = 0; i < m_triangles.size(); i++)
+	for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 	{
-		m_triangles[i].mat = mat;
+		m_triangles[i + triangle_start_index].vertex0 += position;
+		m_triangles[i + triangle_start_index].vertex1 += position;
+		m_triangles[i + triangle_start_index].vertex2 += position;
 	}
-	m_mat = mat;
+
+	m_mesh_position[index] = position;
 }
 
-inline float3 triangle_mesh::get_position() const
+inline void triangle_mesh::set_material(int index, const material& mat)
 {
-	return m_position;
+	int triangle_start_index = 0;
+	for (auto i = 0; i < index; i++)
+	{
+		triangle_start_index += m_mesh_triangles_num[i];
+	}
+
+	for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
+	{
+		m_triangles[i + triangle_start_index].mat = mat;
+	}
+
+	m_mesh_material[index] = mat;
 }
 
-inline material triangle_mesh::get_material() const
+inline int triangle_mesh::get_mesh_num() const
 {
-	return m_mat;
+	return m_mesh_num;
 }
 
-inline int triangle_mesh::get_triangle_num() const
+inline float3 triangle_mesh::get_position(int index) const
 {
-	return m_triangle_num;
+	return m_mesh_position[index];
 }
 
-inline int triangle_mesh::get_vertex_num() const
+inline material triangle_mesh::get_material(int index) const
 {
-	return m_vertex_num;
+	return m_mesh_material[index];
+}
+
+inline int triangle_mesh::get_triangle_num(int index) const
+{
+	return m_mesh_triangles_num[index];
+}
+
+inline int triangle_mesh::get_vertex_num(int index) const
+{
+	return m_mesh_vertices_num[index];
 }
 
 inline std::vector<triangle> triangle_mesh::get_triangles() const
@@ -187,8 +232,9 @@ inline triangle* triangle_mesh::create_mesh_device_data()
 		return nullptr;
 	}
 
-	CUDA_CALL(cudaMalloc((void**)&m_mesh_device, m_triangle_num * sizeof(triangle)));
-	CUDA_CALL(cudaMemcpy(m_mesh_device, m_triangles.data(), m_triangle_num * sizeof(triangle), cudaMemcpyHostToDevice));
+	CUDA_CALL(cudaMalloc((void**)&m_mesh_device, m_triangles.size() * sizeof(triangle)));
+	CUDA_CALL(cudaMemcpy(m_mesh_device, m_triangles.data(), m_triangles.size() * sizeof(triangle), cudaMemcpyHostToDevice));
+	
 	return m_mesh_device;
 }
 

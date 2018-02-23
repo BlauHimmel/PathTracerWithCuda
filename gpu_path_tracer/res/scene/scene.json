@@ -1,7 +1,7 @@
 {
 	"Background" :
 	{
-		"Name" : "lancellotti_chapel",
+		"Name" : "yokohama",
 		"Path" : "res\\texture\\"
 	},
 
@@ -22,9 +22,17 @@
 	],
 
 	"Mesh" :
-	{
-		"Material" : "diamond",
-		"Path" : "res\\obj\\diamond.obj",
-		"Position" : "3.0 0.0 0.0"
-	}
+	[
+		{
+			"Material" : "marble",
+			"Path" : "res\\obj\\teapot.obj",
+			"Position" : "3.0 0.0 0.0"
+		},
+
+		{
+			"Material" : "red",
+			"Path" : "res\\obj\\monkey.obj",
+			"Position" : "6.0 0.0 0.0"
+		}
+	]
 }

@@ -80,7 +80,7 @@ inline image* path_tracer::render()
 	{
 		image* buffer = create_image(m_image->width, m_image->height);
 		path_tracer_kernel(
-			m_scene.get_mesh_triangle_num(),
+			m_scene.get_triangles_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
 			m_scene.get_sphere_num(),
@@ -203,69 +203,78 @@ inline void path_tracer::render_ui()
 
 	bool is_triangle_mesh_modified = false;
 	
-	if (m_scene.get_mesh_triangle_num() > 0 && ImGui::TreeNode("Triangle Mesh"))
+	if (m_scene.get_mesh_num() > 0 && ImGui::TreeNode("Mesh"))
 	{
-		bool is_modified = false;
-
-		ImGui::Separator();
-
-		float3 position = m_scene.get_mesh_position();
-		
-		ImGui::Text("Base:");
-		sprintf(buffer, "Vertices: %d", m_scene.get_mesh_vertices_num());
-		ImGui::Text(buffer);
-		sprintf(buffer, "Facets: %d", m_scene.get_mesh_triangle_num());
-		ImGui::Text(buffer);
-		sprintf(buffer, "Position: (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
-		ImGui::Text(buffer);
-
-		ImGui::Separator();
-
-		material mat = m_scene.get_mesh_material();
-
-		float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
-		float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
-		float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
-		bool is_transparent = mat.is_transparent;
-		float roughness = mat.roughness;
-
-		ImGui::Text("Material:");
-		is_modified = is_modified || ImGui::ColorEdit3("Diffuse", diffuse);
-		is_modified = is_modified || ImGui::ColorEdit3("Specular", specular);
-		is_modified = is_modified || ImGui::ColorEdit3("Emission", emission);
-		is_modified = is_modified || ImGui::Checkbox("Transparent", &is_transparent);
-		is_modified = is_modified || ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
-
-		float refraction_index = mat.medium.refraction_index;
-		float extinction_coefficient = mat.medium.extinction_coefficient;
-
-		is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
-		is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
-
-		float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
-		float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
-
-		is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
-		is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient, 0.001f);
-
-		ImGui::Separator();
-
-		if (is_modified)
+		for (auto i = 0; i < m_scene.get_mesh_num(); i++)
 		{
-			is_triangle_mesh_modified = true;
+			sprintf(buffer, "Mesh-%d", i + 1);
+			if (ImGui::TreeNode(buffer))
+			{
+				bool is_modified = false;
 
-			mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
-			mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
-			mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
-			mat.is_transparent = is_transparent;
-			mat.roughness = roughness;
+				ImGui::Separator();
 
-			mat.medium.refraction_index = refraction_index;
-			mat.medium.extinction_coefficient = extinction_coefficient;
-			mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
-			mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+				float3 position = m_scene.get_mesh_position(i);
 
-			m_scene.set_mesh_material(mat);
+				ImGui::Text("Base:");
+				sprintf(buffer, "Vertices: %d", m_scene.get_mesh_vertices_num(i));
+				ImGui::Text(buffer);
+				sprintf(buffer, "Facets: %d", m_scene.get_mesh_triangle_num(i));
+				ImGui::Text(buffer);
+				sprintf(buffer, "Position: (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
+				ImGui::Text(buffer);
+
+				ImGui::Separator();
+
+				material mat = m_scene.get_mesh_material(i);
+
+				float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
+				float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
+				float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
+				bool is_transparent = mat.is_transparent;
+				float roughness = mat.roughness;
+
+				ImGui::Text("Material:");
+				is_modified = is_modified || ImGui::ColorEdit3("Diffuse", diffuse);
+				is_modified = is_modified || ImGui::ColorEdit3("Specular", specular);
+				is_modified = is_modified || ImGui::ColorEdit3("Emission", emission);
+				is_modified = is_modified || ImGui::Checkbox("Transparent", &is_transparent);
+				is_modified = is_modified || ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
+
+				float refraction_index = mat.medium.refraction_index;
+				float extinction_coefficient = mat.medium.extinction_coefficient;
+
+				is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
+				is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+
+				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
+				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
+
+				is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
+				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient, 0.001f);
+
+				ImGui::Separator();
+
+				if (is_modified)
+				{
+					is_triangle_mesh_modified = true;
+
+					mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
+					mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
+					mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
+					mat.is_transparent = is_transparent;
+					mat.roughness = roughness;
+
+					mat.medium.refraction_index = refraction_index;
+					mat.medium.extinction_coefficient = extinction_coefficient;
+					mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
+					mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+
+					m_scene.set_mesh_material(i, mat);
+				}
+
+				ImGui::TreePop();
+			}
 		}
 
 		ImGui::TreePop();
@@ -287,7 +296,7 @@ inline void path_tracer::render_ui()
 inline void path_tracer::init_scene_device_data()
 {
 	double time;
-	printf("[Info]Load scene data...");
+	printf("[Info]Load scene data...\n");
 	TIME_COUNT_CALL_START();
 	if (!m_scene.load_scene("res\\scene\\scene.json"))
 	{
@@ -297,7 +306,7 @@ inline void path_tracer::init_scene_device_data()
 	}
 	m_scene.create_scene_data_device();
 	TIME_COUNT_CALL_END(time);
-	printf("[Info]Load scene completed, time consuming: %.4f ms\n", time);
+	printf("[Info]Load scene completed, total time consuming: %.4f ms\n", time);
 }
 
 #endif // !__PATH_TRACER__

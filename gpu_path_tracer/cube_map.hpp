@@ -5,6 +5,7 @@
 
 #include <cuda_runtime.h>
 
+#include <iostream>
 #include <vector>
 #include "basic_math.h"
 #include "lib\lodepng\lodepng.h"
@@ -73,6 +74,7 @@ inline bool cube_map_loader::load_data(
 	std::vector<uchar> bmp_buffer;
 	int width, height;
 
+	std::cout << "[Info]Loading file " << filename_x_positive << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_x_positive);
 	if (!decode_bmp(bmp_buffer, m_x_positive_map, m_width, m_height) || m_width != m_height)
 	{
@@ -80,7 +82,10 @@ inline bool cube_map_loader::load_data(
 		m_x_positive_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_x_positive << " succeeded." << std::endl;
 
+
+	std::cout << "[Info]Loading file " << filename_x_negative << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_x_negative);
 	if (!decode_bmp(bmp_buffer, m_x_negative_map, width, height) || width != height || width != m_width || height != m_height)
 	{
@@ -90,7 +95,9 @@ inline bool cube_map_loader::load_data(
 		m_x_negative_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_x_negative << " succeeded." << std::endl;
 
+	std::cout << "[Info]Loading file " << filename_y_positive << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_y_positive);
 	if (!decode_bmp(bmp_buffer, m_y_positive_map, width, height) || width != height || width != m_width || height != m_height)
 	{
@@ -102,7 +109,9 @@ inline bool cube_map_loader::load_data(
 		m_y_positive_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_y_positive << " succeeded." << std::endl;
 
+	std::cout << "[Info]Loading file " << filename_y_negative << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_y_negative);
 	if (!decode_bmp(bmp_buffer, m_y_negative_map, width, height) || width != height || width != m_width || height != m_height)
 	{
@@ -116,7 +125,9 @@ inline bool cube_map_loader::load_data(
 		m_y_negative_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_y_negative << " succeeded." << std::endl;
 
+	std::cout << "[Info]Loading file " << filename_z_positive << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_z_positive);
 	if (!decode_bmp(bmp_buffer, m_z_positive_map, width, height) || width != height || width != m_width || height != m_height)
 	{
@@ -132,7 +143,9 @@ inline bool cube_map_loader::load_data(
 		m_z_positive_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_z_positive << " succeeded." << std::endl;
 
+	std::cout << "[Info]Loading file " << filename_z_negative << "...." << std::endl;
 	lodepng::load_file(bmp_buffer, filename_z_negative);
 	if (!decode_bmp(bmp_buffer, m_z_negative_map, width, height) || width != height || width != m_width || height != m_height)
 	{
@@ -150,6 +163,7 @@ inline bool cube_map_loader::load_data(
 		m_z_negative_map.shrink_to_fit();
 		return false;
 	}
+	std::cout << "[Info]Load file " << filename_z_negative << " succeeded." << std::endl;
 
 	m_is_loaded = true;
 	return true;
