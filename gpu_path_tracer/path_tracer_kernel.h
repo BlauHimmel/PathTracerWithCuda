@@ -10,18 +10,20 @@
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
+#include "configuration.hpp"
 
 extern "C" void path_tracer_kernel(
 	int triangle_num,						//in
-	bvh_node_device* bvh_nodes,				//in
-	triangle* triangles,					//in
+	bvh_node_device* bvh_nodes_device,		//in
+	triangle* triangles_device,				//in
 	int sphere_num,							//in
-	sphere* spheres, 						//in
+	sphere* spheres_device, 				//in
 	int pixel_count, 						//in
 	color* pixels,							//in out
 	int depth, 								//in
-	render_camera* render_camera,			//in
-	cube_map* sky_cube_map					//in
+	render_camera* render_camera_device,	//in
+	cube_map* sky_cube_map_device,			//in
+	configuration* config					//in
 );
 
 #endif // !__PATH_TRACER_KERNEL__

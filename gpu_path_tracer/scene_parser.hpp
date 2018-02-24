@@ -94,18 +94,10 @@
 }
 */
 
-
-#define CHECK_PROPERTY(Category, Property, Token)\
-if (Property.is_null())\
-{\
-	std::cout << "[Error]" << #Category << " property <" << Token << "> not defined!" << std::endl;\
-	return false;\
-}\
-
 class scene_parser
 {
 private:
-	nlohmann::json json_parser;
+	nlohmann::json m_json_parser;
 
 	cube_map_loader m_cube_map_loader;
 	cube_map* m_cube_map_device = nullptr;
@@ -152,9 +144,9 @@ public:
 private:
 	void init_default_material(std::map<std::string, material>& materials);
 
-	float3 parse_float3(std::string text);
-	float parse_float(std::string text);
-	bool parse_bool(std::string text);
+	float3 parse_float3(const std::string& text);
+	float parse_float(const std::string& text);
+	bool parse_bool(const std::string& text);
 };
 
 inline scene_parser::~scene_parser()
@@ -170,9 +162,8 @@ inline bool scene_parser::load_scene(const std::string& filename)
 		return false;
 	}
 
-
 	std::ifstream scene_file(filename, std::ios::in);
-	scene_file >> json_parser;
+	scene_file >> m_json_parser;
 
 	std::vector<std::string> cubemap_pathes(6);
 
@@ -189,10 +180,10 @@ inline bool scene_parser::load_scene(const std::string& filename)
 
 	//Step.1 Load data from file
 
-	auto sphere_object = json_parser[TOKEN_OBJECT_SPHERE];
-	auto mesh_object = json_parser[TOKEN_OBJECT_MESH];
-	auto background_object = json_parser[TOKEN_BACKGROUND];
-	auto material_object = json_parser[TOKEN_MATERIAL];
+	auto sphere_object = m_json_parser[TOKEN_OBJECT_SPHERE];
+	auto mesh_object = m_json_parser[TOKEN_OBJECT_MESH];
+	auto background_object = m_json_parser[TOKEN_BACKGROUND];
+	auto material_object = m_json_parser[TOKEN_MATERIAL];
 
 	//Background
 	if (background_object.is_null())
@@ -454,18 +445,21 @@ inline void scene_parser::create_scene_data_device()
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	bvh_node* root;
-	printf("[Info]Constructing bvh on cpu...\n");
-	TIME_COUNT_CALL_START();
-	root = build_bvh(m_triangle_mesh.get_triangles());
-	TIME_COUNT_CALL_END(time);
-	printf("[Info]Completed, time consuming: %.4f ms\n", time);
+	if (m_triangles_device != nullptr)
+	{
+		bvh_node* root;
+		printf("[Info]Constructing bvh on cpu...\n");
+		TIME_COUNT_CALL_START();
+		root = build_bvh(m_triangle_mesh.get_triangles());
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	printf("[Info]Copy bvh data to GPU...\n");
-	TIME_COUNT_CALL_START();
-	m_bvh_nodes_device = build_bvh_device_data(root);
-	TIME_COUNT_CALL_END(time);
-	printf("[Info]Completed, time consuming: %.4f ms\n", time);
+		printf("[Info]Copy bvh data to GPU...\n");
+		TIME_COUNT_CALL_START();
+		m_bvh_nodes_device = build_bvh_device_data(root);
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
+	}
 }
 
 inline void scene_parser::release_scene_data_device()
@@ -600,7 +594,7 @@ void scene_parser::init_default_material(std::map<std::string, material>& materi
 	materials.insert(std::make_pair("light",			material_data::dielectric::light()));
 }
 
-inline float3 scene_parser::parse_float3(std::string text)
+inline float3 scene_parser::parse_float3(const std::string& text)
 {
 	std::istringstream stream(text);
 	float x, y, z;
@@ -608,7 +602,7 @@ inline float3 scene_parser::parse_float3(std::string text)
 	return make_float3(x, y, z);
 }
 
-inline float scene_parser::parse_float(std::string text)
+inline float scene_parser::parse_float(const std::string& text)
 {
 	std::istringstream stream(text);
 	float value;
@@ -616,12 +610,16 @@ inline float scene_parser::parse_float(std::string text)
 	return value;
 }
 
-inline bool scene_parser::parse_bool(std::string text)
+inline bool scene_parser::parse_bool(const std::string& text)
 {
-	std::istringstream stream(text);
-	bool value;
-	stream >> value;
-	return value;
+	if (text == "true")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 #endif // !__SCENE_PARSER__

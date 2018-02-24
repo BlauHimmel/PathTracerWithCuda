@@ -31,6 +31,18 @@
     <Filter Include="Library\json">
       <UniqueIdentifier>{88a4d66c-241d-46f4-9292-a8cf8631e5e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\json\detail">
+      <UniqueIdentifier>{8e946c1e-91be-4e05-95da-39e6ada487d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\conversions">
+      <UniqueIdentifier>{406004a9-5991-444a-9d19-dc8a6f0784d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\iterators">
+      <UniqueIdentifier>{9919cb94-8400-4d8b-ac74-250c7a1c2012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\parsing">
+      <UniqueIdentifier>{39be4316-9586-4011-92a8-93728c0d9b75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -131,8 +143,77 @@
     <ClInclude Include="config_parser.hpp">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="configuration.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\adl_serializer.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
     <ClInclude Include="lib\json\json.hpp">
       <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\json_fwd.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\exceptions.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\json_ref.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_scope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_unscope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\meta.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\serializer.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\value_t.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\from_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\to_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\internal_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iter_impl.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iteration_proxy.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\json_reverse_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\primitive_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_reader.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_writer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\input_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\lexer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\output_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\parser.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

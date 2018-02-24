@@ -41,8 +41,11 @@ __end_time = clock();\
 Time = static_cast<double>(__end_time - __start_time) / CLOCKS_PER_SEC * 1000.0;\
 }\
 
-
-
-
+#define CHECK_PROPERTY(Category, Property, Token)\
+if (Property.is_null())\
+{\
+	std::cout << "[Error]" << #Category << " property <" << Token << "> not defined!" << std::endl;\
+	return false;\
+}\
 
 #endif // !__UTILITIES__

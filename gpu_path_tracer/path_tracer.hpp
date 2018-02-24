@@ -23,6 +23,7 @@
 #include "triangle_mesh.hpp"
 #include "bvh.hpp"
 #include "scene_parser.hpp"
+#include "config_parser.hpp"
 
 #include "lib\imgui\imgui.h"
 #include "lib\imgui\imgui_impl_glfw_gl3.h"
@@ -32,8 +33,10 @@ class path_tracer
 private:
 	scene_parser m_scene;
 
+	config_parser* m_config;
 	render_camera* m_render_camera;
 	image* m_image;
+	image* m_buffer;
 
 	bool m_is_initiated;
 
@@ -41,7 +44,7 @@ public:
 	path_tracer();
 	~path_tracer();
 
-	void init(render_camera* render_camera);
+	void init(render_camera* render_camera, config_parser* config);
 	image* render();
 	void clear();
 
@@ -55,6 +58,7 @@ path_tracer::path_tracer()
 {
 	m_is_initiated = false;
 	m_image = nullptr;
+	m_buffer = nullptr;
 	m_render_camera = nullptr;
 }
 
@@ -66,11 +70,13 @@ inline path_tracer::~path_tracer()
 	}
 }
 
-inline void path_tracer::init(render_camera* render_camera)
+inline void path_tracer::init(render_camera* render_camera, config_parser* config)
 {
 	m_is_initiated = true;
+	m_config = config;
 	m_render_camera = render_camera;
 	m_image = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
+	m_buffer = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
 	init_scene_device_data();
 }
 
@@ -78,25 +84,24 @@ inline image* path_tracer::render()
 {
 	if (m_is_initiated)
 	{
-		image* buffer = create_image(m_image->width, m_image->height);
 		path_tracer_kernel(
 			m_scene.get_triangles_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
 			m_scene.get_sphere_num(),
-			m_scene.get_sphere_device_ptr(), 
-			buffer->pixel_count, 
-			buffer->pixels, 
+			m_scene.get_sphere_device_ptr(),
+			m_buffer->pixel_count,
+			m_buffer->pixels,
 			m_image->pass_counter,
 			m_render_camera,
-			m_scene.get_cube_map_device_ptr()
+			m_scene.get_cube_map_device_ptr(),
+			m_config->get_config_ptr()
 		);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
-			m_image->pixels[i] += buffer->pixels[i];
+			m_image->pixels[i] += m_buffer->pixels[i];
 		}
 		m_image->pass_counter++;
-		release_image(buffer);
 		return m_image;
 	}
 	else

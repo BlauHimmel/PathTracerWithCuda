@@ -505,7 +505,7 @@ namespace material_data
 				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
 				make_float3(18.0f, 18.0f, 18.0f),			//emission
 				make_float3(0.0f, 0.0f, 0.0f),				//specular
-				true,										//transparent
+				false,										//transparent
 				0.01f,										//roughness
 				{
 					AIR_REFRACTION_INDEX,					//refraction index

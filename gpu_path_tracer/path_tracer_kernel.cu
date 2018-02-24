@@ -21,19 +21,8 @@
 #include "material.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
+#include "configuration.hpp"
 #include "bvh.hpp"
-
-#define BLOCK_SIZE 768
-#define MAX_TRACER_DEPTH 20
-#define VECTOR_BIAS_LENGTH 0.0001f
-#define ENERGY_EXIST_THRESHOLD 0.000001f
-#define SSS_THRESHOLD 0.000001f
-
-#define USE_SKY_BOX
-#define BILINEAR_SAMPLING
-//#define USE_GROUND
-
-//TODO:LET MAX_TRACER_DEPTH BE A PARAMETER, WHICH CAN BE CONTROL IN THE APPLICATION
 
 enum class object_type
 {
@@ -498,94 +487,103 @@ __host__ __device__ fresnel get_fresnel_conductors(
 
 __host__ __device__ float3 get_background_color(
 	const float3& direction,		//in
-	cube_map* sky_cube_map			//in
+	cube_map* sky_cube_map,			//in
+	configuration* config			//in
+
 )
 {
-#ifdef USE_SKY_BOX
-#ifdef BILINEAR_SAMPLING
-	float u, v;
-	int index;
-	convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
-	float x_image_real = u * (float)sky_cube_map->length;
-	float y_image_real = (1.0f - v) * (float)sky_cube_map->length;
+	if (config->use_sky_box)
+	{
+		if (config->use_bilinear)
+		{
+			float u, v;
+			int index;
+			convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
+			float x_image_real = u * (float)sky_cube_map->length;
+			float y_image_real = (1.0f - v) * (float)sky_cube_map->length;
 
-	int floor_x_image = (int)clamp(floorf(x_image_real), 0.0f, (float)(sky_cube_map->length - 1));
-	int ceil_x_image = (int)clamp(ceilf(x_image_real), 0.0f, (float)(sky_cube_map->length - 1));
-	int floor_y_image = (int)clamp(floorf(y_image_real), 0.0f, (float)(sky_cube_map->length - 1));
-	int ceil_y_image = (int)clamp(ceilf(y_image_real), 0.0f, (float)(sky_cube_map->length - 1));
+			int floor_x_image = (int)clamp(floorf(x_image_real), 0.0f, (float)(sky_cube_map->length - 1));
+			int ceil_x_image = (int)clamp(ceilf(x_image_real), 0.0f, (float)(sky_cube_map->length - 1));
+			int floor_y_image = (int)clamp(floorf(y_image_real), 0.0f, (float)(sky_cube_map->length - 1));
+			int ceil_y_image = (int)clamp(ceilf(y_image_real), 0.0f, (float)(sky_cube_map->length - 1));
 
-	//0:left bottm	1:right bottom	2:left top	3:right top
-	int x_images[4] = { floor_x_image, ceil_x_image, floor_x_image, ceil_x_image };
-	int y_images[4] = { floor_y_image, floor_y_image, ceil_y_image, ceil_y_image };
+			//0:left bottm	1:right bottom	2:left top	3:right top
+			int x_images[4] = { floor_x_image, ceil_x_image, floor_x_image, ceil_x_image };
+			int y_images[4] = { floor_y_image, floor_y_image, ceil_y_image, ceil_y_image };
 
-	float left_right_t = x_image_real - floorf(x_image_real);
-	float bottom_top_t = y_image_real - floorf(y_image_real);
+			float left_right_t = x_image_real - floorf(x_image_real);
+			float bottom_top_t = y_image_real - floorf(y_image_real);
 
-	uchar* pixels;
-	if (index == 0) pixels = sky_cube_map->m_x_positive_map;
-	else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
-	else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
-	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
-	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
-	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
+			uchar* pixels;
+			if (index == 0) pixels = sky_cube_map->m_x_positive_map;
+			else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
+			else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
+			else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
+			else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
+			else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
 
-	float3 sample_colors[4] = {
-		make_float3(
-			pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 0] / 255.0f,
-			pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 1] / 255.0f,
-			pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 2] / 255.0f
-		),
-		make_float3(
-			pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 0] / 255.0f,
-			pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 1] / 255.0f,
-			pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 2] / 255.0f
-		),
-		make_float3(
-			pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 0] / 255.0f,
-			pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 1] / 255.0f,
-			pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 2] / 255.0f
-		),
-		make_float3(
-			pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 0] / 255.0f,
-			pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 1] / 255.0f,
-			pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 2] / 255.0f
-		),
-	};
+			float3 sample_colors[4] = {
+				make_float3(
+					pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 0] / 255.0f,
+					pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 1] / 255.0f,
+					pixels[(y_images[0] * sky_cube_map->length + x_images[0]) * 4 + 2] / 255.0f
+				),
+				make_float3(
+					pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 0] / 255.0f,
+					pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 1] / 255.0f,
+					pixels[(y_images[1] * sky_cube_map->length + x_images[1]) * 4 + 2] / 255.0f
+				),
+				make_float3(
+					pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 0] / 255.0f,
+					pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 1] / 255.0f,
+					pixels[(y_images[2] * sky_cube_map->length + x_images[2]) * 4 + 2] / 255.0f
+				),
+				make_float3(
+					pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 0] / 255.0f,
+					pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 1] / 255.0f,
+					pixels[(y_images[3] * sky_cube_map->length + x_images[3]) * 4 + 2] / 255.0f
+				),
+			};
 
-	return lerp(
-		lerp(sample_colors[0], sample_colors[1], left_right_t),
-		lerp(sample_colors[2], sample_colors[3], left_right_t),
-		bottom_top_t
-	);
-#else
-	float u, v;
-	int index;
-	convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
-	int x_image = (int)clamp((u * sky_cube_map->length), 0.0f, (float)(sky_cube_map->length - 1));
-	int y_image = (int)clamp(((1.0f - v) * sky_cube_map->length), 0.0f, (float)(sky_cube_map->length - 1));
+			return lerp(
+				lerp(sample_colors[0], sample_colors[1], left_right_t),
+				lerp(sample_colors[2], sample_colors[3], left_right_t),
+				bottom_top_t
+			);
+		}
+		else
+		{
+			float u, v;
+			int index;
+			convert_xyz_to_cube_uv(direction.x, direction.y, direction.z, index, u, v);
+			int x_image = (int)clamp((u * sky_cube_map->length), 0.0f, (float)(sky_cube_map->length - 1));
+			int y_image = (int)clamp(((1.0f - v) * sky_cube_map->length), 0.0f, (float)(sky_cube_map->length - 1));
 
-	uchar* pixels;
-	if (index == 0) pixels = sky_cube_map->m_x_positive_map;
-	else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
-	else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
-	else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
-	else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
-	else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
+			uchar* pixels;
+			if (index == 0) pixels = sky_cube_map->m_x_positive_map;
+			else if (index == 1) pixels = sky_cube_map->m_x_negative_map;
+			else if (index == 2) pixels = sky_cube_map->m_y_positive_map;
+			else if (index == 3) pixels = sky_cube_map->m_y_negative_map;
+			else if (index == 4) pixels = sky_cube_map->m_z_positive_map;
+			else if (index == 5) pixels = sky_cube_map->m_z_negative_map;
 
-	return make_float3(
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
-		pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
-	);
-#endif // BILINEAR_SAMPLING
-#endif // USE_SKY_BOX
+			return make_float3(
+				pixels[(y_image * sky_cube_map->length + x_image) * 4 + 0] / 255.0f,
+				pixels[(y_image * sky_cube_map->length + x_image) * 4 + 1] / 255.0f,
+				pixels[(y_image * sky_cube_map->length + x_image) * 4 + 2] / 255.0f
+			);
+		}
+	}
 
-#ifdef USE_GROUND
-	float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
-	float3 a = make_float3(0.15f, 0.3f, 0.5f);
-	float3 b = make_float3(1.0f, 1.0f, 1.0f);
-	return ((1.0f - t) * a + t * b) * 1.0f;
-#endif // USE_GROUND
+	if (config->use_ground)
+	{
+		float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
+		float3 a = make_float3(0.15f, 0.3f, 0.5f);
+		float3 b = make_float3(1.0f, 1.0f, 1.0f);
+		return ((1.0f - t) * a + t * b) * 1.0f;
+	}
+
+	return make_float3(0.0f, 0.0f, 0.0f);
 }
 
 __host__ __device__ float3 point_on_ray(
@@ -601,13 +599,14 @@ __global__ void init_data_kernel(
 	int* energy_exist_pixels,				//in out
 	color* not_absorbed_colors,				//in out
 	color* accumulated_colors,				//in out
-	scattering* scatterings					//in out
+	scattering* scatterings,				//in out
+	configuration* config					//in
 )
 {
 	int block_x = blockIdx.x;
 	int thread_x = threadIdx.x;
 
-	int pixel_index = BLOCK_SIZE * block_x + thread_x;
+	int pixel_index = config->block_size * block_x + thread_x;
 	bool is_index_valid = pixel_index < pixel_count;
 
 	if (is_index_valid)
@@ -629,13 +628,14 @@ __global__ void generate_ray_kernel(
 	float focal_distance,				//in
 	int pixel_count,					//in
 	ray* rays,							//in out
-	int seed							//in
+	int seed,							//in
+	configuration* config				//in
 )
 {
 	int block_x = blockIdx.x;
 	int thread_x = threadIdx.x;
 
-	int pixel_index = BLOCK_SIZE * block_x + thread_x;
+	int pixel_index = config->block_size * block_x + thread_x;
 	bool is_index_valid = pixel_index < pixel_count;
 
 	if (is_index_valid)
@@ -709,13 +709,14 @@ __global__ void trace_ray_kernel(
 	float3* not_absorbed_colors,			//in out
 	float3* accumulated_colors,				//in out
 	cube_map* sky_cube_map,					//in
-	int seed								//in
+	int seed,								//in
+	configuration* config					//in
 )
 {
 	int block_x = blockIdx.x;
 	int thread_x = threadIdx.x;
 
-	int energy_exist_pixel_index = BLOCK_SIZE * block_x + thread_x;
+	int energy_exist_pixel_index = config->block_size * block_x + thread_x;
 	bool is_index_valid = energy_exist_pixel_index < energy_exist_pixels_count;
 
 	if (!is_index_valid)
@@ -740,8 +741,7 @@ __global__ void trace_ray_kernel(
 	int min_triangle_index = -1;
 
 	//intersect with primitives in scene
-#ifdef USE_GROUND
-	if (intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
+	if (config->use_ground && intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
 	{
 		//TODO:HARDCODE HERE
 		min_t = hit_t;
@@ -749,7 +749,6 @@ __global__ void trace_ray_kernel(
 		min_normal = hit_normal;
 		min_type = object_type::ground;
 	}
-#endif // USE_GROUND
 
 	for (int i = 0; i < sphere_num; i++)
 	{
@@ -775,7 +774,7 @@ __global__ void trace_ray_kernel(
 	scattering current_scattering = scatterings[pixel_index];
 
 	if (current_scattering.reduced_scattering_coefficient.x > 0.0f ||
-		length(current_scattering.absorption_coefficient) > SSS_THRESHOLD)
+		length(current_scattering.absorption_coefficient) > config->sss_threshold)
 	{
 		float rand = uniform_distribution(random_engine);
 		float scaterring_distance = -log(rand) / current_scattering.reduced_scattering_coefficient.x;
@@ -794,7 +793,7 @@ __global__ void trace_ray_kernel(
 			not_absorbed_colors[pixel_index] *= compute_absorption_through_medium(current_scattering.absorption_coefficient, scaterring_distance);
 
 			//kill the low energy ray
-			if (length(not_absorbed_colors[pixel_index]) <= ENERGY_EXIST_THRESHOLD)
+			if (length(not_absorbed_colors[pixel_index]) <= config->energy_exist_threshold)
 			{
 				energy_exist_pixels[energy_exist_pixel_index] = -1;
 			}
@@ -845,7 +844,7 @@ __global__ void trace_ray_kernel(
 
 		float3 reflection_direction = get_reflection_direction(min_normal, in_direction);
 		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);//may be nan
-		float3 bias_vector = VECTOR_BIAS_LENGTH * min_normal;
+		float3 bias_vector = config->vector_bias_length * min_normal;
 
 		fresnel fresnel;
 		if (min_mat.medium.extinction_coefficient == 0)
@@ -907,14 +906,14 @@ __global__ void trace_ray_kernel(
 		}
 
 		//kill the low energy ray
-		if (length(not_absorbed_colors[pixel_index]) <= ENERGY_EXIST_THRESHOLD)
+		if (length(not_absorbed_colors[pixel_index]) <= config->energy_exist_threshold)
 		{
 			energy_exist_pixels[energy_exist_pixel_index] = -1;
 		}
 	}
 	else
 	{
-		float3 background_color = get_background_color(tracing_ray.direction, sky_cube_map);
+		float3 background_color = get_background_color(tracing_ray.direction, sky_cube_map, config);
 		accumulated_colors[pixel_index] += not_absorbed_colors[pixel_index] * background_color;
 		//kill the low ray because it has left the scene
 		energy_exist_pixels[energy_exist_pixel_index] = -1;
@@ -925,18 +924,19 @@ __global__ void trace_ray_kernel(
 
 extern "C" void path_tracer_kernel(
 	int triangle_num,					//in
-	bvh_node_device* bvh_nodes,			//in
-	triangle* triangles,				//in
+	bvh_node_device* bvh_nodes_device,	//in
+	triangle* triangles_device,			//in
 	int sphere_num,						//in
-	sphere* spheres, 					//in
+	sphere* spheres_device, 			//in
 	int pixel_count, 					//in
 	color* pixels,						//in out
 	int pass_counter, 					//in out
-	render_camera* render_cam,			//in
-	cube_map* sky_cube_map				//in
+	render_camera* render_cam_device,	//in
+	cube_map* sky_cube_map_device,		//in
+	configuration* config				//in
 )
 {
-	int threads_num_per_block = BLOCK_SIZE;
+	int threads_num_per_block = config->block_size;
 	int total_blocks_num_per_gird = (pixel_count + threads_num_per_block - 1) / threads_num_per_block;
 
 	color* not_absorbed_colors = nullptr;
@@ -946,35 +946,41 @@ extern "C" void path_tracer_kernel(
 	int energy_exist_pixels_count = pixel_count;
 	int seed = pass_counter;
 	scattering* scatterings = nullptr;
+	configuration* config_device;
 
+	CUDA_CALL(cudaMalloc((void**)&config_device, sizeof(configuration)));
 	CUDA_CALL(cudaMalloc((void**)&not_absorbed_colors, pixel_count * sizeof(color)));
 	CUDA_CALL(cudaMalloc((void**)&accumulated_colors, pixel_count * sizeof(color)));
 	CUDA_CALL(cudaMalloc((void**)&rays, pixel_count * sizeof(ray)));
 	CUDA_CALL(cudaMalloc((void**)&energy_exist_pixels, pixel_count * sizeof(int)));
 	CUDA_CALL(cudaMalloc((void**)&scatterings, pixel_count * sizeof(scattering)));
 
+	CUDA_CALL(cudaMemcpy(config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
+
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
 		energy_exist_pixels, 
 		not_absorbed_colors, 
 		accumulated_colors,
-		scatterings
+		scatterings,
+		config_device
 		);
 
 	generate_ray_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
-		render_cam->eye,
-		render_cam->view,
-		render_cam->up,
-		render_cam->resolution,
-		render_cam->fov,
-		render_cam->aperture_radius,
-		render_cam->focal_distance,
+		render_cam_device->eye,
+		render_cam_device->view,
+		render_cam_device->up,
+		render_cam_device->resolution,
+		render_cam_device->fov,
+		render_cam_device->aperture_radius,
+		render_cam_device->focal_distance,
 		pixel_count, 
 		rays,
-		seed
+		seed,
+		config_device
 		);
 
-	for (int depth = 0; depth < MAX_TRACER_DEPTH; depth++)
+	for (int depth = 0; depth < config->max_tracer_depth; depth++)
 	{
 		if (energy_exist_pixels_count == 0)
 		{
@@ -985,10 +991,10 @@ extern "C" void path_tracer_kernel(
 
 		trace_ray_kernel <<<used_blocks_num_per_gird, threads_num_per_block>>> (
 			triangle_num,
-			bvh_nodes,
-			triangles,
+			bvh_nodes_device,
+			triangles_device,
 			sphere_num, 
-			spheres, 
+			spheres_device,
 			pixel_count, 
 			depth,
 			energy_exist_pixels_count,
@@ -997,8 +1003,9 @@ extern "C" void path_tracer_kernel(
 			scatterings,
 			not_absorbed_colors, 
 			accumulated_colors, 
-			sky_cube_map,
-			seed
+			sky_cube_map_device,
+			seed,
+			config_device
 			);
 		
 		thrust::device_ptr<int> energy_exist_pixels_start_on_device = thrust::device_pointer_cast(energy_exist_pixels);

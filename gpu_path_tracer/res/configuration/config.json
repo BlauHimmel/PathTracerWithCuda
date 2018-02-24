@@ -1,0 +1,10 @@
+{
+	"BlockSize" : "1024",
+	"MaxDepth" : "20",
+	"BiasLength" : "0.0001",
+	"EnergyThreshold" : "0.000001",
+	"SSSThreshold" : "0.000001",
+	"Skybox" : "true",
+	"BilinearSample" : "true",
+	"Ground" : "false"
+}
