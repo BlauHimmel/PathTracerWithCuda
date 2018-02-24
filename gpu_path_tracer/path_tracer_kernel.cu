@@ -823,7 +823,7 @@ __global__ void trace_ray_kernel(
 		}
 		else if (min_type == object_type::triangle)
 		{
-			min_mat = triangles[min_triangle_index].mat;
+			min_mat = *(triangles[min_triangle_index].mat);
 		}
 
 		float3 in_direction = tracing_ray.direction;

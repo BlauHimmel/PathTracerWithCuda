@@ -140,11 +140,11 @@ public:
 	int get_mesh_vertices_num(int index) const;
 	int get_sphere_num() const;
 	float3 get_mesh_position(int index) const;
-	material get_mesh_material(int index) const;
+	material* get_mesh_material(int index) const;
 	sphere get_sphere(int index) const;
 
 	void set_sphere(int index, const sphere& sphere);
-	void set_mesh_material(int index, const material& material);
+	void set_mesh_material(int index, material* material);
 
 	void update_sphere_device_data();
 	void update_triangles_device_data();
@@ -394,8 +394,8 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			m_triangle_mesh.unload_obj();
 			return false;
 		}
-
-		m_triangle_mesh.set_material(i, materials[meshes_mat[i]]);
+		
+		m_triangle_mesh.set_material(i, copy_default_material(materials[meshes_mat[i]]));
 		m_triangle_mesh.set_position(i, meshes_position[i]);
 	}
 
@@ -531,7 +531,7 @@ inline float3 scene_parser::get_mesh_position(int index) const
 	return m_triangle_mesh.get_position(index);
 }
 
-inline material scene_parser::get_mesh_material(int index) const
+inline material* scene_parser::get_mesh_material(int index) const
 {
 	return m_triangle_mesh.get_material(index);
 }
@@ -546,7 +546,7 @@ inline void scene_parser::set_sphere(int index, const sphere& sphere)
 	m_spheres[index] = sphere;
 }
 
-inline void scene_parser::set_mesh_material(int index, const material& material)
+inline void scene_parser::set_mesh_material(int index, material* material)
 {
 	m_triangle_mesh.set_material(index, material);
 }

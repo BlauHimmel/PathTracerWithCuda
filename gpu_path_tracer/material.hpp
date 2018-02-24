@@ -50,6 +50,28 @@ inline material get_default_material()
 	return mat;
 }
 
+inline material* new_default_material()
+{
+	material* mat = new material();
+	mat->diffuse_color = make_float3(0.0f, 0.0f, 0.0f);
+	mat->emission_color = make_float3(0.0f, 0.0f, 0.0f);
+	mat->specular_color = make_float3(0.0f, 0.0f, 0.0f);
+	mat->is_transparent = false;
+	mat->roughness = 0.0f;
+	mat->medium.refraction_index = AIR_REFRACTION_INDEX;
+	mat->medium.extinction_coefficient = 0.0f;
+	mat->medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);
+	mat->medium.scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);
+	return mat;
+}
+
+inline material* copy_default_material(const material& mat)
+{
+	material* dst = new material();
+	*dst = mat;
+	return dst;
+}
+
 namespace material_data
 {
 	class metal
