@@ -1,5 +1,8 @@
 {
-	"BlockSize" : "1024",
+	"Width" : "1024",
+	"Height" : "768",
+	"FullScreen" : "false",
+	"BlockSize" : "64",
 	"MaxDepth" : "20",
 	"BiasLength" : "0.0001",
 	"EnergyThreshold" : "0.000001",

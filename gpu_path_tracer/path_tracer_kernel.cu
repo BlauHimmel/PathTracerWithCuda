@@ -24,6 +24,8 @@
 #include "configuration.hpp"
 #include "bvh.hpp"
 
+//TODO: Use unified memory managed
+
 enum class object_type
 {
 	none,
@@ -947,14 +949,14 @@ extern "C" void path_tracer_kernel(
 	int seed = pass_counter;
 	scattering* scatterings = nullptr;
 	configuration* config_device;
-
+	
 	CUDA_CALL(cudaMalloc((void**)&config_device, sizeof(configuration)));
 	CUDA_CALL(cudaMalloc((void**)&not_absorbed_colors, pixel_count * sizeof(color)));
 	CUDA_CALL(cudaMalloc((void**)&accumulated_colors, pixel_count * sizeof(color)));
 	CUDA_CALL(cudaMalloc((void**)&rays, pixel_count * sizeof(ray)));
 	CUDA_CALL(cudaMalloc((void**)&energy_exist_pixels, pixel_count * sizeof(int)));
 	CUDA_CALL(cudaMalloc((void**)&scatterings, pixel_count * sizeof(scattering)));
-
+	
 	CUDA_CALL(cudaMemcpy(config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
