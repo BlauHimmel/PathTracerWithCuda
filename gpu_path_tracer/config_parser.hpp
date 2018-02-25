@@ -86,9 +86,16 @@ bool config_parser::load_config(const std::string& filename)
 	{
 		return false;
 	}
-
-	std::ifstream config_file(filename, std::ios::in);
-	config_file >> m_json_parser;
+	try
+	{
+		std::ifstream config_file(filename, std::ios::in);
+		config_file >> m_json_parser;
+	}
+	catch (nlohmann::detail::parse_error error)
+	{
+		std::cout << "[Error]" << error.what() << std::endl;
+		return false;
+	}
 
 	auto height = m_json_parser[TOKEN_CONFIG_HEIGHT];
 	auto width = m_json_parser[TOKEN_CONFIG_WIDTH];

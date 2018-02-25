@@ -11,6 +11,7 @@
 #include "material.hpp"
 #include "bvh.hpp"
 
+#include <exception>
 #include <fstream>
 
 #define TOKEN_OBJECT_SPHERE "Sphere"
@@ -162,8 +163,16 @@ inline bool scene_parser::load_scene(const std::string& filename)
 		return false;
 	}
 
-	std::ifstream scene_file(filename, std::ios::in);
-	scene_file >> m_json_parser;
+	try
+	{
+		std::ifstream scene_file(filename, std::ios::in);
+		scene_file >> m_json_parser;
+	}
+	catch (nlohmann::detail::parse_error error)
+	{
+		std::cout << "[ERROR]" << error.what() << std::endl;
+		return false;
+	}
 
 	std::vector<std::string> cubemap_pathes(6);
 
