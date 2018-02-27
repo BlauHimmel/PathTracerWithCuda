@@ -23,7 +23,50 @@ extern "C" void path_tracer_kernel(
 	int depth, 								//in
 	render_camera* render_camera_device,	//in
 	cube_map* sky_cube_map_device,			//in
-	configuration* config					//in
+	configuration* config,					//in
+	color* not_absorbed_colors_device,		//in 
+	color* accumulated_colors_device,		//in 
+	ray* rays_device,						//in 
+	int* energy_exist_pixels_device,		//in 
+	scattering* scatterings_device,			//in 
+	configuration* config_device			//in 
 );
+
+extern "C" void path_tracer_kernel_memory_allocate(
+	color** not_absorbed_colors_device,		//in out
+	color** accumulated_colors_device,		//in out
+	ray** rays_device,						//in out
+	int** energy_exist_pixels_device,		//in out
+	scattering** scatterings_device,		//in out
+	configuration* config,					//in
+	configuration** config_device,			//in out
+	int pixel_count							//in
+)
+{
+	CUDA_CALL(cudaMalloc((void**)not_absorbed_colors_device, pixel_count * sizeof(color)));
+	CUDA_CALL(cudaMalloc((void**)accumulated_colors_device, pixel_count * sizeof(color)));
+	CUDA_CALL(cudaMalloc((void**)rays_device, pixel_count * sizeof(ray)));
+	CUDA_CALL(cudaMalloc((void**)energy_exist_pixels_device, pixel_count * sizeof(int)));
+	CUDA_CALL(cudaMalloc((void**)scatterings_device, pixel_count * sizeof(scattering)));
+	CUDA_CALL(cudaMalloc((void**)config_device, sizeof(configuration)));
+	CUDA_CALL(cudaMemcpy(*config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
+}
+
+extern "C" void path_tracer_kernel_memory_free(
+	color* not_absorbed_colors_device,	//in out
+	color* accumulated_colors_device,	//in out
+	ray* rays_device,					//in out
+	int* energy_exist_pixels_device,	//in out
+	scattering* scatterings_device,		//in out
+	configuration* config_device		//in out
+)
+{
+	CUDA_CALL(cudaFree(not_absorbed_colors_device));
+	CUDA_CALL(cudaFree(accumulated_colors_device));
+	CUDA_CALL(cudaFree(rays_device));
+	CUDA_CALL(cudaFree(energy_exist_pixels_device));
+	CUDA_CALL(cudaFree(scatterings_device));
+	CUDA_CALL(cudaFree(config_device));
+}
 
 #endif // !__PATH_TRACER_KERNEL__

@@ -40,6 +40,13 @@ private:
 
 	bool m_is_initiated;
 
+	color* m_not_absorbed_colors_device;
+	color* m_accumulated_colors_device;
+	ray* m_rays_device;
+	int* m_energy_exist_pixels_device;
+	scattering* m_scatterings_device;
+	configuration* m_config_device;
+
 public:
 	path_tracer();
 	~path_tracer();
@@ -68,6 +75,14 @@ inline path_tracer::~path_tracer()
 	{
 		release_image(m_image);
 	}
+	path_tracer_kernel_memory_free(
+		m_not_absorbed_colors_device,
+		m_accumulated_colors_device,
+		m_rays_device,
+		m_energy_exist_pixels_device,
+		m_scatterings_device,
+		m_config_device
+	);
 }
 
 inline void path_tracer::init(render_camera* render_camera, config_parser* config)
@@ -77,6 +92,16 @@ inline void path_tracer::init(render_camera* render_camera, config_parser* confi
 	m_render_camera = render_camera;
 	m_image = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
 	m_buffer = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
+	path_tracer_kernel_memory_allocate(
+		&m_not_absorbed_colors_device,
+		&m_accumulated_colors_device,
+		&m_rays_device,
+		&m_energy_exist_pixels_device,
+		&m_scatterings_device,
+		m_config->get_config_ptr(),
+		&m_config_device,
+		m_buffer->pixel_count
+	);
 	init_scene_device_data();
 }
 
@@ -95,7 +120,13 @@ inline image* path_tracer::render()
 			m_image->pass_counter,
 			m_render_camera,
 			m_scene.get_cube_map_device_ptr(),
-			m_config->get_config_ptr()
+			m_config->get_config_ptr(),
+			m_not_absorbed_colors_device,
+			m_accumulated_colors_device,
+			m_rays_device,
+			m_energy_exist_pixels_device,
+			m_scatterings_device,
+			m_config_device
 		);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{

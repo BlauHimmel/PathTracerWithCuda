@@ -935,36 +935,27 @@ extern "C" void path_tracer_kernel(
 	int pass_counter, 					//in out
 	render_camera* render_cam_device,	//in
 	cube_map* sky_cube_map_device,		//in
-	configuration* config				//in
+	configuration* config,				//in
+	color* not_absorbed_colors_device,	//in 
+	color* accumulated_colors_device,	//in 
+	ray* rays_device,					//in 
+	int* energy_exist_pixels_device,	//in 
+	scattering* scatterings_device,		//in 
+	configuration* config_device		//in 
 )
 {
 	int threads_num_per_block = config->block_size;
 	int total_blocks_num_per_gird = (pixel_count + threads_num_per_block - 1) / threads_num_per_block;
 
-	color* not_absorbed_colors = nullptr;
-	color* accumulated_colors = nullptr;
-	ray* rays = nullptr;
-	int* energy_exist_pixels = nullptr;
 	int energy_exist_pixels_count = pixel_count;
 	int seed = pass_counter;
-	scattering* scatterings = nullptr;
-	configuration* config_device;
-	
-	CUDA_CALL(cudaMalloc((void**)&config_device, sizeof(configuration)));
-	CUDA_CALL(cudaMalloc((void**)&not_absorbed_colors, pixel_count * sizeof(color)));
-	CUDA_CALL(cudaMalloc((void**)&accumulated_colors, pixel_count * sizeof(color)));
-	CUDA_CALL(cudaMalloc((void**)&rays, pixel_count * sizeof(ray)));
-	CUDA_CALL(cudaMalloc((void**)&energy_exist_pixels, pixel_count * sizeof(int)));
-	CUDA_CALL(cudaMalloc((void**)&scatterings, pixel_count * sizeof(scattering)));
-	
-	CUDA_CALL(cudaMemcpy(config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
-		energy_exist_pixels, 
-		not_absorbed_colors, 
-		accumulated_colors,
-		scatterings,
+		energy_exist_pixels_device, 
+		not_absorbed_colors_device,
+		accumulated_colors_device,
+		scatterings_device,
 		config_device
 		);
 
@@ -977,7 +968,7 @@ extern "C" void path_tracer_kernel(
 		render_cam_device->aperture_radius,
 		render_cam_device->focal_distance,
 		pixel_count, 
-		rays,
+		rays_device,
 		seed,
 		config_device
 		);
@@ -1000,31 +991,25 @@ extern "C" void path_tracer_kernel(
 			pixel_count, 
 			depth,
 			energy_exist_pixels_count,
-			energy_exist_pixels, 
-			rays, 
-			scatterings,
-			not_absorbed_colors, 
-			accumulated_colors, 
+			energy_exist_pixels_device,
+			rays_device,
+			scatterings_device,
+			not_absorbed_colors_device,
+			accumulated_colors_device,
 			sky_cube_map_device,
 			seed,
 			config_device
 			);
 		
-		thrust::device_ptr<int> energy_exist_pixels_start_on_device = thrust::device_pointer_cast(energy_exist_pixels);
+		thrust::device_ptr<int> energy_exist_pixels_start_on_device = thrust::device_pointer_cast(energy_exist_pixels_device);
 		thrust::device_ptr<int> energy_exist_pixels_end_on_device = thrust::remove_if(
 			energy_exist_pixels_start_on_device,
 			energy_exist_pixels_start_on_device + energy_exist_pixels_count,
 			is_negative_predicate()
 		);
 		
-		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels);
+		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels_device);
 	}
 
-	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors, pixel_count * sizeof(color), cudaMemcpyDeviceToHost));
-
-	CUDA_CALL(cudaFree(not_absorbed_colors));
-	CUDA_CALL(cudaFree(accumulated_colors));
-	CUDA_CALL(cudaFree(rays));
-	CUDA_CALL(cudaFree(energy_exist_pixels));
-	CUDA_CALL(cudaFree(scatterings));
+	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors_device, pixel_count * sizeof(color), cudaMemcpyDeviceToHost));
 }
