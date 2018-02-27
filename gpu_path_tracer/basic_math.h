@@ -105,10 +105,10 @@ namespace math
 	{
 		float gamma = 2.2f;
 		float inverse_gamma = 1.0f / gamma;
-		color corrected_color;
-		corrected_color.x = std::powf(primitive_color.x, inverse_gamma);
-		corrected_color.y = std::powf(primitive_color.y, inverse_gamma);
-		corrected_color.z = std::powf(primitive_color.z, inverse_gamma);
+		color corrected_color; 
+		corrected_color.x = std::expf(inverse_gamma * std::logf(primitive_color.x));
+		corrected_color.y = std::expf(inverse_gamma * std::logf(primitive_color.y));
+		corrected_color.z = std::expf(inverse_gamma * std::logf(primitive_color.z));
 		return corrected_color;
 	}
 
