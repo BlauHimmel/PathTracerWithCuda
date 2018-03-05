@@ -950,6 +950,12 @@ extern "C" void path_tracer_kernel(
 	int energy_exist_pixels_count = pixel_count;
 	int seed = pass_counter;
 
+	if (config->is_modified)
+	{
+		CUDA_CALL(cudaMemcpy(config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
+		config->is_modified = false;
+	}
+
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
 		energy_exist_pixels_device, 

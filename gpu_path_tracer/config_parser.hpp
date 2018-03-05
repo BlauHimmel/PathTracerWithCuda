@@ -182,6 +182,7 @@ inline configuration* config_parser::get_config_ptr()
 		m_config->use_sky_box = m_use_sky_box;
 		m_config->use_bilinear = m_use_bilinear;
 		m_config->use_ground = m_use_ground;
+		m_config->is_modified = false;
 	}
 
 	return m_config;
