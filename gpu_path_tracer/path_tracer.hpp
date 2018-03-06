@@ -295,18 +295,20 @@ inline void path_tracer::render_ui()
 				{
 					is_triangle_mesh_modified = true;
 
-					mat->diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
-					mat->specular_color = make_float3(specular[0], specular[1], specular[2]);
-					mat->emission_color = make_float3(emission[0], emission[1], emission[2]);
-					mat->is_transparent = is_transparent;
-					mat->roughness = roughness;
+					material* new_mat = new material();
 
-					mat->medium.refraction_index = refraction_index;
-					mat->medium.extinction_coefficient = extinction_coefficient;
-					mat->medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
-					mat->medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+					new_mat->diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
+					new_mat->specular_color = make_float3(specular[0], specular[1], specular[2]);
+					new_mat->emission_color = make_float3(emission[0], emission[1], emission[2]);
+					new_mat->is_transparent = is_transparent;
+					new_mat->roughness = roughness;
 
-					m_scene.set_mesh_material(i, mat);
+					new_mat->medium.refraction_index = refraction_index;
+					new_mat->medium.extinction_coefficient = extinction_coefficient;
+					new_mat->medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
+					new_mat->medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+
+					m_scene.set_mesh_material(i, new_mat);
 				}
 
 				ImGui::TreePop();

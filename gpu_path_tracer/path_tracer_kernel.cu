@@ -867,7 +867,7 @@ __global__ void trace_ray_kernel(
 
 			float rand1 = uniform_distribution(random_engine);
 			float rand2 = uniform_distribution(random_engine);
-			
+
 			float remap_roughness = powf(min_mat.roughness, 2.0f) / 2.0f;
 			float3 micro_normal = sample_on_hemisphere_ggx_weight(min_normal, remap_roughness, rand1, rand2);
 			float self_shadowing = compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, tracing_ray.direction);
