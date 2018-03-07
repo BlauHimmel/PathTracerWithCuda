@@ -16,8 +16,6 @@ struct configuration
 	bool use_sky_box;
 	bool use_ground;
 	bool use_bilinear;
-
-	bool is_modified = false;
 };
 
 #endif // !__CONFIGURATION__

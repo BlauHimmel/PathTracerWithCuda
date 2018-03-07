@@ -931,11 +931,10 @@ extern "C" void path_tracer_kernel(
 	int sphere_num,						//in
 	sphere* spheres_device, 			//in
 	int pixel_count, 					//in
-	color* pixels,						//in out
+	color** pixels,						//in out
 	int pass_counter, 					//in out
 	render_camera* render_cam_device,	//in
 	cube_map* sky_cube_map_device,		//in
-	configuration* config,				//in
 	color* not_absorbed_colors_device,	//in 
 	color* accumulated_colors_device,	//in 
 	ray* rays_device,					//in 
@@ -944,17 +943,14 @@ extern "C" void path_tracer_kernel(
 	configuration* config_device		//in 
 )
 {
-	int threads_num_per_block = config->block_size;
+	configuration config = *config_device;
+
+	int threads_num_per_block = config.block_size;
 	int total_blocks_num_per_gird = (pixel_count + threads_num_per_block - 1) / threads_num_per_block;
 
 	int energy_exist_pixels_count = pixel_count;
 	int seed = pass_counter;
-
-	if (config->is_modified)
-	{
-		CUDA_CALL(cudaMemcpy(config_device, config, sizeof(configuration), cudaMemcpyHostToDevice));
-		config->is_modified = false;
-	}
+	int max_depth = config.max_tracer_depth;
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
@@ -979,7 +975,7 @@ extern "C" void path_tracer_kernel(
 		config_device
 		);
 
-	for (int depth = 0; depth < config->max_tracer_depth; depth++)
+	for (int depth = 0; depth < max_depth; depth++)
 	{
 		if (energy_exist_pixels_count == 0)
 		{
@@ -1017,5 +1013,7 @@ extern "C" void path_tracer_kernel(
 		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels_device);
 	}
 
-	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors_device, pixel_count * sizeof(color), cudaMemcpyDeviceToHost));
+	cudaDeviceSynchronize();
+
+	*pixels = accumulated_colors_device;
 }

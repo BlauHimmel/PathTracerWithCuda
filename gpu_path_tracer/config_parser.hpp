@@ -54,7 +54,7 @@ private:
 	bool m_use_ground = true;
 	bool m_use_bilinear = false;
 
-	configuration* m_config = nullptr;
+	configuration* m_config_device = nullptr;
 
 	bool m_is_loaded = false;
 
@@ -66,7 +66,10 @@ public:
 	bool load_config(const std::string& filename);
 	void unload_config();
 
-	configuration* get_config_ptr();
+	configuration* get_config_device_ptr();
+
+	void create_config_device_data();
+	void release_config_device_data();
 
 private:
 	float parse_float(const std::string& text);
@@ -77,7 +80,6 @@ private:
 inline config_parser::~config_parser()
 {
 	unload_config();
-	SAFE_DELETE(m_config);
 }
 
 bool config_parser::load_config(const std::string& filename)
@@ -166,26 +168,34 @@ inline void config_parser::unload_config()
 	m_use_ground = false;
 }
 
-inline configuration* config_parser::get_config_ptr()
+inline configuration* config_parser::get_config_device_ptr()
 {
-	if (m_config == nullptr)
-	{
-		m_config = new configuration();
-		m_config->width = m_width;
-		m_config->height = m_height;
-		m_config->use_fullscreen = m_use_fullscreen;
-		m_config->block_size = m_block_size;
-		m_config->max_tracer_depth = m_max_tracer_depth;
-		m_config->vector_bias_length = m_vector_bias_length;
-		m_config->energy_exist_threshold = m_energy_exist_threshold;
-		m_config->sss_threshold = m_sss_threshold;
-		m_config->use_sky_box = m_use_sky_box;
-		m_config->use_bilinear = m_use_bilinear;
-		m_config->use_ground = m_use_ground;
-		m_config->is_modified = false;
-	}
+	return m_config_device;
+}
 
-	return m_config;
+inline void config_parser::create_config_device_data()
+{
+	CUDA_CALL(cudaMallocManaged((void**)&m_config_device, sizeof(configuration)));
+	m_config_device->width = m_width;
+	m_config_device->height = m_height;
+	m_config_device->use_fullscreen = m_use_fullscreen;
+	m_config_device->block_size = m_block_size;
+	m_config_device->max_tracer_depth = m_max_tracer_depth;
+	m_config_device->vector_bias_length = m_vector_bias_length;
+	m_config_device->energy_exist_threshold = m_energy_exist_threshold;
+	m_config_device->sss_threshold = m_sss_threshold;
+	m_config_device->use_sky_box = m_use_sky_box;
+	m_config_device->use_bilinear = m_use_bilinear;
+	m_config_device->use_ground = m_use_ground;
+}
+
+inline void config_parser::release_config_device_data()
+{
+	if (m_config_device != nullptr)
+	{
+		CUDA_CALL(cudaFree(m_config_device));
+		m_config_device = nullptr;
+	}
 }
 
 inline float config_parser::parse_float(const std::string& text)

@@ -33,22 +33,20 @@ class path_tracer
 private:
 	scene_parser m_scene;
 
-	config_parser* m_config;
-	render_camera* m_render_camera;
-	image* m_image;
-	image* m_buffer;
+	config_parser* m_config = nullptr;
+	render_camera* m_render_camera = nullptr;
+	image* m_image = nullptr;
+	image* m_buffer = nullptr;
 
-	bool m_is_initiated;
+	bool m_is_initiated = false;
 
-	color* m_not_absorbed_colors_device;
-	color* m_accumulated_colors_device;
-	ray* m_rays_device;
-	int* m_energy_exist_pixels_device;
-	scattering* m_scatterings_device;
-	configuration* m_config_device;
+	color* m_not_absorbed_colors_device = nullptr;
+	color* m_accumulated_colors_device = nullptr;
+	ray* m_rays_device = nullptr;
+	int* m_energy_exist_pixels_device = nullptr;
+	scattering* m_scatterings_device = nullptr;
 
 public:
-	path_tracer();
 	~path_tracer();
 
 	void init(render_camera* render_camera, config_parser* config);
@@ -61,14 +59,6 @@ private:
 	void init_scene_device_data();
 };
 
-path_tracer::path_tracer()
-{
-	m_is_initiated = false;
-	m_image = nullptr;
-	m_buffer = nullptr;
-	m_render_camera = nullptr;
-}
-
 inline path_tracer::~path_tracer()
 {
 	if (m_is_initiated)
@@ -80,8 +70,7 @@ inline path_tracer::~path_tracer()
 		m_accumulated_colors_device,
 		m_rays_device,
 		m_energy_exist_pixels_device,
-		m_scatterings_device,
-		m_config_device
+		m_scatterings_device
 	);
 }
 
@@ -98,8 +87,6 @@ inline void path_tracer::init(render_camera* render_camera, config_parser* confi
 		&m_rays_device,
 		&m_energy_exist_pixels_device,
 		&m_scatterings_device,
-		m_config->get_config_ptr(),
-		&m_config_device,
 		m_buffer->pixel_count
 	);
 	init_scene_device_data();
@@ -116,17 +103,17 @@ inline image* path_tracer::render()
 			m_scene.get_sphere_num(),
 			m_scene.get_sphere_device_ptr(),
 			m_buffer->pixel_count,
-			m_buffer->pixels,
+			&m_buffer->pixels,
 			m_image->pass_counter,
 			m_render_camera,
 			m_scene.get_cube_map_device_ptr(),
-			m_config->get_config_ptr(),
 			m_not_absorbed_colors_device,
 			m_accumulated_colors_device,
 			m_rays_device,
 			m_energy_exist_pixels_device,
 			m_scatterings_device,
-			m_config_device
+			m_config->get_config_device_ptr()
+
 		);
 		for (auto i = 0; i < m_image->pixel_count; i++)
 		{
