@@ -1013,7 +1013,7 @@ extern "C" void path_tracer_kernel(
 		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels_device);
 	}
 
-	cudaDeviceSynchronize();
+	CUDA_CALL(cudaDeviceSynchronize());
 
 	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors_device, pixel_count * sizeof(color), cudaMemcpyDefault));
 }

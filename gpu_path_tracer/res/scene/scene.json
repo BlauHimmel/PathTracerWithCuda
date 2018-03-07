@@ -23,15 +23,15 @@
 	"Mesh" :
 	[
 		{
-			"Material" : "diamond",
-			"Path" : "res\\obj\\diamond.obj",
-			"Position" : "3.0 0.0 0.0"
+			"Material" : "green_glass",
+			"Path" : "res\\obj\\dragon.obj",
+			"Position" : "0.0 0.0 0.0"
 		},
 
 		{
-			"Material" : "red",
+			"Material" : "blue",
 			"Path" : "res\\obj\\monkey.obj",
-			"Position" : "6.0 0.0 0.0"
+			"Position" : "3.0 0.0 0.0"
 		}
 	]
 }

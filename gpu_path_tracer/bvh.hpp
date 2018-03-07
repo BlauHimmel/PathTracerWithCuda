@@ -13,7 +13,7 @@
 #include "triangle_mesh.hpp"
 #include "cuda_math.hpp"
 
-#define BVH_LEAF_NODE_TRIANGLE_NUM 6
+#define BVH_LEAF_NODE_TRIANGLE_NUM 12
 #define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12
 
 struct bounding_box
@@ -212,7 +212,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 
 				float cost = box_left.get_surface_area() * triangle_num_left + box_right.get_surface_area() * triangle_num_right;
 
-				if (cost < min_cost)
+				if (cost < min_cost && cost > 0.0f)
 				{
 					min_cost = cost;
 					split_axis = axis;
@@ -238,7 +238,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 			if (split_triangle_num_left <= BVH_LEAF_NODE_TRIANGLE_NUM)
 			{
 				left->is_leaf = true;
-				left->triangle_indices.resize(6, -1);
+				left->triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
 			}
 			else
 			{
@@ -259,7 +259,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 			if (split_triangle_num_right <= BVH_LEAF_NODE_TRIANGLE_NUM)
 			{
 				right->is_leaf = true;
-				right->triangle_indices.resize(6, -1);
+				right->triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
 			}
 			else
 			{
@@ -363,7 +363,7 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 
 		if (current_node->is_leaf)
 		{
-			node_device.triangle_indices = leaf_node_triangle_indices + leaf_node_index * 6;
+			node_device.triangle_indices = leaf_node_triangle_indices + leaf_node_index * BVH_LEAF_NODE_TRIANGLE_NUM;
 			leaf_node_index++;
 		}
 
