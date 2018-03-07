@@ -127,20 +127,18 @@ public:
 	triangle* get_triangles_device_ptr();
 	bvh_node_device* get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
+
 	int get_mesh_num() const;
 	int get_triangles_num() const;
 	int get_mesh_triangle_num(int index) const;
 	int get_mesh_vertices_num(int index) const;
 	int get_sphere_num() const;
 	float3 get_mesh_position(int index) const;
-	material* get_mesh_material(int index) const;
+	material get_mesh_material(int index) const;
 	sphere get_sphere(int index) const;
 
-	void set_sphere(int index, const sphere& sphere);
-	void set_mesh_material(int index, material* material);
-
-	void update_sphere_device_data();
-	void update_triangles_device_data();
+	void set_sphere_device(int index, const sphere& sphere);
+	void set_mesh_material_device(int index, const material& material);
 
 private:
 	void init_default_material(std::map<std::string, material>& materials);
@@ -386,7 +384,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	//Mesh
 	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		error = !m_triangle_mesh.load_obj(meshes_path[i]);
+		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], copy_material(materials[meshes_mat[i]]));
 
 		if (error)
 		{
@@ -394,9 +392,6 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			m_triangle_mesh.unload_obj();
 			return false;
 		}
-		
-		m_triangle_mesh.set_material(i, copy_default_material(materials[meshes_mat[i]]));
-		m_triangle_mesh.set_position(i, meshes_position[i]);
 	}
 
 	//Sphere
@@ -443,8 +438,9 @@ inline void scene_parser::create_scene_data_device()
 
 	printf("[Info]Copy sphere data to gpu...\n");
 	TIME_COUNT_CALL_START();
-	CUDA_CALL(cudaMalloc((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
-	CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
+	CUDA_CALL(cudaMallocManaged((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
+	CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyDefault));
+
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -459,7 +455,7 @@ inline void scene_parser::create_scene_data_device()
 		bvh_node* root;
 		printf("[Info]Constructing bvh on cpu...\n");
 		TIME_COUNT_CALL_START();
-		root = build_bvh(m_triangle_mesh.get_triangles());
+		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_total_triangle_num());
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -511,7 +507,7 @@ inline int scene_parser::get_mesh_num() const
 
 inline int scene_parser::get_triangles_num() const
 {
-	return static_cast<int>(m_triangle_mesh.get_triangles().size());
+	return m_triangle_mesh.get_total_triangle_num();
 }
 
 inline int scene_parser::get_mesh_triangle_num(int index) const
@@ -534,42 +530,24 @@ inline float3 scene_parser::get_mesh_position(int index) const
 	return m_triangle_mesh.get_position(index);
 }
 
-inline material* scene_parser::get_mesh_material(int index) const
+inline material scene_parser::get_mesh_material(int index) const
 {
 	return m_triangle_mesh.get_material(index);
 }
 
 inline sphere scene_parser::get_sphere(int index) const
 {
-	return m_spheres[index];
+	return m_spheres_device[index];
 }
 
-inline void scene_parser::set_sphere(int index, const sphere& sphere)
+inline void scene_parser::set_sphere_device(int index, const sphere& sphere)
 {
-	m_spheres[index] = sphere;
+	m_spheres_device[index] = sphere;
 }
 
-inline void scene_parser::set_mesh_material(int index, material* material)
+inline void scene_parser::set_mesh_material_device(int index, const material& material)
 {
-	m_triangle_mesh.set_material(index, material);
-}
-
-inline void scene_parser::update_sphere_device_data()
-{
-	if (m_spheres_device == nullptr)
-	{
-		return;
-	}
-
-	CUDA_CALL(cudaFree(m_spheres_device));
-	CUDA_CALL(cudaMalloc((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
-	CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyHostToDevice));
-}
-
-inline void scene_parser::update_triangles_device_data()
-{
-	m_triangle_mesh.release_mesh_device_data();
-	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
+	m_triangle_mesh.set_material_device(index, material);
 }
 
 void scene_parser::init_default_material(std::map<std::string, material>& materials)

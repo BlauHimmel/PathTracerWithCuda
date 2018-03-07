@@ -65,7 +65,7 @@ inline material* new_default_material()
 	return mat;
 }
 
-inline material* copy_default_material(const material& mat)
+inline material* copy_material(const material& mat)
 {
 	material* dst = new material();
 	*dst = mat;

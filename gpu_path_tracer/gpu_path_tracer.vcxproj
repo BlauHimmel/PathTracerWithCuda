@@ -224,7 +224,6 @@
     <ClInclude Include="path_tracer.hpp" />
     <ClInclude Include="path_tracer_kernel.h" />
     <ClInclude Include="ray.hpp" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="scene_parser.hpp" />
     <ClInclude Include="sphere.hpp" />
     <ClInclude Include="triangle_mesh.hpp" />

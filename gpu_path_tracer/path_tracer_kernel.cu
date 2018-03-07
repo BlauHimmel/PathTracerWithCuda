@@ -931,7 +931,7 @@ extern "C" void path_tracer_kernel(
 	int sphere_num,						//in
 	sphere* spheres_device, 			//in
 	int pixel_count, 					//in
-	color** pixels,						//in out
+	color* pixels,						//in out
 	int pass_counter, 					//in out
 	render_camera* render_cam_device,	//in
 	cube_map* sky_cube_map_device,		//in
@@ -1015,5 +1015,5 @@ extern "C" void path_tracer_kernel(
 
 	cudaDeviceSynchronize();
 
-	*pixels = accumulated_colors_device;
+	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors_device, pixel_count * sizeof(color), cudaMemcpyDefault));
 }

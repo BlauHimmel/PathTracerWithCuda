@@ -103,7 +103,7 @@ inline image* path_tracer::render()
 			m_scene.get_sphere_num(),
 			m_scene.get_sphere_device_ptr(),
 			m_buffer->pixel_count,
-			&m_buffer->pixels,
+			m_buffer->pixels,
 			m_image->pass_counter,
 			m_render_camera,
 			m_scene.get_cube_map_device_ptr(),
@@ -214,7 +214,7 @@ inline void path_tracer::render_ui()
 
 					sphere.mat = mat;
 
-					m_scene.set_sphere(i, sphere);
+					m_scene.set_sphere_device(i, sphere);
 				}
 
 				ImGui::TreePop();
@@ -249,13 +249,13 @@ inline void path_tracer::render_ui()
 
 				ImGui::Separator();
 
-				material* mat = m_scene.get_mesh_material(i);
+				material mat = m_scene.get_mesh_material(i);
 
-				float diffuse[3] = { mat->diffuse_color.x, mat->diffuse_color.y, mat->diffuse_color.z };
-				float specular[3] = { mat->specular_color.x, mat->specular_color.y, mat->specular_color.z };
-				float emission[3] = { mat->emission_color.x, mat->emission_color.y, mat->emission_color.z };
-				bool is_transparent = mat->is_transparent;
-				float roughness = mat->roughness;
+				float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
+				float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
+				float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
+				bool is_transparent = mat.is_transparent;
+				float roughness = mat.roughness;
 
 				ImGui::Text("Material:");
 				is_modified = is_modified || ImGui::ColorEdit3("Diffuse", diffuse);
@@ -264,14 +264,14 @@ inline void path_tracer::render_ui()
 				is_modified = is_modified || ImGui::Checkbox("Transparent", &is_transparent);
 				is_modified = is_modified || ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
 
-				float refraction_index = mat->medium.refraction_index;
-				float extinction_coefficient = mat->medium.extinction_coefficient;
+				float refraction_index = mat.medium.refraction_index;
+				float extinction_coefficient = mat.medium.extinction_coefficient;
 
 				is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
 				is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
 
-				float absorption_coefficient[] = { mat->medium.scattering.absorption_coefficient.x, mat->medium.scattering.absorption_coefficient.y, mat->medium.scattering.absorption_coefficient.z };
-				float reduced_scattering_coefficient = mat->medium.scattering.reduced_scattering_coefficient.x;
+				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
+				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
 
 				is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
 				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient, 0.001f);
@@ -282,20 +282,20 @@ inline void path_tracer::render_ui()
 				{
 					is_triangle_mesh_modified = true;
 
-					material* new_mat = new material();
+					material new_mat = get_default_material();
 
-					new_mat->diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
-					new_mat->specular_color = make_float3(specular[0], specular[1], specular[2]);
-					new_mat->emission_color = make_float3(emission[0], emission[1], emission[2]);
-					new_mat->is_transparent = is_transparent;
-					new_mat->roughness = roughness;
+					new_mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
+					new_mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
+					new_mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
+					new_mat.is_transparent = is_transparent;
+					new_mat.roughness = roughness;
 
-					new_mat->medium.refraction_index = refraction_index;
-					new_mat->medium.extinction_coefficient = extinction_coefficient;
-					new_mat->medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
-					new_mat->medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+					new_mat.medium.refraction_index = refraction_index;
+					new_mat.medium.extinction_coefficient = extinction_coefficient;
+					new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
+					new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
 
-					m_scene.set_mesh_material(i, new_mat);
+					m_scene.set_mesh_material_device(i, new_mat);
 				}
 
 				ImGui::TreePop();
@@ -305,15 +305,8 @@ inline void path_tracer::render_ui()
 		ImGui::TreePop();
 	}
 
-	if (is_sphere_modified)
+	if (is_sphere_modified || is_triangle_mesh_modified)
 	{
-		m_scene.update_sphere_device_data();
-		clear();
-	}
-
-	if (is_triangle_mesh_modified)
-	{
-		m_scene.update_triangles_device_data();
 		clear();
 	}
 }

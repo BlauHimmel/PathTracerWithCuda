@@ -42,6 +42,7 @@
 class config_parser
 {
 private:
+	//============================================
 	int m_width = 1024;
 	int m_height = 768;
 	bool m_use_fullscreen = false;
@@ -53,6 +54,7 @@ private:
 	bool m_use_sky_box = true;
 	bool m_use_ground = true;
 	bool m_use_bilinear = false;
+	//============================================
 
 	configuration* m_config_device = nullptr;
 

@@ -276,10 +276,8 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 	SAFE_DELETE_ARRAY(is_box_init);
 }
 
-inline bvh_node* build_bvh(std::vector<triangle> triangles)
+inline bvh_node* build_bvh(triangle* triangles, int triangle_num)
 {
-	int triangle_num = static_cast<int>(triangles.size());
-
 	if (triangle_num == 0)
 	{
 		return nullptr;

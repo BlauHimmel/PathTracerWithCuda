@@ -26,13 +26,15 @@ struct cube_map
 class cube_map_loader
 {
 private:
+	//============================================
 	std::vector<uchar> m_x_positive_map;
 	std::vector<uchar> m_x_negative_map;
 	std::vector<uchar> m_y_positive_map;
 	std::vector<uchar> m_y_negative_map;
 	std::vector<uchar> m_z_positive_map;
 	std::vector<uchar> m_z_negative_map;
-	
+	//============================================
+
 	cube_map* m_cube_map_device = nullptr;
 	
 	bool m_is_loaded = false;
