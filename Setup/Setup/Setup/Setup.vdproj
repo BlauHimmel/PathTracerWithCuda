@@ -45,6 +45,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_32CE64CD1689457F8C04FA8C9595D5BC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_35F1F62768CF4CA291B00B56CFCDEA02"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -184,6 +190,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9620F15089E746DD9265B6B6ABA0063E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9871FADF0C624CC88DB9057F1DF975A1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -481,6 +493,26 @@
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_32CE64CD1689457F8C04FA8C9595D5BC"
+            {
+            "SourcePath" = "8:..\\DLL\\cudart64_91.dll"
+            "TargetName" = "8:cudart64_91.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_13553983B1034CF2B24B971F21981836"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -961,6 +993,26 @@
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9871FADF0C624CC88DB9057F1DF975A1"
+            {
+            "SourcePath" = "8:..\\DLL\\glfw3.dll"
+            "TargetName" = "8:glfw3.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_13553983B1034CF2B24B971F21981836"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1595,7 +1647,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Setup"
         "ProductCode" = "8:{30817370-A4F1-41B1-B429-07657EF02B1D}"
-        "PackageCode" = "8:{245971A5-6890-4552-BCE0-E4D0CB700A35}"
+        "PackageCode" = "8:{6242D919-4393-430D-9E4C-B2A21585C8AC}"
         "UpgradeCode" = "8:{D15897F3-575B-4E40-AEE5-251F07FE013F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
