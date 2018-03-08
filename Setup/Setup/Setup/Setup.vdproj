@@ -27,6 +27,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1411680E61E945659E97B59AE3441940"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1BECBAFDF1214634BB1277AEAA2FE055"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_24792DB5BCF64596B286676814745B96"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,13 +63,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4540B476500B4BC6A31AC6BB2875F802"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4A41C361A8744256BB5C9F673A21C191"
+        "MsmKey" = "8:_4E8C3B144E614EC381EC1BFD694BA238"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -69,7 +75,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5A09476778DC4E778CD95B7C486CC892"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5A27882F62DA4BDFB1B89D7C957AC5FF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_61D7414A36124EA48BA203A76A05E92A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -82,12 +100,6 @@
         "Entry"
         {
         "MsmKey" = "8:_664C33F3FB60484A96DE32A5D979D9FD"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_675D4B822A514BF08A591D3FFBC4ED1F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -129,12 +141,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7AB9BF585A4642299F7196CDBDDB9544"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_7B05005426C84F0E8C57D1532B00EA29"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -147,13 +153,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_80345597439740B79F4C766694B4B593"
+        "MsmKey" = "8:_8174604755454E6A97237E7BEAAB16D5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_83F3E1ABCD2842E483F91A66647C036F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_842F29C552524D2F9795DECEBB4E1AB1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -183,13 +195,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9C70E5F11EC34BAB9020BF55AD020A0E"
+        "MsmKey" = "8:_A1F3F274E10645E796792FE25E5D97C5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A1F3F274E10645E796792FE25E5D97C5"
+        "MsmKey" = "8:_A5CD4AEFAF0241978B123DC0DCE82E01"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5D06ECBA54845D79011108A74289A13"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -201,25 +219,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AE6E824AECF94BC98973A7DAE5EBAB43"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AEA763CF43E246A6AAD05EE69707540F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B1C4DF13058A4022989FB36A2DE5F399"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B3379A6450234C938E5BDDB557E4A4EE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -231,7 +231,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BB234ECF65814D81A5D9A4B2F5772901"
+        "MsmKey" = "8:_B5829DC829284C65B2979DF1F9F3BBEF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -243,13 +243,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C3A200888B15499390B84B1D2BC370E5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C769894745BC41DE9F61EA59D30DD3A8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D0BA3E7F38914E6D8D9E251903651181"
+        "MsmKey" = "8:_CC940B27B02541B7BF74DAFC9C4D3C44"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -261,7 +267,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D7C953547028404783D719872C1E5EE3"
+        "MsmKey" = "8:_D49830A311664B13B93E45B85B38FE74"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -273,43 +279,37 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DB6DAC49521A46C0B99FB2CA9B85454C"
+        "MsmKey" = "8:_DA98395C433C457FBB3078E749274F0D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DFCF10B4D81746C6A36BBD7676028230"
+        "MsmKey" = "8:_DC2C6001709E4FB2A73795366E0B3B22"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E08BC18110534969992F70689A5FF841"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E32EF2DE97F2404FA9F841CCD5072FF8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E518AFA2A3DE4ED2A83AD2D44183B96B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_E79F12E6DC1F42A5A8C52BDEE6BC5948"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F314C373C5D941E8B4F7DA5DBADD676F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F79AE31A9BC54E838812AA8E88B769D2"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FB1E40F3C5704E32994D24ED82DE068F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FC7C7CC9F09C46588FB3D817EDF703EF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -338,6 +338,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -389,7 +397,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0059332C077F4149A4895E39AFEEB15E"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\ypos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\ypos.bmp"
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -409,7 +417,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00B559BDB9DB4EC28A90258DC758EEB4"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\zpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\zpos.bmp"
             "TargetName" = "8:zpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -427,9 +435,49 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1411680E61E945659E97B59AE3441940"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\armadillo.obj"
+            "TargetName" = "8:armadillo.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1BECBAFDF1214634BB1277AEAA2FE055"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\human.obj"
+            "TargetName" = "8:human.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_24792DB5BCF64596B286676814745B96"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\xpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\xpos.bmp"
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -449,7 +497,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_35F1F62768CF4CA291B00B56CFCDEA02"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\zneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -469,7 +517,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3AC6F7D42624443B83FFA3ACD1F6E0A0"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\xpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\xpos.bmp"
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -489,7 +537,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_42DE55FA513047C69CCF60068B0D733C"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\ypos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\ypos.bmp"
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
@@ -507,10 +555,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4540B476500B4BC6A31AC6BB2875F802"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E8C3B144E614EC381EC1BFD694BA238"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\lucy.obj"
-            "TargetName" = "8:lucy.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\buddaha.15k.obj"
+            "TargetName" = "8:buddaha.15k.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -527,29 +575,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4A41C361A8744256BB5C9F673A21C191"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\gpu_path_tracer.exe"
-            "TargetName" = "8:CUDA Path Tracer.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_13553983B1034CF2B24B971F21981836"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_521BA6894D2B47D29C19E67FCB1DF52F"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\yneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\yneg.bmp"
             "TargetName" = "8:yneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -567,9 +595,29 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A09476778DC4E778CD95B7C486CC892"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cow.obj"
+            "TargetName" = "8:cow.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A27882F62DA4BDFB1B89D7C957AC5FF"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\zneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -587,9 +635,29 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_61D7414A36124EA48BA203A76A05E92A"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\Buddha.obj"
+            "TargetName" = "8:Buddha.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_63935CF3C31943B9B2F1B0D93E92F60E"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\yneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\yneg.bmp"
             "TargetName" = "8:yneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -609,7 +677,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_664C33F3FB60484A96DE32A5D979D9FD"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\xneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -627,29 +695,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_675D4B822A514BF08A591D3FFBC4ED1F"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\diamond.obj"
-            "TargetName" = "8:diamond.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_68C5FAAC0FF5487382DFC0274238B63A"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\xpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\xpos.bmp"
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -669,7 +717,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A4A39A16A9B42AB94825EBF277733C5"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\yneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\yneg.bmp"
             "TargetName" = "8:yneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
@@ -689,7 +737,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C3A5D86189848199525F77EF12BF28F"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\xneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
@@ -709,7 +757,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E0CB3BDF2294928BF0C06581286FC75"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\ypos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\ypos.bmp"
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -729,7 +777,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_73C0D7389CAE49D49D93BEA9CB0C2580"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\ypos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\ypos.bmp"
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -749,7 +797,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76391E27A7D64A99A82C56FB27FC7DB6"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\yneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\yneg.bmp"
             "TargetName" = "8:yneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -767,29 +815,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7AB9BF585A4642299F7196CDBDDB9544"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\human.obj"
-            "TargetName" = "8:human.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B05005426C84F0E8C57D1532B00EA29"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\xneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -809,7 +837,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EDA1C2B08394D34BD90A5BD28EC03CE"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\zneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -827,12 +855,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_80345597439740B79F4C766694B4B593"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8174604755454E6A97237E7BEAAB16D5"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\buddaha.15k.obj"
-            "TargetName" = "8:buddaha.15k.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\configuration\\config.json"
+            "TargetName" = "8:config.json"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_A96969AB5AB44F5A8061F00DC59D918F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -849,7 +877,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_83F3E1ABCD2842E483F91A66647C036F"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\xneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -867,9 +895,29 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_842F29C552524D2F9795DECEBB4E1AB1"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\lucy.obj"
+            "TargetName" = "8:lucy.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_93C341AD10264C138FD397E5C60072D6"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\zneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -889,7 +937,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9575FE25807143F68943127F62221EFF"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\zpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\zpos.bmp"
             "TargetName" = "8:zpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -909,7 +957,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9620F15089E746DD9265B6B6ABA0063E"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\ypos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\ypos.bmp"
             "TargetName" = "8:ypos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_838B4548702242E5815F2BDF381577DB"
@@ -929,7 +977,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9AE3F9E56B834A7C9D6E545628A9F3E8"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\xneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -947,29 +995,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C70E5F11EC34BAB9020BF55AD020A0E"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\bunny.fine.obj"
-            "TargetName" = "8:bunny.fine.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1F3F274E10645E796792FE25E5D97C5"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\xpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\xpos.bmp"
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
@@ -987,9 +1015,49 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A5CD4AEFAF0241978B123DC0DCE82E01"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dinosaur.obj"
+            "TargetName" = "8:dinosaur.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A5D06ECBA54845D79011108A74289A13"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\scene.json"
+            "TargetName" = "8:scene.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A97A3C771F1D4378A56867E96D7CC4EB"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\xpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\xpos.bmp"
             "TargetName" = "8:xpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -1007,29 +1075,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AE6E824AECF94BC98973A7DAE5EBAB43"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\teapot.obj"
-            "TargetName" = "8:teapot.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AEA763CF43E246A6AAD05EE69707540F"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\lobby\\yneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\lobby\\yneg.bmp"
             "TargetName" = "8:yneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
@@ -1047,49 +1095,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B1C4DF13058A4022989FB36A2DE5F399"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\skeleton_hand.obj"
-            "TargetName" = "8:skeleton_hand.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3379A6450234C938E5BDDB557E4A4EE"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\configuration\\config.json"
-            "TargetName" = "8:config.json"
-            "Tag" = "8:"
-            "Folder" = "8:_A96969AB5AB44F5A8061F00DC59D918F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B473AE0DE03A4AAF9C230133FAF52625"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\lake\\zpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\zpos.bmp"
             "TargetName" = "8:zpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
@@ -1107,10 +1115,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB234ECF65814D81A5D9A4B2F5772901"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B5829DC829284C65B2979DF1F9F3BBEF"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\Buddha.obj"
-            "TargetName" = "8:Buddha.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\diamond.obj"
+            "TargetName" = "8:diamond.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1129,7 +1137,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1354FA0CED94B2C89F2CDE7F4AD19FE"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\gpu_path_tracer\\res\\texture\\hexagon\\zpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\zpos.bmp"
             "TargetName" = "8:zpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_F52B2A7EB3534AF39FA4184EE0F35B34"
@@ -1147,9 +1155,29 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3A200888B15499390B84B1D2BC370E5"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\bunny.fine.obj"
+            "TargetName" = "8:bunny.fine.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C769894745BC41DE9F61EA59D30DD3A8"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\zneg.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
@@ -1167,10 +1195,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D0BA3E7F38914E6D8D9E251903651181"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC940B27B02541B7BF74DAFC9C4D3C44"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\cube.obj"
-            "TargetName" = "8:cube.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dragon.obj"
+            "TargetName" = "8:dragon.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1189,7 +1217,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D483A1CFF76345B0862602E800C49018"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\icon\\icon.png"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\icon\\icon.png"
             "TargetName" = "8:icon.png"
             "Tag" = "8:"
             "Folder" = "8:_F8160C6029C04A1BBDC525506C720AE9"
@@ -1207,10 +1235,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D7C953547028404783D719872C1E5EE3"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D49830A311664B13B93E45B85B38FE74"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\dinosaur.obj"
-            "TargetName" = "8:dinosaur.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cube.obj"
+            "TargetName" = "8:cube.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1247,10 +1275,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DB6DAC49521A46C0B99FB2CA9B85454C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA98395C433C457FBB3078E749274F0D"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\cow.obj"
-            "TargetName" = "8:cow.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\skeleton_hand.obj"
+            "TargetName" = "8:skeleton_hand.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1267,10 +1295,70 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DFCF10B4D81746C6A36BBD7676028230"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DC2C6001709E4FB2A73795366E0B3B22"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\armadillo.obj"
-            "TargetName" = "8:armadillo.obj"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\gpu_path_tracer.exe"
+            "TargetName" = "8:GPU Path Tracer.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_13553983B1034CF2B24B971F21981836"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E08BC18110534969992F70689A5FF841"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\monkey.obj"
+            "TargetName" = "8:monkey.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E32EF2DE97F2404FA9F841CCD5072FF8"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\teapot.obj"
+            "TargetName" = "8:teapot.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E518AFA2A3DE4ED2A83AD2D44183B96B"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\horse.obj"
+            "TargetName" = "8:horse.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1289,90 +1377,10 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E79F12E6DC1F42A5A8C52BDEE6BC5948"
             {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\texture\\yokohama\\zpos.bmp"
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\texture\\yokohama\\zpos.bmp"
             "TargetName" = "8:zpos.bmp"
             "Tag" = "8:"
             "Folder" = "8:_A7E1282EEB2C4C8FA4336C0E7A57CDBB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F314C373C5D941E8B4F7DA5DBADD676F"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\dragon.obj"
-            "TargetName" = "8:dragon.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F79AE31A9BC54E838812AA8E88B769D2"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\scene\\scene.json"
-            "TargetName" = "8:scene.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB1E40F3C5704E32994D24ED82DE068F"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\monkey.obj"
-            "TargetName" = "8:monkey.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FC7C7CC9F09C46588FB3D817EDF703EF"
-            {
-            "SourcePath" = "8:D:\\Learning\\VS2017 Project\\gpu_path_tracer\\x64\\Release\\res\\obj\\horse.obj"
-            "TargetName" = "8:horse.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1587,7 +1595,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Setup"
         "ProductCode" = "8:{30817370-A4F1-41B1-B429-07657EF02B1D}"
-        "PackageCode" = "8:{8BFE0C1F-88EA-4E72-8117-B6C6B2026065}"
+        "PackageCode" = "8:{245971A5-6890-4552-BCE0-E4D0CB700A35}"
         "UpgradeCode" = "8:{D15897F3-575B-4E40-AEE5-251F07FE013F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1707,6 +1715,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1BFCD104E75E484692FBAAFACFBB2A3C"
+            {
+            "Name" = "8:GPU Path Tracer.exe"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_DC2C6001709E4FB2A73795366E0B3B22"
+            "Folder" = "8:_76E04C4DB1244919A43A53B22BBCA141"
+            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_94AD35B5217A4F07A54199A0B8AA56CD"
             {
             "Name" = "8:UnInstall.exe"
@@ -1735,31 +1757,17 @@
             "Icon" = "8:"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B80240FD2DA045A1A321233AF40EA62C"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D30B965098964AC79E1D98884FA0BFA9"
             {
-            "Name" = "8:CUDA Path Tracer.exe"
+            "Name" = "8:GPU Path Tracer.exe"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_4A41C361A8744256BB5C9F673A21C191"
-            "Folder" = "8:_76E04C4DB1244919A43A53B22BBCA141"
-            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FF031A99588A4FA59F931812715CF60A"
-            {
-            "Name" = "8:CUDA Path Tracer.exe"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_4A41C361A8744256BB5C9F673A21C191"
+            "Target" = "8:_DC2C6001709E4FB2A73795366E0B3B22"
             "Folder" = "8:_570052C183D5419E93460CD99C4D6C16"
-            "WorkingFolder" = "8:_A3A2A53AC6B0474BB54D3B52708F18A9"
+            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
             "Icon" = "8:"
             "Feature" = "8:"
             }
