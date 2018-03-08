@@ -13,6 +13,30 @@
 			"Radius" : "1.0"
 		},
 
+		{
+			"Material" : "blue",
+			"Center" : "-0.9 4.0 -0.9",
+			"Radius" : "1.0"
+		},
+
+		{
+			"Material" : "red",
+			"Center" : "-0.9 6.0 -0.9",
+			"Radius" : "1.0"
+		},
+
+		{
+			"Material" : "glass",
+			"Center" : "-2.9 6.0 -0.9",
+			"Radius" : "1.0"
+		},
+
+		{
+			"Material" : "marble",
+			"Center" : "-4.9 6.0 -0.9",
+			"Radius" : "1.0"
+		},
+
     {
 			"Material" : "light",
 			"Center" : "-8.0 50.0 -5.0",
@@ -24,14 +48,14 @@
 	[
 		{
 			"Material" : "green_glass",
-			"Path" : "res\\obj\\dragon.obj",
+			"Path" : "res\\obj\\skeleton_hand.obj",
 			"Position" : "0.0 0.0 0.0"
 		},
 
 		{
 			"Material" : "blue",
 			"Path" : "res\\obj\\monkey.obj",
-			"Position" : "3.0 0.0 0.0"
+			"Position" : "2.2 0.0 0.0"
 		}
 	]
 }
