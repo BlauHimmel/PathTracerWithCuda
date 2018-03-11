@@ -48,14 +48,16 @@
 	[
 		{
 			"Material" : "green_glass",
-			"Path" : "res\\obj\\skeleton_hand.obj",
-			"Position" : "0.0 0.0 0.0"
+			"Path" : "res\\obj\\human.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "4.0 4.0 4.0"
 		},
 
 		{
-			"Material" : "blue",
-			"Path" : "res\\obj\\monkey.obj",
-			"Position" : "2.2 0.0 0.0"
+			"Material" : "gold",
+			"Path" : "res\\obj\\cow.obj",
+			"Position" : "2.2 0.0 0.0",
+			"Scale" : "1.0 1.0 1.0"
 		}
 	]
 }

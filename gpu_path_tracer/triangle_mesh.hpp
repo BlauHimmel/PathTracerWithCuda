@@ -30,6 +30,7 @@ private:
 	std::vector<int> m_mesh_vertices_num;
 
 	std::vector<float3> m_mesh_position;
+	std::vector<float3> m_mesh_scale;
 	std::vector<material*> m_mesh_material;
 
 	int m_mesh_num = 0;
@@ -41,7 +42,7 @@ private:
 	material* m_mat_device = nullptr;
 
 public:
-	bool load_obj(const std::string& filename, const float3& position, material* mat);
+	bool load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat);
 	void unload_obj();
 
 	void set_material_device(int index, const material& mat);
@@ -49,6 +50,7 @@ public:
 	int get_total_triangle_num() const;
 	int get_mesh_num() const;
 	float3 get_position(int index) const;
+	float3 get_scale(int index) const;
 	material get_material(int index) const;
 	int get_triangle_num(int index) const;
 	int get_vertex_num(int index) const;
@@ -60,7 +62,7 @@ public:
 };
 
 //TODO:COULD LOAD MTL HERE(OR TEXTURE)
-inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, material* mat)
+inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat)
 {
 	if (mat == nullptr)
 	{
@@ -128,9 +130,9 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 			);
 
 			triangle triangle;
- 			triangle.vertex0 = vertex[0] + position;
-			triangle.vertex1 = vertex[1] + position;
-			triangle.vertex2 = vertex[2] + position;
+ 			triangle.vertex0 = vertex[0] * scale + position;
+			triangle.vertex1 = vertex[1] * scale + position;
+			triangle.vertex2 = vertex[2] * scale + position;
 			triangle.normal = normalize(cross(vertex[1] - vertex[0], vertex[2] - vertex[0]));
 			triangle.mat = mat;
 			m_triangles.push_back(triangle);
@@ -146,7 +148,8 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 
 	m_mesh_triangles_num.push_back(triangle_num);
 	m_mesh_vertices_num.push_back(vertices_num);
-	m_mesh_position.push_back(make_float3(0.0f, 0.0f, 0.0f));
+	m_mesh_position.push_back(position);
+	m_mesh_scale.push_back(scale);
 	m_mesh_material.push_back(mat);
 
 	std::cout << "[Info]Load file " << filename << " succeeded. vertices : " << vertices_num << std::endl;
@@ -193,6 +196,11 @@ inline int triangle_mesh::get_mesh_num() const
 inline float3 triangle_mesh::get_position(int index) const
 {
 	return m_mesh_position[index];
+}
+
+inline float3 triangle_mesh::get_scale(int index) const
+{
+	return m_mesh_scale[index];
 }
 
 inline material triangle_mesh::get_material(int index) const

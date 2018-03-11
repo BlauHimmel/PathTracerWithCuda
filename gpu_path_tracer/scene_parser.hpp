@@ -23,6 +23,7 @@
 #define TOKEN_OBJECT_MESH_PATH "Path"
 #define TOKEN_OBJECT_MESH_MATERIAL "Material"
 #define TOKEN_OBJECT_MESH_POSITION "Position"
+#define TOKEN_OBJECT_MESH_SCALE "Scale"
 
 #define TOKEN_BACKGROUND "Background"
 #define TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH "Path"
@@ -88,7 +89,8 @@
 		{
 			"Material" : "XXXX",							-- name of material(user declared or built-in material)
 			"Path" : "XXXX\\YYYY",
-			"Position" : "0.0 0.0 0.0"
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "1.0 1.0 1.0"
 		},
 		...
 	]
@@ -135,6 +137,7 @@ public:
 	int get_sphere_num() const;
 	float3 get_mesh_position(int index) const;
 	material get_mesh_material(int index) const;
+	float3 get_mesh_scale(int index) const;
 	sphere get_sphere(int index) const;
 
 	void set_sphere_device(int index, const sphere& sphere);
@@ -182,6 +185,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	std::vector<std::string> meshes_path;
 	std::vector<std::string> meshes_mat;
 	std::vector<float3> meshes_position;
+	std::vector<float3> meshes_scale;
 
 	init_default_material(materials);
 
@@ -321,18 +325,22 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			auto path = mesh_element[TOKEN_OBJECT_MESH_PATH];
 			auto material = mesh_element[TOKEN_OBJECT_MESH_MATERIAL];
 			auto position = mesh_element[TOKEN_OBJECT_MESH_POSITION];
+			auto scale = mesh_element[TOKEN_OBJECT_MESH_SCALE];
 
 			CHECK_PROPERTY(Mesh, path, TOKEN_OBJECT_MESH_PATH);
 			CHECK_PROPERTY(Mesh, material, TOKEN_OBJECT_MESH_MATERIAL);
 			CHECK_PROPERTY(Mesh, position, TOKEN_OBJECT_MESH_MATERIAL);
+			CHECK_PROPERTY(Mesh, scale, TOKEN_OBJECT_MESH_SCALE);
 
 			std::string path_str = path;
 			std::string material_str = material;
 			std::string position_str = position;
+			std::string scale_str = scale;
 
 			meshes_path.push_back(path_str);
 			meshes_mat.push_back(material_str);
 			meshes_position.push_back(parse_float3(position_str));
+			meshes_scale.push_back(parse_float3(scale_str));
 		}
 	}
 
@@ -384,7 +392,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	//Mesh
 	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], copy_material(materials[meshes_mat[i]]));
+		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], copy_material(materials[meshes_mat[i]]));
 
 		if (error)
 		{
@@ -533,6 +541,11 @@ inline float3 scene_parser::get_mesh_position(int index) const
 inline material scene_parser::get_mesh_material(int index) const
 {
 	return m_triangle_mesh.get_material(index);
+}
+
+inline float3 scene_parser::get_mesh_scale(int index) const
+{
+	return m_triangle_mesh.get_scale(index);
 }
 
 inline sphere scene_parser::get_sphere(int index) const

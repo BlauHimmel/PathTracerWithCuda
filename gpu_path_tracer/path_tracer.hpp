@@ -36,7 +36,6 @@ private:
 	config_parser* m_config = nullptr;
 	render_camera* m_render_camera = nullptr;
 	image* m_image = nullptr;
-	image* m_buffer = nullptr;
 
 	bool m_is_initiated = false;
 
@@ -80,14 +79,13 @@ inline void path_tracer::init(render_camera* render_camera, config_parser* confi
 	m_config = config;
 	m_render_camera = render_camera;
 	m_image = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
-	m_buffer = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
 	path_tracer_kernel_memory_allocate(
 		&m_not_absorbed_colors_device,
 		&m_accumulated_colors_device,
 		&m_rays_device,
 		&m_energy_exist_pixels_device,
 		&m_scatterings_device,
-		m_buffer->pixel_count
+		m_image->pixel_count
 	);
 	init_scene_device_data();
 }
@@ -96,14 +94,17 @@ inline image* path_tracer::render()
 {
 	if (m_is_initiated)
 	{
+		m_image->pass_counter++;
+
 		path_tracer_kernel(
 			m_scene.get_triangles_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
 			m_scene.get_sphere_num(),
 			m_scene.get_sphere_device_ptr(),
-			m_buffer->pixel_count,
-			m_buffer->pixels,
+			m_image->pixel_count,
+			m_image->pixels_device,
+			m_image->pixels_256_device,
 			m_image->pass_counter,
 			m_render_camera,
 			m_scene.get_cube_map_device_ptr(),
@@ -115,11 +116,7 @@ inline image* path_tracer::render()
 			m_config->get_config_device_ptr()
 
 		);
-		for (auto i = 0; i < m_image->pixel_count; i++)
-		{
-			m_image->pixels[i] += m_buffer->pixels[i];
-		}
-		m_image->pass_counter++;
+
 		return m_image;
 	}
 	else
@@ -132,8 +129,7 @@ inline void path_tracer::clear()
 {
 	if (m_is_initiated)
 	{
-		release_image(m_image);
-		m_image = create_image(static_cast<int>(m_render_camera->resolution.x), static_cast<int>(m_render_camera->resolution.y));
+		reset_image(m_image);
 	}
 }
 
@@ -238,6 +234,7 @@ inline void path_tracer::render_ui()
 				ImGui::Separator();
 
 				float3 position = m_scene.get_mesh_position(i);
+				float3 scale = m_scene.get_mesh_scale(i);
 
 				ImGui::Text("Base:");
 				sprintf(buffer, "Vertices: %d", m_scene.get_mesh_vertices_num(i));
@@ -245,6 +242,8 @@ inline void path_tracer::render_ui()
 				sprintf(buffer, "Facets: %d", m_scene.get_mesh_triangle_num(i));
 				ImGui::Text(buffer);
 				sprintf(buffer, "Position: (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
+				ImGui::Text(buffer);
+				sprintf(buffer, "Scale: (%.2f, %.2f, %.2f)", scale.x, scale.y, scale.z);
 				ImGui::Text(buffer);
 
 				ImGui::Separator();

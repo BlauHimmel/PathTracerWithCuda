@@ -13,7 +13,8 @@ struct image
 	int height;
 	int pixel_count;
 	int pass_counter;
-	color* pixels;
+	color* pixels_device;
+	color256* pixels_256_device;
 
 	clock_t start_clock;
 
@@ -27,16 +28,25 @@ inline image* create_image(int width, int height)
 	img->width = width;
 	img->height = height;
 	img->pixel_count = width * height;
-	img->pixels = new color[img->pixel_count];
 	img->pass_counter = 0;
 	img->start_clock = clock();
+	CUDA_CALL(cudaMallocManaged((void**)&img->pixels_device, img->pixel_count * sizeof(color)));
+	CUDA_CALL(cudaMallocManaged((void**)&img->pixels_256_device, img->pixel_count * sizeof(color256)));
+
 	return img;
 }
 
 inline void release_image(image* image)
 {
-	SAFE_DELETE_ARRAY(image->pixels);
+	CUDA_CALL(cudaFree(image->pixels_device));
+	CUDA_CALL(cudaFree(image->pixels_256_device));
 	SAFE_DELETE(image);
+}
+
+inline void reset_image(image* image)
+{
+	image->pass_counter = 0;
+	image->start_clock = clock();
 }
 
 inline float get_elapsed_second(image* image)
@@ -51,14 +61,14 @@ inline float get_fps(image* image)
 
 inline color image::get_pixel(int x, int y) const
 {
-	return pixels[y * width + x];
+	return pixels_device[y * width + x];
 }
 
 inline void image::set_pixel(int x, int y, const color& color)
 {
-	pixels[y * width + x].x = color.x;
-	pixels[y * width + x].y = color.y;
-	pixels[y * width + x].z = color.z;
+	pixels_device[y * width + x].x = color.x;
+	pixels_device[y * width + x].y = color.y;
+	pixels_device[y * width + x].z = color.z;
 }
 
 #endif // !__IMAGE__

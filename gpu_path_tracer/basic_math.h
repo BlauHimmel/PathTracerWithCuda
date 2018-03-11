@@ -8,6 +8,7 @@
 #include <cuda_runtime.h>
 
 using color = float3;
+using color256 = uchar3;
 using uchar = unsigned char;
 
 #define PI						3.1415926535897f
@@ -98,40 +99,6 @@ namespace math
 		float temp = a;
 		a = b;
 		b = temp;
-	}
-
-	//Utility Function
-	inline color gamma_correct(const color& primitive_color)
-	{
-		float gamma = 2.2f;
-		float inverse_gamma = 1.0f / gamma;
-		color corrected_color; 
-		corrected_color.x = std::expf(inverse_gamma * std::logf(primitive_color.x));
-		corrected_color.y = std::expf(inverse_gamma * std::logf(primitive_color.y));
-		corrected_color.z = std::expf(inverse_gamma * std::logf(primitive_color.z));
-		return corrected_color;
-	}
-
-	inline uchar3 float_to_8bit(const color& primitive_color, bool is_corrected = false)
-	{
-		color color;
-		if (!is_corrected)
-		{
-			color = gamma_correct(primitive_color);
-		}
-		else
-		{
-			color = primitive_color;
-		}
-
-		float x = clamp(color.x * 255.0f, 0.0f, 255.0f);
-		float y = clamp(color.y * 255.0f, 0.0f, 255.0f);
-		float z = clamp(color.z * 255.0f, 0.0f, 255.0f);
-		uchar3 color_8bit;
-		color_8bit.x = static_cast<uchar>(x);
-		color_8bit.y = static_cast<uchar>(y);
-		color_8bit.z = static_cast<uchar>(z);
-		return color_8bit;
 	}
 }
 

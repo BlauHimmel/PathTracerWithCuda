@@ -922,6 +922,54 @@ __global__ void trace_ray_kernel(
 	}
 }
 
+__global__ void pixel_256_transform_gamma_corrected_kernel(
+	color* accumulated_colors,			//in 
+	color* image_pixels,				//in
+	color256* image_pixels_256,			//in out
+	int pixel_count,					//in
+	int pass_counter,					//in
+	configuration* config				//in
+)
+{
+	int block_x = blockIdx.x;
+	int thread_x = threadIdx.x;
+
+	int pixel_index = config->block_size * block_x + thread_x;
+	bool is_index_valid = pixel_index < pixel_count;
+
+	if (is_index_valid)
+	{
+		if (pass_counter != 1)
+		{
+			image_pixels[pixel_index] += accumulated_colors[pixel_index];
+		}
+		else
+		{
+			image_pixels[pixel_index] = accumulated_colors[pixel_index];
+		}
+
+		color pixel = image_pixels[pixel_index] / (float)pass_counter;
+
+		float inverse_gamma = 0.45454545f;
+		color corrected_pixel;
+		corrected_pixel.x = std::expf(inverse_gamma * std::logf(pixel.x));
+		corrected_pixel.y = std::expf(inverse_gamma * std::logf(pixel.y));
+		corrected_pixel.z = std::expf(inverse_gamma * std::logf(pixel.z));
+
+		float x = clamp(corrected_pixel.x * 255.0f, 0.0f, 255.0f);
+		float y = clamp(corrected_pixel.y * 255.0f, 0.0f, 255.0f);
+		float z = clamp(corrected_pixel.z * 255.0f, 0.0f, 255.0f);
+
+		color256 color_256;
+		color_256.x = (uchar)x;
+		color_256.y = (uchar)y;
+		color_256.z = (uchar)z;
+
+		image_pixels_256[pixel_index] = color_256;
+	}
+}
+
+//===============================================================================================================
 //TODO:BUILD SPATIAL STRUCTURE ON GPU
 
 extern "C" void path_tracer_kernel(
@@ -931,8 +979,9 @@ extern "C" void path_tracer_kernel(
 	int sphere_num,						//in
 	sphere* spheres_device, 			//in
 	int pixel_count, 					//in
-	color* pixels,						//in out
-	int pass_counter, 					//in out
+	color* image_pixels,					//in out
+	color256* image_pixels_256,				//in out
+	int pass_counter, 					//in 
 	render_camera* render_cam_device,	//in
 	cube_map* sky_cube_map_device,		//in
 	color* not_absorbed_colors_device,	//in 
@@ -1013,7 +1062,14 @@ extern "C" void path_tracer_kernel(
 		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels_device);
 	}
 
-	CUDA_CALL(cudaDeviceSynchronize());
+	pixel_256_transform_gamma_corrected_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
+		accumulated_colors_device,
+		image_pixels,
+		image_pixels_256,
+		pixel_count,
+		pass_counter,
+		config_device
+		);
 
-	CUDA_CALL(cudaMemcpy(pixels, accumulated_colors_device, pixel_count * sizeof(color), cudaMemcpyDefault));
+	CUDA_CALL(cudaDeviceSynchronize());
 }

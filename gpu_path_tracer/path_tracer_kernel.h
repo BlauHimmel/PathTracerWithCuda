@@ -19,7 +19,8 @@ extern "C" void path_tracer_kernel(
 	int sphere_num,							//in
 	sphere* spheres_device, 				//in
 	int pixel_count, 						//in
-	color* pixels,							//in out
+	color* image_pixels,					//in out
+	color256* image_pixels_256,				//in out
 	int depth, 								//in
 	render_camera* render_camera_device,	//in
 	cube_map* sky_cube_map_device,			//in

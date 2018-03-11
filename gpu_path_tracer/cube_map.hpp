@@ -196,28 +196,23 @@ inline cube_map* cube_map_loader::create_cube_device_data()
 		return nullptr;
 	}
 
-	cube_map* temp_cube_map = new cube_map();
+	CUDA_CALL(cudaMallocManaged((void**)&m_cube_map_device, sizeof(cube_map)));
 
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_x_positive_map), m_width * m_height * 4 * sizeof(uchar)));
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_x_negative_map), m_width * m_height * 4 * sizeof(uchar)));
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_y_positive_map), m_width * m_height * 4 * sizeof(uchar)));
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_y_negative_map), m_width * m_height * 4 * sizeof(uchar)));
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_z_positive_map), m_width * m_height * 4 * sizeof(uchar)));
-	CUDA_CALL(cudaMalloc((void**)&(temp_cube_map->m_z_negative_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_x_positive_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_x_negative_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_y_positive_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_y_negative_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_z_positive_map), m_width * m_height * 4 * sizeof(uchar)));
+	CUDA_CALL(cudaMallocManaged((void**)&(m_cube_map_device->m_z_negative_map), m_width * m_height * 4 * sizeof(uchar)));
 
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_x_positive_map, m_x_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_x_negative_map, m_x_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_y_positive_map, m_y_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_y_negative_map, m_y_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_z_positive_map, m_z_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
-	CUDA_CALL(cudaMemcpy(temp_cube_map->m_z_negative_map, m_z_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_x_positive_map, m_x_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_x_negative_map, m_x_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_y_positive_map, m_y_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_y_negative_map, m_y_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_z_positive_map, m_z_positive_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
+	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_z_negative_map, m_z_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
 
-	temp_cube_map->length = m_width;
-
-	CUDA_CALL(cudaMalloc((void**)&m_cube_map_device, sizeof(cube_map)));
-	CUDA_CALL(cudaMemcpy(m_cube_map_device, temp_cube_map, sizeof(cube_map), cudaMemcpyHostToDevice));
-
-	SAFE_DELETE(temp_cube_map);
+	m_cube_map_device->length = m_width;
 
 	return m_cube_map_device;
 }
