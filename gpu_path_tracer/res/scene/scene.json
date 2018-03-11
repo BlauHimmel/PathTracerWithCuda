@@ -54,10 +54,10 @@
 		},
 
 		{
-			"Material" : "gold",
-			"Path" : "res\\obj\\cow.obj",
+			"Material" : "silver",
+			"Path" : "res\\obj\\lucy.obj",
 			"Position" : "2.2 0.0 0.0",
-			"Scale" : "1.0 1.0 1.0"
+			"Scale" : "0.005 0.005 0.005"
 		}
 	]
 }
