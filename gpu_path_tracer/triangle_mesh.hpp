@@ -12,9 +12,9 @@
 
 struct triangle
 {
-	int vertex_index0;
-	int vertex_index1;
-	int vertex_index2;
+	float3 vertex0;
+	float3 vertex1;
+	float3 vertex2;
 	float3 normal;
 
 	material* mat;
@@ -25,7 +25,6 @@ class triangle_mesh
 private:
 	//============================================
 	std::vector<triangle> m_triangles;
-	std::vector<float3> m_vertices;
 
 	std::vector<int> m_mesh_triangles_num;
 	std::vector<int> m_mesh_vertices_num;
@@ -41,7 +40,6 @@ private:
 
 	triangle* m_mesh_device = nullptr;
 	material* m_mat_device = nullptr;
-	float3* m_vertices_device = nullptr;
 
 public:
 	bool load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat);
@@ -57,7 +55,6 @@ public:
 	int get_triangle_num(int index) const;
 	int get_vertex_num(int index) const;
 	triangle* get_triangles_device() const;
-	float3* get_vertices_device() const;
 
 	bool create_mesh_device_data();
 	void release_mesh_device_data();
@@ -133,9 +130,9 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 			);
 
 			triangle triangle;
- 			triangle.vertex_index0 = shapes[i].mesh.indices[f * 3].vertex_index + static_cast<int>(m_vertices.size());
-			triangle.vertex_index1 = shapes[i].mesh.indices[f * 3 + 1].vertex_index + static_cast<int>(m_vertices.size());
-			triangle.vertex_index2 = shapes[i].mesh.indices[f * 3 + 2].vertex_index + static_cast<int>(m_vertices.size());
+ 			triangle.vertex0 = vertex[0] * scale + position;
+			triangle.vertex1 = vertex[1] * scale + position;
+			triangle.vertex2 = vertex[2] * scale + position;
 
 			triangle.normal = normalize(cross(vertex[1] - vertex[0], vertex[2] - vertex[0]));
 			triangle.mat = mat;
@@ -144,19 +141,6 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 
 			triangle_num++;
 		}
-	}
-
-	for (auto i = 0; i < attrib.vertices.size(); i += 3)
-	{
-		float3 vertex = make_float3(
-			attrib.vertices[i] * scale.x + position.x,
-			attrib.vertices[i + 1] * scale.y + position.y,
-			attrib.vertices[i + 2] * scale.z + position.z
-		);
-
-		
-
-		m_vertices.push_back(vertex);
 	}
 
 	m_is_loaded = true;
@@ -241,11 +225,6 @@ inline triangle* triangle_mesh::get_triangles_device() const
 	return m_mesh_device;
 }
 
-inline float3 * triangle_mesh::get_vertices_device() const
-{
-	return m_vertices_device;
-}
-
 inline bool triangle_mesh::create_mesh_device_data()
 {
 	if (!m_is_loaded)
@@ -264,9 +243,6 @@ inline bool triangle_mesh::create_mesh_device_data()
 
 	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_device, m_triangles.size() * sizeof(triangle)));
 	CUDA_CALL(cudaMemcpy(m_mesh_device, m_triangles.data(), m_triangles.size() * sizeof(triangle), cudaMemcpyDefault));
-
-	CUDA_CALL(cudaMallocManaged((void**)&m_vertices_device, m_vertices.size() * sizeof(float3)));
-	CUDA_CALL(cudaMemcpy(m_vertices_device, m_vertices.data(), m_vertices.size() * sizeof(float3), cudaMemcpyDefault));
 		
 	for (auto index = 0; index < m_mesh_num; index++)
 	{
@@ -296,11 +272,6 @@ inline void triangle_mesh::release_mesh_device_data()
 	{
 		CUDA_CALL(cudaFree(m_mesh_device));
 		m_mesh_device = nullptr;
-	}
-	if (m_vertices_device != nullptr)
-	{
-		CUDA_CALL(cudaFree(m_vertices_device));
-		m_vertices_device = nullptr;
 	}
 }
 

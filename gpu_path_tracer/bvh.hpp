@@ -276,7 +276,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 	SAFE_DELETE_ARRAY(is_box_init);
 }
 
-inline bvh_node* build_bvh(triangle* triangles, float3* vertices, int triangle_num)
+inline bvh_node* build_bvh(triangle* triangles, int triangle_num)
 {
 	if (triangle_num == 0)
 	{
@@ -284,11 +284,11 @@ inline bvh_node* build_bvh(triangle* triangles, float3* vertices, int triangle_n
 	}
 
 	bvh_node* root_node = new bvh_node();
-	root_node->box.get_bounding_box(vertices[triangles[0].vertex_index0], vertices[triangles[0].vertex_index1], vertices[triangles[0].vertex_index2]);
+	root_node->box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
 
 	for (auto i = 0; i < triangle_num; i++)
 	{
-		root_node->box.expand_to_fit_triangle(vertices[triangles[i].vertex_index0], vertices[triangles[i].vertex_index1], vertices[triangles[i].vertex_index2]);
+		root_node->box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 		root_node->triangle_indices.push_back(i);
 	}
 
@@ -302,7 +302,7 @@ inline bvh_node* build_bvh(triangle* triangles, float3* vertices, int triangle_n
 
 	for (auto i = 0; i < triangle_num; i++)
 	{
-		boxes[i].get_bounding_box(vertices[triangles[i].vertex_index0], vertices[triangles[i].vertex_index1], vertices[triangles[i].vertex_index2]);
+		boxes[i].get_bounding_box(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 	}
 
 	split_bounding_box(root_node, boxes);

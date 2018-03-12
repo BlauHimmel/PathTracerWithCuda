@@ -16,7 +16,6 @@ extern "C" void path_tracer_kernel(
 	int triangle_num,						//in
 	bvh_node_device* bvh_nodes_device,		//in
 	triangle* triangles_device,				//in
-	float3* vertices_device,				//in
 	int sphere_num,							//in
 	sphere* spheres_device, 				//in
 	int pixel_count, 						//in

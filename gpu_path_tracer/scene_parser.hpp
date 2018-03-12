@@ -125,7 +125,6 @@ public:
 
 	cube_map* get_cube_map_device_ptr();
 	triangle* get_triangles_device_ptr();
-	float3* get_vertices_device_ptr();
 	bvh_node_device* get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
 
@@ -465,12 +464,12 @@ inline bool scene_parser::create_scene_data_device()
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	if (m_triangle_mesh.get_triangles_device() != nullptr && m_triangle_mesh.get_vertices_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
+	if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
 	{
 		bvh_node* root;
 		printf("[Info]Constructing bvh on cpu...\n");
 		TIME_COUNT_CALL_START();
-		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_vertices_device(), m_triangle_mesh.get_total_triangle_num());
+		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_total_triangle_num());
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -505,11 +504,6 @@ inline cube_map* scene_parser::get_cube_map_device_ptr()
 inline triangle* scene_parser::get_triangles_device_ptr()
 {
 	return m_triangle_mesh.get_triangles_device();
-}
-
-inline float3 * scene_parser::get_vertices_device_ptr()
-{
-	return m_triangle_mesh.get_vertices_device();
 }
 
 inline bvh_node_device* scene_parser::get_bvh_node_device_ptr()

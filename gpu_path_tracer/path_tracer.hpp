@@ -109,7 +109,6 @@ inline image* path_tracer::render()
 			m_scene.get_triangles_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
-			m_scene.get_vertices_device_ptr(),
 			m_scene.get_sphere_num(),
 			m_scene.get_sphere_device_ptr(),
 			m_image->pixel_count,
