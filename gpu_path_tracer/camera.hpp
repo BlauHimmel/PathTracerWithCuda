@@ -74,7 +74,7 @@ inline view_camera::view_camera()
 	center = glm::vec3(0.0f, 0.0f, 0.0f);
 	yaw = 0.0f;
 	pitch = 0.3f;
-	radius = 4.0f;
+	radius = 14.0f;
 	aperture_radius = 0.0f;
 	focal_distance = radius;
 

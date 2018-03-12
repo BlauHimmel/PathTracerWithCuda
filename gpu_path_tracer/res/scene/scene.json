@@ -48,9 +48,9 @@
 	[
 		{
 			"Material" : "green_glass",
-			"Path" : "res\\obj\\human.obj",
-			"Position" : "0.0 0.0 0.0",
-			"Scale" : "4.0 4.0 4.0"
+			"Path" : "res\\obj\\cow.obj",
+			"Position" : "0.0 0.0 3.0",
+			"Scale" : "1.0 1.0 1.0"
 		},
 
 		{
