@@ -127,12 +127,13 @@ __host__ __device__  bool intersect_sphere(
 
 __host__ __device__ bool intersect_triangle(
 	const triangle& triangle,		//in
+	float3* vertices,				//in
 	const ray& ray,					//in
 	float& hit_t					//out	
 )
 {
-	float3 edge1 = triangle.vertex1 - triangle.vertex0;
-	float3 edge2 = triangle.vertex2 - triangle.vertex0;
+	float3 edge1 = vertices[triangle.vertex_index1] - vertices[triangle.vertex_index0];
+	float3 edge2 = vertices[triangle.vertex_index2] - vertices[triangle.vertex_index0];
 
 	float3 p_vec = cross(ray.direction, edge2);
 	float det = dot(edge1, p_vec);
@@ -143,7 +144,7 @@ __host__ __device__ bool intersect_triangle(
 	}
 
 	float inverse_det = 1.0f / det;
-	float3 t_vec = ray.origin - triangle.vertex0;
+	float3 t_vec = ray.origin - vertices[triangle.vertex_index0];
 	float3 q_vec = cross(t_vec, edge1);
 
 	float t1 = dot(t_vec, p_vec) * inverse_det;
@@ -184,6 +185,7 @@ __host__ __device__ bool intersect_bounding_box(
 
 __host__ __device__ bool intersect_triangle_mesh_bvh(
 	triangle* triangles,			//in	
+	float3* vertices,				//in	
 	bvh_node_device* bvh_nodes,		//in	
 	int triangle_num,				//in	
 	const ray& ray,					//in
@@ -221,7 +223,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
 					{
-						if (intersect_triangle(triangles[triangle_index], ray, current_t) && current_t > 0.0f && current_t < min_t)
+						if (intersect_triangle(triangles[triangle_index], vertices, ray, current_t) && current_t > 0.0f && current_t < min_t)
 						{
 							min_t = current_t;
 							min_triangle_index = triangle_index;
@@ -455,7 +457,7 @@ __host__ __device__ fresnel get_fresnel_dielectrics(
 	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
 
 	fresnel.reflection_index = reflection_coef_unpolarized;
-	fresnel.refractive_index = 1 - fresnel.reflection_index;
+	fresnel.refractive_index = 1.0f - fresnel.reflection_index;
 	return fresnel;
 }
 
@@ -483,7 +485,7 @@ __host__ __device__ fresnel get_fresnel_conductors(
 	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
 
 	fresnel.reflection_index = reflection_coef_unpolarized;
-	fresnel.refractive_index = 1 - fresnel.reflection_index;
+	fresnel.refractive_index = 1.0f - fresnel.reflection_index;
 	return fresnel;
 }
 
@@ -700,6 +702,7 @@ __global__ void trace_ray_kernel(
 	int triangle_num,						//in
 	bvh_node_device* bvh_nodes,				//in
 	triangle* triangles,					//in
+	float3* vertices,						//in
 	int sphere_num,							//in
 	sphere* spheres,						//in
 	int pixel_count,						//in
@@ -745,7 +748,6 @@ __global__ void trace_ray_kernel(
 	//intersect with primitives in scene
 	if (config->use_ground && intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
 	{
-		//TODO:HARDCODE HERE
 		min_t = hit_t;
 		min_point = hit_point;
 		min_normal = hit_normal;
@@ -764,7 +766,7 @@ __global__ void trace_ray_kernel(
 		}
 	}
 	
-	if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, triangle_num, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+	if (intersect_triangle_mesh_bvh(triangles, vertices, bvh_nodes, triangle_num, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 	{
 		min_t = hit_t;
 		min_point = point_on_ray(tracing_ray, hit_t);
@@ -814,7 +816,6 @@ __global__ void trace_ray_kernel(
 		material min_mat;
 		if (min_type == object_type::ground)
 		{
-			//TODO:HARDCODE HERE
 			GET_DEFAULT_MATERIAL_DEVICE(min_mat);
 			min_mat.diffuse_color = make_float3(0.455f, 0.43f, 0.39f);
 		}
@@ -976,11 +977,12 @@ extern "C" void path_tracer_kernel(
 	int triangle_num,					//in
 	bvh_node_device* bvh_nodes_device,	//in
 	triangle* triangles_device,			//in
+	float3* vertices_device,			//in
 	int sphere_num,						//in
 	sphere* spheres_device, 			//in
 	int pixel_count, 					//in
-	color* image_pixels,					//in out
-	color256* image_pixels_256,				//in out
+	color* image_pixels,				//in out
+	color256* image_pixels_256,			//in out
 	int pass_counter, 					//in 
 	render_camera* render_cam_device,	//in
 	cube_map* sky_cube_map_device,		//in
@@ -1037,6 +1039,7 @@ extern "C" void path_tracer_kernel(
 			triangle_num,
 			bvh_nodes_device,
 			triangles_device,
+			vertices_device,
 			sphere_num, 
 			spheres_device,
 			pixel_count, 

@@ -51,7 +51,9 @@ public:
 	);
 	void unload_data();
 
-	cube_map* create_cube_device_data();
+	cube_map* get_cube_map_device() const;
+
+	bool create_cube_device_data();
 	void release_cube_device_data();
 
 private:
@@ -189,11 +191,16 @@ inline void cube_map_loader::unload_data()
 	m_is_loaded = false;
 }
 
-inline cube_map* cube_map_loader::create_cube_device_data()
+inline cube_map * cube_map_loader::get_cube_map_device() const
+{
+	return m_cube_map_device;
+}
+
+inline bool cube_map_loader::create_cube_device_data()
 {
 	if (!m_is_loaded)
 	{
-		return nullptr;
+		return false;
 	}
 
 	CUDA_CALL(cudaMallocManaged((void**)&m_cube_map_device, sizeof(cube_map)));
@@ -214,7 +221,7 @@ inline cube_map* cube_map_loader::create_cube_device_data()
 
 	m_cube_map_device->length = m_width;
 
-	return m_cube_map_device;
+	return true;
 }
 
 inline void cube_map_loader::release_cube_device_data()

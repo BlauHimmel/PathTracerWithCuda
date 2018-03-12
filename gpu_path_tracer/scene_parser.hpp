@@ -103,10 +103,8 @@ private:
 	nlohmann::json m_json_parser;
 
 	cube_map_loader m_cube_map_loader;
-	cube_map* m_cube_map_device = nullptr;
 
 	triangle_mesh m_triangle_mesh;
-	triangle* m_triangles_device = nullptr;
 
 	bvh_node_device* m_bvh_nodes_device = nullptr;
 
@@ -122,11 +120,12 @@ public:
 	bool load_scene(const std::string& filename);
 	void unload_scene();
 
-	void create_scene_data_device();
+	bool create_scene_data_device();
 	void release_scene_data_device();
 
 	cube_map* get_cube_map_device_ptr();
 	triangle* get_triangles_device_ptr();
+	float3* get_vertices_device_ptr();
 	bvh_node_device* get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
 
@@ -429,18 +428,22 @@ inline void scene_parser::unload_scene()
 	}
 }
 
-inline void scene_parser::create_scene_data_device()
+inline bool scene_parser::create_scene_data_device()
 {
 	if (!m_is_loaded)
 	{
-		return;
+		return false;
 	}
 
 	double time;
 
 	printf("[Info]Copy background data to gpu...\n");
 	TIME_COUNT_CALL_START();
-	m_cube_map_device = m_cube_map_loader.create_cube_device_data();
+	if (!m_cube_map_loader.create_cube_device_data())
+	{
+		m_cube_map_loader.release_cube_device_data();
+		return false;
+	}
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -448,22 +451,26 @@ inline void scene_parser::create_scene_data_device()
 	TIME_COUNT_CALL_START();
 	CUDA_CALL(cudaMallocManaged((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
 	CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyDefault));
-
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 	printf("[Info]Copy triangle data to gpu...\n");
 	TIME_COUNT_CALL_START();
-	m_triangles_device = m_triangle_mesh.create_mesh_device_data();
+	if (!m_triangle_mesh.create_mesh_device_data())
+	{
+		m_cube_map_loader.release_cube_device_data();
+		m_triangle_mesh.release_mesh_device_data();
+		return false;
+	}
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	if (m_triangles_device != nullptr)
+	if (m_triangle_mesh.get_triangles_device() != nullptr && m_triangle_mesh.get_vertices_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
 	{
 		bvh_node* root;
 		printf("[Info]Constructing bvh on cpu...\n");
 		TIME_COUNT_CALL_START();
-		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_total_triangle_num());
+		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_vertices_device(), m_triangle_mesh.get_total_triangle_num());
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -472,15 +479,17 @@ inline void scene_parser::create_scene_data_device()
 		m_bvh_nodes_device = build_bvh_device_data(root);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
+
+		return true;
 	}
+	
+	return false;
 }
 
 inline void scene_parser::release_scene_data_device()
 {
 	m_cube_map_loader.release_cube_device_data();
-	m_cube_map_device = nullptr;
 	m_triangle_mesh.release_mesh_device_data();
-	m_triangles_device = nullptr;
 	if (m_spheres_device != nullptr)
 	{
 		CUDA_CALL(cudaFree(m_spheres_device));
@@ -490,12 +499,17 @@ inline void scene_parser::release_scene_data_device()
 
 inline cube_map* scene_parser::get_cube_map_device_ptr()
 {
-	return m_cube_map_device;
+	return m_cube_map_loader.get_cube_map_device();
 }
 
 inline triangle* scene_parser::get_triangles_device_ptr()
 {
-	return m_triangles_device;
+	return m_triangle_mesh.get_triangles_device();
+}
+
+inline float3 * scene_parser::get_vertices_device_ptr()
+{
+	return m_triangle_mesh.get_vertices_device();
 }
 
 inline bvh_node_device* scene_parser::get_bvh_node_device_ptr()

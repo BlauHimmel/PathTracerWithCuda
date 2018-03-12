@@ -55,7 +55,7 @@ public:
 	void render_ui();
 
 private:
-	void init_scene_device_data();
+	bool init_scene_device_data();
 };
 
 inline path_tracer::~path_tracer()
@@ -75,7 +75,6 @@ inline path_tracer::~path_tracer()
 
 inline void path_tracer::init(render_camera* render_camera, config_parser* config)
 {
-	m_is_initiated = true;
 	m_config = config;
 	m_render_camera = render_camera;
 	m_image = create_image(static_cast<int>(render_camera->resolution.x), static_cast<int>(render_camera->resolution.y));
@@ -87,7 +86,17 @@ inline void path_tracer::init(render_camera* render_camera, config_parser* confi
 		&m_scatterings_device,
 		m_image->pixel_count
 	);
-	init_scene_device_data();
+	if (!init_scene_device_data())
+	{
+		m_config = nullptr;
+		m_render_camera = nullptr;
+		m_is_initiated = false;
+		release_image(m_image);
+	}
+	else
+	{
+		m_is_initiated = true;
+	}
 }
 
 inline image* path_tracer::render()
@@ -100,6 +109,7 @@ inline image* path_tracer::render()
 			m_scene.get_triangles_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
+			m_scene.get_vertices_device_ptr(),
 			m_scene.get_sphere_num(),
 			m_scene.get_sphere_device_ptr(),
 			m_image->pixel_count,
@@ -310,7 +320,7 @@ inline void path_tracer::render_ui()
 	}
 }
 
-inline void path_tracer::init_scene_device_data()
+inline bool path_tracer::init_scene_device_data()
 {
 	double time;
 	printf("[Info]Load scene data...\n");
@@ -319,11 +329,19 @@ inline void path_tracer::init_scene_device_data()
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Load scene failed!" << std::endl;
-		return;
+		return false;
 	}
-	m_scene.create_scene_data_device();
+	if (!m_scene.create_scene_data_device())
+	{
+		m_is_initiated = false;
+		std::cout << "[Error]Copy scene data on GPU failed!" << std::endl;
+		m_scene.release_scene_data_device();
+		return false;
+	}
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Load scene completed, total time consuming: %.4f ms\n", time);
+
+	return true;
 }
 
 #endif // !__PATH_TRACER__
