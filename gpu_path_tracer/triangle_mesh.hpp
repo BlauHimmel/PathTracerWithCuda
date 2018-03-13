@@ -309,6 +309,9 @@ inline bool triangle_mesh::create_mesh_device_data()
 		for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 		{
 			m_mesh_device[i + triangle_start_index].mat = m_mat_device + index;
+			//m_mesh_device[i + triangle_start_index].vertex0 = m_mesh_device[i + triangle_start_index].vertex0 * m_mesh_scale[index] + m_mesh_position[index];
+			//m_mesh_device[i + triangle_start_index].vertex1 = m_mesh_device[i + triangle_start_index].vertex1 * m_mesh_scale[index] + m_mesh_position[index];
+			//m_mesh_device[i + triangle_start_index].vertex2 = m_mesh_device[i + triangle_start_index].vertex2 * m_mesh_scale[index] + m_mesh_position[index];
 		}
 	}
 	

@@ -47,16 +47,30 @@
 	"Mesh" :
 	[
 		{
-			"Material" : "green_glass",
+			"Material" : "copper",
 			"Path" : "res\\obj\\cow.obj",
 			"Position" : "0.0 0.0 3.0",
 			"Scale" : "1.0 1.0 1.0"
 		},
 
 		{
+			"Material" : "gold",
+			"Path" : "res\\obj\\diamond.obj",
+			"Position" : "0.0 0.0 6.0",
+			"Scale" : "1.0 1.0 1.0"
+		},
+
+		{
+			"Material" : "red",
+			"Path" : "res\\obj\\monkey.obj",
+			"Position" : "6.0 0.0 6.0",
+			"Scale" : "1.0 1.0 1.0"
+		},
+
+		{
 			"Material" : "silver",
 			"Path" : "res\\obj\\lucy.obj",
-			"Position" : "3.2 0.0 0.0",
+			"Position" : "3.0 0.0 0.0",
 			"Scale" : "0.005 0.005 0.005"
 		}
 	]

@@ -14,7 +14,7 @@
 #include "utilities.hpp"
 #include "cuda_math.hpp"
 
-#define BVH_LEAF_NODE_TRIANGLE_NUM 12
+#define BVH_LEAF_NODE_TRIANGLE_NUM 6
 #define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12
 
 struct bounding_box

@@ -199,11 +199,13 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 
 	bool is_hit = false;
 
-	int node_num = bvh_nodes[mesh_index][0].next_node_index;
+	bvh_node_device* bvh_node = bvh_nodes[mesh_index];
+
+	int node_num = bvh_node[0].next_node_index;
 	int traversal_position = 0;
 	while (traversal_position != node_num)
 	{
-		bvh_node_device current_node = bvh_nodes[mesh_index][traversal_position];
+		bvh_node_device current_node = bvh_node[traversal_position];
 
 		//if hit the box them check if it is leaf node, otherwise check stop traversing on this branch
 		if (intersect_bounding_box(current_node.box, ray))
@@ -729,6 +731,7 @@ __global__ void trace_ray_kernel(
 
 	float hit_t;
 	float3 hit_point, hit_normal;
+	int hit_triangle_index;
 
 	float min_t = INFINITY;
 	float3 min_point = make_float3(0.0f, 0.0f, 0.0f);
@@ -760,11 +763,12 @@ __global__ void trace_ray_kernel(
 	
 	for (int mesh_index = 0; mesh_index < mesh_num; mesh_index++)
 	{
-		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, hit_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 		{
 			min_t = hit_t;
 			min_point = point_on_ray(tracing_ray, hit_t);
-			min_normal = triangles[min_triangle_index].normal;
+			min_normal = triangles[hit_triangle_index].normal;
+			min_triangle_index = hit_triangle_index;
 			min_type = object_type::triangle;
 		}
 	}

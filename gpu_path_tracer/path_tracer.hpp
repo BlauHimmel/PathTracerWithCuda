@@ -123,7 +123,6 @@ inline image* path_tracer::render()
 			m_energy_exist_pixels_device,
 			m_scatterings_device,
 			m_config->get_config_device_ptr()
-
 		);
 
 		return m_image;
