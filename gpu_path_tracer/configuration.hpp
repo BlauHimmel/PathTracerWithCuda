@@ -9,6 +9,7 @@ struct configuration
 	int height;
 	bool use_fullscreen;
 	int block_size;
+	int max_block_size;
 	int max_tracer_depth;
 	float vector_bias_length;
 	float energy_exist_threshold;

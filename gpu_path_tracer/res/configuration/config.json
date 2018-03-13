@@ -3,6 +3,7 @@
 	"Height" : "900",
 	"FullScreen" : "false",
 	"BlockSize" : "64",
+	"MaxBlockSize" : "768",
 	"MaxDepth" : "20",
 	"BiasLength" : "0.0002",
 	"EnergyThreshold" : "0.000001",
