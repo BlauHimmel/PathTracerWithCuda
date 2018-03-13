@@ -4,7 +4,6 @@
 #define __SPHERE__
 
 #include <cuda_runtime.h>
-#include "basic_math.h"
 #include "material.hpp"
 
 struct sphere
@@ -15,4 +14,4 @@ struct sphere
 	material mat;
 };
 
-#endif // !__RAY__
+#endif // !__SPHERE__

@@ -6,6 +6,7 @@
 #include <cuda_runtime.h>
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
+#include "basic_math.hpp"
 
 #define MAX_APERTURE_RADIUS 1.0f
 

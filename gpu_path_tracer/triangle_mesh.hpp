@@ -5,20 +5,16 @@
 
 #include <cuda_runtime.h>
 #include <iostream>
+#include <time.h>
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
+#include "triangle.hpp"
 #include "material.hpp"
 #include "utilities.hpp"
 #include "cuda_math.hpp"
+#include "bvh.h"
 
-struct triangle
-{
-	float3 vertex0;
-	float3 vertex1;
-	float3 vertex2;
-	float3 normal;
-
-	material* mat;
-};
+struct bvh_node_device;
+struct bvh_node;
 
 class triangle_mesh
 {
@@ -41,6 +37,8 @@ private:
 	triangle* m_mesh_device = nullptr;
 	material* m_mat_device = nullptr;
 
+	bvh_node_device** m_mesh_bvh_device = nullptr;
+
 public:
 	bool load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat);
 	void unload_obj();
@@ -55,13 +53,15 @@ public:
 	int get_triangle_num(int index) const;
 	int get_vertex_num(int index) const;
 	triangle* get_triangles_device() const;
+	bvh_node_device** get_bvh_node_device() const;
+
+	bool create_bvh_device_data();
+	void release_bvh_device_data();
 
 	bool create_mesh_device_data();
 	void release_mesh_device_data();
-	
 };
 
-//TODO:COULD LOAD MTL HERE(OR TEXTURE)
 inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat)
 {
 	if (mat == nullptr)
@@ -223,6 +223,60 @@ inline int triangle_mesh::get_vertex_num(int index) const
 inline triangle* triangle_mesh::get_triangles_device() const
 {
 	return m_mesh_device;
+}
+
+inline bvh_node_device** triangle_mesh::get_bvh_node_device() const
+{
+	return m_mesh_bvh_device;
+}
+
+inline bool triangle_mesh::create_bvh_device_data()
+{
+	if (m_mesh_num == 0 || m_mesh_device == nullptr)
+	{
+		return false;
+	}
+
+	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_device, m_mesh_num * sizeof(bvh_node_device*)));
+
+	for (auto index = 0; index < m_mesh_num; index++)
+	{
+		int triangle_start_index = 0;
+		for (auto j = 0; j < index; j++)
+		{
+			triangle_start_index += m_mesh_triangles_num[j];
+		}
+
+		double time;
+		bvh_node* root;
+		printf("[Info]Constructing bvh for mesh %d on cpu...\n", index);
+		TIME_COUNT_CALL_START();
+		root = build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
+
+		printf("[Info]Copy bvh data for mesh %d to GPU...\n", index);
+		TIME_COUNT_CALL_START();
+		m_mesh_bvh_device[index] = build_bvh_device_data(root);
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
+
+		release_bvh(root);
+	}
+
+	return true;
+}
+
+inline void triangle_mesh::release_bvh_device_data()
+{
+	if (m_mesh_bvh_device != nullptr)
+	{
+		for (auto index = 0; index < m_mesh_num; index++)
+		{
+			CUDA_CALL(cudaFree(m_mesh_bvh_device[index]));
+		}
+		CUDA_CALL(cudaFree(m_mesh_bvh_device));
+	}
 }
 
 inline bool triangle_mesh::create_mesh_device_data()

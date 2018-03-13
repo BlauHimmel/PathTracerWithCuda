@@ -1,107 +1,57 @@
-#pragma once
+#include "bvh.h"
 
-#ifndef __BVH__
-#define __BVH__
-
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
-#include <thrust\device_vector.h>
-
-#include <vector>
-#include <stack>
-
-#include "triangle_mesh.hpp"
-#include "cuda_math.hpp"
-
-#define BVH_LEAF_NODE_TRIANGLE_NUM 12
-#define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12
-
-struct bounding_box
-{
-	float3 left_bottom;
-	float3 right_top;
-	float3 centroid;
-
-	bounding_box();
-	bounding_box(const float3& left_bottom, const float3& right_top);
-	void expand_to_fit_box(const float3& other_left_bottom, const float3& other_right_top);
-	void expand_to_fit_triangle(const float3& vertex0, const float3& vertex1, const float3& vertex2);
-	void get_bounding_box(const float3& other_left_bottom, const float3& other_right_top);
-	void get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2);
-	float get_surface_area();
-	float get_axis_length(int axis); //return- 0:x 1:y 2:z
-};
-
-struct bvh_node
-{
-	bounding_box box;
-	bvh_node* left = nullptr;
-	bvh_node* right = nullptr;
-	bool is_leaf = false;
-	int traversal_index = -1;
-	std::vector<int> triangle_indices;
-};
-
-struct bvh_node_device
-{
-	bounding_box box;
-	int* triangle_indices = nullptr;	//length = BVH_LEAF_NODE_TRIANGLE_NUM, index equal -1 means no triangle
-	bool is_leaf = false;
-	int next_node_index = -1;
-};
-
-inline bounding_box::bounding_box() 
+bounding_box::bounding_box()
 {
 
 }
 
-inline bounding_box::bounding_box(const float3& left_bottom, const float3& right_top) :
+bounding_box::bounding_box(const float3& left_bottom, const float3& right_top) :
 	left_bottom(left_bottom), right_top(right_top), centroid(0.5f * (right_top + left_bottom))
 {
 
 }
 
-inline void bounding_box::expand_to_fit_box(const float3& other_left_bottom, const float3& other_right_top)
+void bounding_box::expand_to_fit_box(const float3& other_left_bottom, const float3& other_right_top)
 {
 	left_bottom = fminf(left_bottom, other_left_bottom);
 	right_top = fmaxf(right_top, other_right_top);
 	centroid = 0.5f * (right_top + left_bottom);
 }
 
-inline void bounding_box::expand_to_fit_triangle(const float3& vertex0, const float3& vertex1, const float3& vertex2)
+void bounding_box::expand_to_fit_triangle(const float3& vertex0, const float3& vertex1, const float3& vertex2)
 {
 	left_bottom = fminf(left_bottom, make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z)));
 	right_top = fmaxf(right_top, make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z)));
 	centroid = 0.5f * (right_top + left_bottom);
 }
 
-inline void bounding_box::get_bounding_box(const float3& other_left_bottom, const float3& other_right_top)
+void bounding_box::get_bounding_box(const float3& other_left_bottom, const float3& other_right_top)
 {
 	left_bottom = other_left_bottom;
 	right_top = other_right_top;
 	centroid = 0.5f * (right_top + left_bottom);
 }
 
-inline void bounding_box::get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2)
+void bounding_box::get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2)
 {
 	left_bottom = make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z));
 	right_top = make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z));
 	centroid = 0.5f * (right_top + left_bottom);
 }
 
-inline float bounding_box::get_surface_area()
+float bounding_box::get_surface_area()
 {
 	return 2.0f * (right_top.x - left_bottom.x) * (right_top.y - left_bottom.y) * (right_top.z - left_bottom.z);
 }
 
-inline float bounding_box::get_axis_length(int axis)
+float bounding_box::get_axis_length(int axis)
 {
 	if (axis == 0)	return right_top.x - left_bottom.x;
 	else if (axis == 1) return right_top.y - left_bottom.y;
 	else return right_top.z - left_bottom.z;
 }
 
-inline bvh_node_device get_bvh_node_device(bvh_node* node)
+bvh_node_device get_bvh_node_device(bvh_node* node)
 {
 	bvh_node_device node_device;
 	node_device.box = node->box;
@@ -111,7 +61,7 @@ inline bvh_node_device get_bvh_node_device(bvh_node* node)
 	return node_device;
 }
 
-inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
+void split_bounding_box(bvh_node* node, bounding_box* boxes, int start_index)
 {
 	std::stack<bvh_node*> stack;
 	stack.push(node);
@@ -151,6 +101,8 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 
 			for (auto triangle_index : current_node->triangle_indices)
 			{
+				triangle_index -= start_index;
+
 				int internal_index = static_cast<int>((get(boxes[triangle_index].centroid, axis) - get(current_node->box.left_bottom, axis)) / internal_length);
 				internal_index = internal_index >= divide_internal_num ? (divide_internal_num - 1) : (internal_index < 0 ? 0 : internal_index);
 
@@ -163,7 +115,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 				{
 					internals[axis][internal_index].box.expand_to_fit_box(boxes[triangle_index].left_bottom, boxes[triangle_index].right_top);
 				}
-				internals[axis][internal_index].triangle_indices.push_back(triangle_index);
+				internals[axis][internal_index].triangle_indices.push_back(triangle_index + start_index);
 			}
 
 			for (auto i = 0; i < divide_internal_num; i++)
@@ -276,7 +228,7 @@ inline void split_bounding_box(bvh_node* node, bounding_box* boxes)
 	SAFE_DELETE_ARRAY(is_box_init);
 }
 
-inline bvh_node* build_bvh(triangle* triangles, int triangle_num)
+bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index)
 {
 	if (triangle_num == 0)
 	{
@@ -289,7 +241,7 @@ inline bvh_node* build_bvh(triangle* triangles, int triangle_num)
 	for (auto i = 0; i < triangle_num; i++)
 	{
 		root_node->box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
-		root_node->triangle_indices.push_back(i);
+		root_node->triangle_indices.push_back(i + start_index);
 	}
 
 	if (root_node->triangle_indices.size() <= BVH_LEAF_NODE_TRIANGLE_NUM)
@@ -305,17 +257,40 @@ inline bvh_node* build_bvh(triangle* triangles, int triangle_num)
 		boxes[i].get_bounding_box(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 	}
 
-	split_bounding_box(root_node, boxes);
+	split_bounding_box(root_node, boxes, start_index);
 
 	SAFE_DELETE_ARRAY(boxes);
 
 	return root_node;
 }
 
-inline bvh_node_device* build_bvh_device_data(bvh_node* root)
+void release_bvh(bvh_node* root_node)
+{
+	if (root_node != nullptr)
+	{
+		if (root_node->left == nullptr && root_node->right == nullptr)
+		{
+			SAFE_DELETE(root_node)
+		}
+		else
+		{
+			if (root_node->left != nullptr)
+			{
+				release_bvh(root_node->left);
+			}
+			if (root_node->right != nullptr)
+			{
+				release_bvh(root_node->right);
+			}
+			SAFE_DELETE(root_node);
+		}
+	}
+}
+
+bvh_node_device* build_bvh_device_data(bvh_node* root)
 {
 	std::stack<bvh_node*> stack;
-	std::vector<int> bvh_left_node_triangles_index_vec_device;
+	std::vector<int> bvh_leaf_node_triangles_index_vec_device;
 	int traversal_index = 0;
 	int node_num = 0;
 	stack.push(root);
@@ -330,7 +305,7 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 
 		if (current_node->is_leaf)
 		{
-			bvh_left_node_triangles_index_vec_device.insert(bvh_left_node_triangles_index_vec_device.end(), 
+			bvh_leaf_node_triangles_index_vec_device.insert(bvh_leaf_node_triangles_index_vec_device.end(),
 				current_node->triangle_indices.begin(), current_node->triangle_indices.end());
 		}
 
@@ -346,8 +321,8 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 	}
 
 	int* leaf_node_triangle_indices;
-	CUDA_CALL(cudaMalloc((void**)&leaf_node_triangle_indices, bvh_left_node_triangles_index_vec_device.size() * sizeof(int)));
-	CUDA_CALL(cudaMemcpy(leaf_node_triangle_indices, bvh_left_node_triangles_index_vec_device.data(), bvh_left_node_triangles_index_vec_device.size() * sizeof(int), cudaMemcpyHostToDevice));
+	CUDA_CALL(cudaMallocManaged((void**)&leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vec_device.size() * sizeof(int)));
+	CUDA_CALL(cudaMemcpy(leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vec_device.data(), bvh_leaf_node_triangles_index_vec_device.size() * sizeof(int), cudaMemcpyDefault));
 
 	std::vector<bvh_node_device> bvh_nodes_vec_device(node_num);
 	traversal_index = -1;
@@ -387,11 +362,9 @@ inline bvh_node_device* build_bvh_device_data(bvh_node* root)
 			stack.push(current_node->left);
 		}
 	}
-	
+
 	bvh_node_device* bvh_nodes_array_device;
-	CUDA_CALL(cudaMalloc((void**)&bvh_nodes_array_device, bvh_nodes_vec_device.size() * sizeof(bvh_node_device)));
-	CUDA_CALL(cudaMemcpy(bvh_nodes_array_device, bvh_nodes_vec_device.data(), bvh_nodes_vec_device.size() * sizeof(bvh_node_device), cudaMemcpyHostToDevice));
+	CUDA_CALL(cudaMallocManaged((void**)&bvh_nodes_array_device, bvh_nodes_vec_device.size() * sizeof(bvh_node_device)));
+	CUDA_CALL(cudaMemcpy(bvh_nodes_array_device, bvh_nodes_vec_device.data(), bvh_nodes_vec_device.size() * sizeof(bvh_node_device), cudaMemcpyDefault));
 	return bvh_nodes_array_device;
 }
-
-#endif // !__BVH__

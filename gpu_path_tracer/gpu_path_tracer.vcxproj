@@ -122,7 +122,7 @@
     <CudaCompile>
       <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_60,sm_60</CodeGeneration>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -166,10 +166,11 @@
       <TargetMachinePlatform>64</TargetMachinePlatform>
       <GPUDebugInfo>false</GPUDebugInfo>
       <GenerateLineInfo>false</GenerateLineInfo>
-      <CodeGeneration>compute_60,sm_60</CodeGeneration>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bvh.cpp" />
     <ClCompile Include="window.cpp" />
     <ClCompile Include="lib\imgui\imgui.cpp" />
     <ClCompile Include="lib\imgui\imgui_demo.cpp" />
@@ -179,9 +180,9 @@
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bvh.hpp" />
+    <ClInclude Include="bvh.h" />
     <ClInclude Include="camera.hpp" />
-    <ClInclude Include="basic_math.h" />
+    <ClInclude Include="basic_math.hpp" />
     <ClInclude Include="configuration.hpp" />
     <ClInclude Include="config_parser.hpp" />
     <ClInclude Include="cube_map.hpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="ray.hpp" />
     <ClInclude Include="scene_parser.hpp" />
     <ClInclude Include="sphere.hpp" />
+    <ClInclude Include="triangle.hpp" />
     <ClInclude Include="triangle_mesh.hpp" />
     <ClInclude Include="utilities.hpp" />
   </ItemGroup>

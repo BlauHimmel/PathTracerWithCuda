@@ -3,7 +3,7 @@
 #ifndef __IMAGE__
 #define __IMAGE__
 
-#include "basic_math.h"
+#include "basic_math.hpp"
 #include "utilities.hpp"
 #include <ctime>
 

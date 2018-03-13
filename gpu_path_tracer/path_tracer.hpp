@@ -16,12 +16,12 @@
 #include "material.hpp"
 #include "cuda_math.hpp"
 #include "utilities.hpp"
-#include "basic_math.h"
+#include "basic_math.hpp"
 #include "path_tracer_kernel.h"
 #include "material.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
-#include "bvh.hpp"
+#include "bvh.h"
 #include "scene_parser.hpp"
 #include "config_parser.hpp"
 
@@ -106,7 +106,7 @@ inline image* path_tracer::render()
 		m_image->pass_counter++;
 
 		path_tracer_kernel(
-			m_scene.get_triangles_num(),
+			m_scene.get_mesh_num(),
 			m_scene.get_bvh_node_device_ptr(),
 			m_scene.get_triangles_device_ptr(),
 			m_scene.get_sphere_num(),

@@ -9,7 +9,7 @@
 #include "triangle_mesh.hpp"
 #include "cube_map.hpp"
 #include "material.hpp"
-#include "bvh.hpp"
+#include "bvh.h"
 
 #include <exception>
 #include <fstream>
@@ -97,6 +97,8 @@
 }
 */
 
+struct triangle;
+
 class scene_parser
 {
 private:
@@ -105,8 +107,6 @@ private:
 	cube_map_loader m_cube_map_loader;
 
 	triangle_mesh m_triangle_mesh;
-
-	bvh_node_device* m_bvh_nodes_device = nullptr;
 
 	sphere* m_spheres = nullptr;
 	int m_sphere_num = 0;
@@ -125,7 +125,7 @@ public:
 
 	cube_map* get_cube_map_device_ptr();
 	triangle* get_triangles_device_ptr();
-	bvh_node_device* get_bvh_node_device_ptr();
+	bvh_node_device** get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
 
 	int get_mesh_num() const;
@@ -466,19 +466,7 @@ inline bool scene_parser::create_scene_data_device()
 
 	if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
 	{
-		bvh_node* root;
-		printf("[Info]Constructing bvh on cpu...\n");
-		TIME_COUNT_CALL_START();
-		root = build_bvh(m_triangle_mesh.get_triangles_device(), m_triangle_mesh.get_total_triangle_num());
-		TIME_COUNT_CALL_END(time);
-		printf("[Info]Completed, time consuming: %.4f ms\n", time);
-
-		printf("[Info]Copy bvh data to GPU...\n");
-		TIME_COUNT_CALL_START();
-		m_bvh_nodes_device = build_bvh_device_data(root);
-		TIME_COUNT_CALL_END(time);
-		printf("[Info]Completed, time consuming: %.4f ms\n", time);
-
+		m_triangle_mesh.create_bvh_device_data();
 		return true;
 	}
 	
@@ -489,6 +477,7 @@ inline void scene_parser::release_scene_data_device()
 {
 	m_cube_map_loader.release_cube_device_data();
 	m_triangle_mesh.release_mesh_device_data();
+	m_triangle_mesh.release_bvh_device_data();
 	if (m_spheres_device != nullptr)
 	{
 		CUDA_CALL(cudaFree(m_spheres_device));
@@ -506,9 +495,9 @@ inline triangle* scene_parser::get_triangles_device_ptr()
 	return m_triangle_mesh.get_triangles_device();
 }
 
-inline bvh_node_device* scene_parser::get_bvh_node_device_ptr()
+inline bvh_node_device** scene_parser::get_bvh_node_device_ptr()
 {
-	return m_bvh_nodes_device;
+	return m_triangle_mesh.get_bvh_node_device();
 }
 
 inline sphere* scene_parser::get_sphere_device_ptr()

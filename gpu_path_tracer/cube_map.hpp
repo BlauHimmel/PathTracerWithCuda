@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <vector>
-#include "basic_math.h"
+#include "basic_math.hpp"
 #include "lib\lodepng\lodepng.h"
 #include "utilities.hpp"
 

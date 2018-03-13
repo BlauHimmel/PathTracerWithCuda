@@ -10,10 +10,11 @@
 #include "curand.h"
 #include "curand_kernel.h"
 
-#include "basic_math.h"
+#include "basic_math.hpp"
 #include "cuda_math.hpp"
 
 #include "sphere.hpp"
+#include "triangle.hpp"
 #include "image.hpp"
 #include "ray.hpp"
 #include "camera.hpp"
@@ -22,7 +23,7 @@
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
 #include "configuration.hpp"
-#include "bvh.hpp"
+#include "bvh.h"
 
 //TODO: Use unified memory managed
 
@@ -184,20 +185,13 @@ __host__ __device__ bool intersect_bounding_box(
 
 __host__ __device__ bool intersect_triangle_mesh_bvh(
 	triangle* triangles,			//in	
-	bvh_node_device* bvh_nodes,		//in	
-	int triangle_num,				//in	
+	bvh_node_device** bvh_nodes,	//in
+	int mesh_index,					//in
 	const ray& ray,					//in
 	float& hit_t,					//out	
 	int& hit_triangle_index			//out
 )
 {
-	if (triangle_num == 0)
-	{
-		return false;
-	}
-
-	int node_num = bvh_nodes[0].next_node_index;
-
 	float min_t = INFINITY;
 	int min_triangle_index;
 
@@ -205,10 +199,11 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 
 	bool is_hit = false;
 
+	int node_num = bvh_nodes[mesh_index][0].next_node_index;
 	int traversal_position = 0;
 	while (traversal_position != node_num)
 	{
-		bvh_node_device current_node = bvh_nodes[traversal_position];
+		bvh_node_device current_node = bvh_nodes[mesh_index][traversal_position];
 
 		//if hit the box them check if it is leaf node, otherwise check stop traversing on this branch
 		if (intersect_bounding_box(current_node.box, ray))
@@ -216,7 +211,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 			if (current_node.is_leaf)
 			{
 				//intersect with each triangles in the leaf node and update the relevant minimal parameters
-				for (auto i = 0; i < BVH_LEAF_NODE_TRIANGLE_NUM; i++)
+				for (int i = 0; i < BVH_LEAF_NODE_TRIANGLE_NUM; i++)
 				{
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
@@ -697,8 +692,8 @@ __global__ void generate_ray_kernel(
 }
 
 __global__ void trace_ray_kernel(
-	int triangle_num,						//in
-	bvh_node_device* bvh_nodes,				//in
+	int mesh_num,							//in
+	bvh_node_device** bvh_nodes,			//in
 	triangle* triangles,					//in
 	int sphere_num,							//in
 	sphere* spheres,						//in
@@ -763,12 +758,15 @@ __global__ void trace_ray_kernel(
 		}
 	}
 	
-	if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, triangle_num, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+	for (int mesh_index = 0; mesh_index < mesh_num; mesh_index++)
 	{
-		min_t = hit_t;
-		min_point = point_on_ray(tracing_ray, hit_t);
-		min_normal = triangles[min_triangle_index].normal;
-		min_type = object_type::triangle;
+		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, min_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+		{
+			min_t = hit_t;
+			min_point = point_on_ray(tracing_ray, hit_t);
+			min_normal = triangles[min_triangle_index].normal;
+			min_type = object_type::triangle;
+		}
 	}
 
 	//absorption and scattering of medium
@@ -971,23 +969,23 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 //TODO:BUILD SPATIAL STRUCTURE ON GPU
 
 extern "C" void path_tracer_kernel(
-	int triangle_num,					//in
-	bvh_node_device* bvh_nodes_device,	//in
-	triangle* triangles_device,			//in
-	int sphere_num,						//in
-	sphere* spheres_device, 			//in
-	int pixel_count, 					//in
-	color* image_pixels,				//in out
-	color256* image_pixels_256,			//in out
-	int pass_counter, 					//in 
-	render_camera* render_cam_device,	//in
-	cube_map* sky_cube_map_device,		//in
-	color* not_absorbed_colors_device,	//in 
-	color* accumulated_colors_device,	//in 
-	ray* rays_device,					//in 
-	int* energy_exist_pixels_device,	//in 
-	scattering* scatterings_device,		//in 
-	configuration* config_device		//in 
+	int mesh_num,							//in
+	bvh_node_device** bvh_nodes_device,		//in
+	triangle* triangles_device,				//in
+	int sphere_num,							//in
+	sphere* spheres_device, 				//in
+	int pixel_count, 						//in
+	color* image_pixels,					//in out
+	color256* image_pixels_256,				//in out
+	int pass_counter, 						//in
+	render_camera* render_camera_device,	//in
+	cube_map* sky_cube_map_device,			//in
+	color* not_absorbed_colors_device,		//in 
+	color* accumulated_colors_device,		//in 
+	ray* rays_device,						//in 
+	int* energy_exist_pixels_device,		//in 
+	scattering* scatterings_device,			//in 
+	configuration* config_device			//in 
 )
 {
 	configuration config = *config_device;
@@ -1009,13 +1007,13 @@ extern "C" void path_tracer_kernel(
 		);
 
 	generate_ray_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
-		render_cam_device->eye,
-		render_cam_device->view,
-		render_cam_device->up,
-		render_cam_device->resolution,
-		render_cam_device->fov,
-		render_cam_device->aperture_radius,
-		render_cam_device->focal_distance,
+		render_camera_device->eye,
+		render_camera_device->view,
+		render_camera_device->up,
+		render_camera_device->resolution,
+		render_camera_device->fov,
+		render_camera_device->aperture_radius,
+		render_camera_device->focal_distance,
 		pixel_count, 
 		rays_device,
 		seed,
@@ -1032,7 +1030,7 @@ extern "C" void path_tracer_kernel(
 		int used_blocks_num_per_gird = (energy_exist_pixels_count + threads_num_per_block - 1) / threads_num_per_block;
 
 		trace_ray_kernel <<<used_blocks_num_per_gird, threads_num_per_block>>> (
-			triangle_num,
+			mesh_num,
 			bvh_nodes_device,
 			triangles_device,
 			sphere_num, 

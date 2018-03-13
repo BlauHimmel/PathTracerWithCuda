@@ -66,6 +66,9 @@
     <ClCompile Include="window.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="bvh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.hpp">
@@ -92,9 +95,6 @@
     <ClInclude Include="path_tracer.hpp">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="basic_math.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="material.hpp">
       <Filter>Header</Filter>
     </ClInclude>
@@ -111,9 +111,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="triangle_mesh.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="bvh.hpp">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -214,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="lib\json\detail\parsing\parser.hpp">
       <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_math.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="bvh.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 #define __MATERIAL__
 
 #include <cuda_runtime.h>
-#include "basic_math.h"
+#include "basic_math.hpp"
 
 //for conductors(e.g. metals like aluminum or copper) extinction is set to be greater than zero, otherwise it is considered as dielectrics
 //note : 

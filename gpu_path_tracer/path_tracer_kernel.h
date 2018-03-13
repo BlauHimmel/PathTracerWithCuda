@@ -8,20 +8,20 @@
 #include "ray.hpp"
 #include "camera.hpp"
 #include "cube_map.hpp"
-#include "triangle_mesh.hpp"
-#include "bvh.hpp"
+#include "triangle.hpp"
+#include "bvh.h"
 #include "configuration.hpp"
 
 extern "C" void path_tracer_kernel(
-	int triangle_num,						//in
-	bvh_node_device* bvh_nodes_device,		//in
+	int mesh_num,							//in
+	bvh_node_device** bvh_nodes_device,		//in
 	triangle* triangles_device,				//in
 	int sphere_num,							//in
 	sphere* spheres_device, 				//in
 	int pixel_count, 						//in
 	color* image_pixels,					//in out
 	color256* image_pixels_256,				//in out
-	int depth, 								//in
+	int pass_counter, 						//in
 	render_camera* render_camera_device,	//in
 	cube_map* sky_cube_map_device,			//in
 	color* not_absorbed_colors_device,		//in 
