@@ -3,6 +3,10 @@
 #ifndef __UTILITIES__
 #define __UTILITIES__
 
+#define API_ENTRY
+
+#define INTERNAL_FUNC
+
 #define CUDA_CALL(Statement)\
 {\
 	cudaError error = Statement;\

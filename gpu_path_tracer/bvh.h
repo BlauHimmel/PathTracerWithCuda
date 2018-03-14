@@ -36,6 +36,7 @@ struct bounding_box
 struct bvh_node
 {
 	bounding_box box;
+	uint morton_code;
 	bvh_node* left = nullptr;
 	bvh_node* right = nullptr;
 	bool is_leaf = false;
@@ -51,14 +52,58 @@ struct bvh_node_device
 	int next_node_index = -1;
 };
 
-bvh_node_device get_bvh_node_device(bvh_node* node);
+//For simplicity, I decide not to use the a series of classes here.
 
-void split_bounding_box(bvh_node* node, bounding_box* boxes, int start_index);
+namespace bvh_naive_cpu
+{
+	INTERNAL_FUNC bvh_node_device get_bvh_node_device(bvh_node* node);
 
-bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index);
+	INTERNAL_FUNC void split_bounding_box(bvh_node* node, bounding_box* boxes, int start_index);
 
-void release_bvh(bvh_node* root_node);
+	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index);
 
-bvh_node_device* build_bvh_device_data(bvh_node* root);
+	API_ENTRY void release_bvh(bvh_node* root_node);
+
+	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
+}
+
+namespace bvh_morton_code_cpu
+{
+	struct morton_node_predicate
+	{
+		bool operator()(const bvh_node& left, const bvh_node& right) const
+		{
+			return left.morton_code < right.morton_code;
+		}
+	};
+
+	/*
+		Expands a 10-bit integer into 30 bits by inserting 2 zeros after each bit.
+		From from http://devblogs.nvidia.com/parallelforall/thinking-parallel-part-iii-tree-construction-gpu/
+	*/
+	INTERNAL_FUNC uint expand_bits(uint value);
+
+	/*
+		Calculates a 30-bit Morton code for the given 3D point located within the unit cube [0,1].
+		From from http://devblogs.nvidia.com/parallelforall/thinking-parallel-part-iii-tree-construction-gpu/
+	*/
+	INTERNAL_FUNC uint morton_code(const float3& point);
+
+	/*
+		Counts the number of leading zero bits in a 32-bit integer.
+		From : http://embeddedgurus.com/state-space/2014/09/fast-deterministic-and-portable-counting-leading-zeros/
+	*/
+	INTERNAL_FUNC uint clz(uint value);
+
+	/*
+		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
+	*/
+	INTERNAL_FUNC uint find_split(uint* morton_codes, uint first_index, uint last_index);
+
+	/*
+		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
+	*/
+	uint2 find_range(uint* morton_codes, uint morton_codes_size, uint index);
+}
 
 #endif // !__BVH__

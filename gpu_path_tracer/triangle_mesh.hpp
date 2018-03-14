@@ -28,6 +28,7 @@ private:
 	std::vector<float3> m_mesh_position;
 	std::vector<float3> m_mesh_scale;
 	std::vector<material*> m_mesh_material;
+	std::vector<std::string> m_mesh_name;
 
 	int m_mesh_num = 0;
 	//============================================
@@ -69,6 +70,8 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 		return false;
 	}
 
+	std::string mesh_name =filename.substr(filename.find_last_of('\\') + 1);
+
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	tinyobj::attrib_t attrib; 
@@ -76,7 +79,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 
 	int triangle_num = 0;
 
-	std::cout << "[Info]Loading file " << filename << "...." << std::endl;
+	std::cout << "[Info]Loading file " << mesh_name << "...." << std::endl;
 
 	bool is_success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, filename.c_str());
 
@@ -87,7 +90,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 
 	if (!is_success)
 	{
-		std::cout << "[Info]Load file " << filename << "failed." << std::endl;
+		std::cout << "[Info]Load file " << mesh_name << "failed." << std::endl;
 		return false;
 	}
 
@@ -97,7 +100,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 		{
 			if (num != 3)
 			{
-				std::cout << "[Error]" <<  filename << " is not a triangle mesh." << std::endl;
+				std::cout << "[Error]" << mesh_name << " is not a triangle mesh." << std::endl;
 				return false;
 			}
 		}
@@ -153,8 +156,9 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 	m_mesh_position.push_back(position);
 	m_mesh_scale.push_back(scale);
 	m_mesh_material.push_back(mat);
+	m_mesh_name.push_back(mesh_name);
 
-	std::cout << "[Info]Load file " << filename << " succeeded. vertices : " << vertices_num << std::endl;
+	std::cout << "[Info]Load file " << mesh_name << " succeeded. vertices : " << vertices_num << std::endl;
 
 	return true;
 }
@@ -249,19 +253,19 @@ inline bool triangle_mesh::create_bvh_device_data()
 
 		double time;
 		bvh_node* root;
-		printf("[Info]Constructing bvh for mesh %d on cpu...\n", index);
+		printf("[Info]Constructing bvh for mesh %s on cpu...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		root = build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		root = bvh_naive_cpu::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-		printf("[Info]Copy bvh data for mesh %d to GPU...\n", index);
+		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_device[index] = build_bvh_device_data(root);
+		m_mesh_bvh_device[index] = bvh_naive_cpu::build_bvh_device_data(root);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-		release_bvh(root);
+		bvh_naive_cpu::release_bvh(root);
 	}
 
 	return true;
