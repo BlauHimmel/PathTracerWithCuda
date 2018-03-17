@@ -9,13 +9,18 @@
 
 #include <vector>
 #include <stack>
+#include <bitset>
+#include <algorithm>
+
+#include <omp.h>
 
 #include "triangle.hpp"
 #include "utilities.hpp"
 #include "cuda_math.hpp"
 
-#define BVH_LEAF_NODE_TRIANGLE_NUM 6
-#define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12
+#undef BVH_MORTON_CODE_BUILD_OPENMP			//used by bvh_morton_code_cpu
+#define BVH_LEAF_NODE_TRIANGLE_NUM 1			//used by bvh_naive_cpu and bvh_morton_code_cpu
+#define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12	//used by bvh_naive_cpu
 
 struct bounding_box
 {
@@ -31,17 +36,22 @@ struct bounding_box
 	void get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2);
 	float get_surface_area();
 	float get_axis_length(int axis); //return- 0:x 1:y 2:z
+	bool is_thin_bounding_box();
 };
 
 struct bvh_node
 {
 	bounding_box box;
-	uint morton_code;
 	bvh_node* left = nullptr;
 	bvh_node* right = nullptr;
 	bool is_leaf = false;
 	int traversal_index = -1;
 	std::vector<int> triangle_indices;
+
+	uint morton_code = 0;		//used by bvh_morton_code_cpu
+	bvh_node* parent = nullptr;	//used by bvh_morton_code_cpu
+	bool is_visited = false;	//used by bvh_morton_code_cpu
+	int triangle_index = -1;	//used by bvh_morton_code_cpu
 };
 
 struct bvh_node_device
@@ -69,13 +79,7 @@ namespace bvh_naive_cpu
 
 namespace bvh_morton_code_cpu
 {
-	struct morton_node_predicate
-	{
-		bool operator()(const bvh_node& left, const bvh_node& right) const
-		{
-			return left.morton_code < right.morton_code;
-		}
-	};
+	bool bvh_node_morton_node_comparator(const bvh_node& left, const bvh_node& right);
 
 	/*
 		Expands a 10-bit integer into 30 bits by inserting 2 zeros after each bit.
@@ -98,12 +102,22 @@ namespace bvh_morton_code_cpu
 	/*
 		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 	*/
-	INTERNAL_FUNC uint find_split(uint* morton_codes, uint first_index, uint last_index);
+	INTERNAL_FUNC uint find_split(bvh_node* sorted_leaf_nodes, uint first_index, uint last_index);
 
 	/*
 		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 	*/
-	uint2 find_range(uint* morton_codes, uint morton_codes_size, uint index);
+	INTERNAL_FUNC uint2 find_range(bvh_node* sorted_leaf_nodes, uint node_num, uint index);
+
+	INTERNAL_FUNC void generate_internal_node(bvh_node* internal_nodes, bvh_node* leaf_nodes, uint leaf_node_num, uint index);
+
+	INTERNAL_FUNC void generate_bounding_box_for_internal_node(bvh_node* node);
+
+	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index);
+
+	API_ENTRY void release_bvh(bvh_node* root_node);
+
+	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
 }
 
 #endif // !__BVH__

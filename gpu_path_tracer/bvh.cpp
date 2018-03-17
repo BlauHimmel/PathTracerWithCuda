@@ -2,7 +2,15 @@
 
 bounding_box::bounding_box()
 {
-
+	left_bottom.x = -1.0f;
+	left_bottom.y = -1.0f;
+	left_bottom.z = -1.0f;
+	right_top.x = -1.0f;
+	right_top.y = -1.0f;
+	right_top.z = -1.0f;
+	centroid.x = -1.0f;
+	centroid.y = -1.0f;
+	centroid.z = -1.0f;
 }
 
 bounding_box::bounding_box(const float3& left_bottom, const float3& right_top) :
@@ -36,6 +44,7 @@ void bounding_box::get_bounding_box(const float3& vertex0, const float3& vertex1
 {
 	left_bottom = make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z));
 	right_top = make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z));
+
 	centroid = 0.5f * (right_top + left_bottom);
 }
 
@@ -49,6 +58,14 @@ float bounding_box::get_axis_length(int axis)
 	if (axis == 0)	return right_top.x - left_bottom.x;
 	else if (axis == 1) return right_top.y - left_bottom.y;
 	else return right_top.z - left_bottom.z;
+}
+
+bool bounding_box::is_thin_bounding_box()
+{
+	return
+		right_top.x == left_bottom.x ||
+		right_top.y == left_bottom.y ||
+		right_top.z == left_bottom.z;
 }
 
 namespace bvh_naive_cpu
@@ -89,20 +106,20 @@ namespace bvh_naive_cpu
 			float min_cost = INFINITY;
 
 			//find the best partition
-			for (auto axis = 0; axis < 3; axis++)
+			for (int axis = 0; axis < 3; axis++)
 			{
 				float axis_length = current_node->box.get_axis_length(axis);
 
 				int divide_internal_num = min(static_cast<int>(BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM), static_cast<int>(current_node->triangle_indices.size()));
 				float internal_length = axis_length / static_cast<float>(divide_internal_num);
 
-				for (auto i = 0; i < divide_internal_num; i++)
+				for (int i = 0; i < divide_internal_num; i++)
 				{
 					is_box_init[i] = false;
 					internals[axis][i].triangle_indices.clear();
 				}
 
-				for (auto triangle_index : current_node->triangle_indices)
+				for (int triangle_index : current_node->triangle_indices)
 				{
 					triangle_index -= start_index;
 
@@ -121,10 +138,10 @@ namespace bvh_naive_cpu
 					internals[axis][internal_index].triangle_indices.push_back(triangle_index + start_index);
 				}
 
-				for (auto i = 0; i < divide_internal_num; i++)
+				for (int i = 0; i < divide_internal_num; i++)
 				{
 					bounding_box box_left;
-					for (auto j = 0; j < i; j++)
+					for (int j = 0; j < i; j++)
 					{
 						if (is_box_init[j])
 						{
@@ -135,7 +152,7 @@ namespace bvh_naive_cpu
 
 					size_t triangle_num_left = 0;
 
-					for (auto j = 0; j < i; j++)
+					for (int j = 0; j < i; j++)
 					{
 						if (is_box_init[j])
 						{
@@ -145,7 +162,7 @@ namespace bvh_naive_cpu
 					}
 
 					bounding_box box_right;
-					for (auto j = i; j < divide_internal_num; j++)
+					for (int j = i; j < divide_internal_num; j++)
 					{
 						if (is_box_init[j])
 						{
@@ -156,7 +173,7 @@ namespace bvh_naive_cpu
 
 					size_t triangle_num_right = 0;
 
-					for (auto j = i; j < divide_internal_num; j++)
+					for (int j = i; j < divide_internal_num; j++)
 					{
 						if (is_box_init[j])
 						{
@@ -186,7 +203,7 @@ namespace bvh_naive_cpu
 			{
 				bvh_node* left = new bvh_node();
 				left->box = split_box_left;
-				for (auto i = 0; i < split_internal_index; i++)
+				for (int i = 0; i < split_internal_index; i++)
 				{
 					left->triangle_indices.insert(left->triangle_indices.end(), internals[split_axis][i].triangle_indices.begin(), internals[split_axis][i].triangle_indices.end());
 				}
@@ -201,13 +218,14 @@ namespace bvh_naive_cpu
 					stack.push(left);
 				}
 				current_node->left = left;
+				left->parent = current_node;
 			}
 
 			if (split_triangle_num_right > 0)
 			{
 				bvh_node* right = new bvh_node();
 				right->box = split_box_right;
-				for (auto i = split_internal_index; i < split_divide_internal_num; i++)
+				for (int i = split_internal_index; i < split_divide_internal_num; i++)
 				{
 					right->triangle_indices.insert(right->triangle_indices.end(), internals[split_axis][i].triangle_indices.begin(), internals[split_axis][i].triangle_indices.end());
 				}
@@ -222,6 +240,7 @@ namespace bvh_naive_cpu
 					stack.push(right);
 				}
 				current_node->right = right;
+				right->parent = current_node;
 			}
 		}
 
@@ -241,7 +260,7 @@ namespace bvh_naive_cpu
 		bvh_node* root_node = new bvh_node();
 		root_node->box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
 
-		for (auto i = 0; i < triangle_num; i++)
+		for (int i = 0; i < triangle_num; i++)
 		{
 			root_node->box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 			root_node->triangle_indices.push_back(i + start_index);
@@ -255,7 +274,7 @@ namespace bvh_naive_cpu
 
 		bounding_box* boxes = new bounding_box[triangle_num];
 
-		for (auto i = 0; i < triangle_num; i++)
+		for (int i = 0; i < triangle_num; i++)
 		{
 			boxes[i].get_bounding_box(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 		}
@@ -310,6 +329,11 @@ namespace bvh_naive_cpu
 			{
 				bvh_leaf_node_triangles_index_vec_device.insert(bvh_leaf_node_triangles_index_vec_device.end(),
 					current_node->triangle_indices.begin(), current_node->triangle_indices.end());
+			
+				if (current_node->box.is_thin_bounding_box())
+				{
+					current_node->box.expand_to_fit_box(current_node->parent->box.left_bottom, current_node->parent->box.right_top);
+				}
 			}
 
 			if (current_node->right != nullptr)
@@ -374,7 +398,12 @@ namespace bvh_naive_cpu
 }
 
 namespace bvh_morton_code_cpu
-{	
+{
+	bool bvh_node_morton_node_comparator(const bvh_node& left, const bvh_node& right)
+	{
+		return left.morton_code < right.morton_code;
+	}
+
 	/*
 		Expands a 10-bit integer into 30 bits by inserting 2 zeros after each bit.
 		From from http://devblogs.nvidia.com/parallelforall/thinking-parallel-part-iii-tree-construction-gpu/
@@ -402,7 +431,7 @@ namespace bvh_morton_code_cpu
 		uint yy = expand_bits(static_cast<uint>(y));
 		uint zz = expand_bits(static_cast<uint>(z));
 
-		return xx << 2 + yy << 1 + zz;
+		return xx * 4 + yy * 2 + zz;
 	}
 
 	/*
@@ -478,10 +507,10 @@ namespace bvh_morton_code_cpu
 	/*
 		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 	*/
-	INTERNAL_FUNC uint find_split(uint* morton_codes, uint first_index, uint last_index)
+	INTERNAL_FUNC uint find_split(bvh_node* sorted_leaf_nodes, uint first_index, uint last_index)
 	{
-		uint first_morton_code = morton_codes[first_index];
-		uint last_morton_code = morton_codes[last_index];
+		uint first_morton_code = sorted_leaf_nodes[first_index].morton_code;
+		uint last_morton_code = sorted_leaf_nodes[last_index].morton_code;
 
 		if (first_morton_code == last_morton_code)
 		{
@@ -499,8 +528,8 @@ namespace bvh_morton_code_cpu
 
 			if (new_split_index < last_index)
 			{
-				uint split_morton_code = morton_codes[new_split_index];
-				int split_prefix_length = clz(first_morton_code ^ split_morton_code);
+				uint split_morton_code = sorted_leaf_nodes[new_split_index].morton_code;
+				uint split_prefix_length = clz(first_morton_code ^ split_morton_code);
 
 				if (split_prefix_length > common_prefix_length)
 				{
@@ -517,33 +546,33 @@ namespace bvh_morton_code_cpu
 	/*
 		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 	*/
-	uint2 find_range(uint* morton_codes, uint morton_codes_size, uint index)
+	INTERNAL_FUNC uint2 find_range(bvh_node* sorted_leaf_nodes, uint node_num, uint index)//TODO:BUG
 	{
 		if (index == 0)
 		{
-			return make_uint2(0, morton_codes_size - 1);
+			return make_uint2(0, node_num - 1);
 		}
 
 		int direction;
 		uint delta_min;
 		uint initial_index = index;
 
-		uint previous_morton_code = morton_codes[index - 1];
-		uint current_morton_code = morton_codes[index];
-		uint next_morton_code = morton_codes[index + 1];
+		uint previous_morton_code = sorted_leaf_nodes[index - 1].morton_code;
+		uint current_morton_code = sorted_leaf_nodes[index].morton_code;
+		uint next_morton_code = sorted_leaf_nodes[index + 1].morton_code;
 
 		if (previous_morton_code == current_morton_code && current_morton_code == next_morton_code)
 		{
-			while (index > 0 && index < morton_codes_size - 1)
+			while (index > 0 && index < node_num - 1)
 			{
 				index++;
 
-				if (index >= morton_codes_size - 1)
+				if (index >= node_num - 1)
 				{
 					break;
 				}
 
-				if (morton_codes[index] != morton_codes[index + 1])
+				if (sorted_leaf_nodes[index].morton_code != sorted_leaf_nodes[index + 1].morton_code)
 				{
 					break;
 				}
@@ -571,8 +600,8 @@ namespace bvh_morton_code_cpu
 		uint l_max = 2;
 		uint test_index = index + l_max * direction;
 
-		while (test_index < morton_codes_size && test_index >= 0 &&
-			clz(current_morton_code ^ morton_codes[test_index] > delta_min))
+		while (test_index < node_num && test_index >= 0 &&
+			clz(current_morton_code ^ sorted_leaf_nodes[test_index].morton_code) > delta_min)
 		{
 			l_max *= 2;
 			test_index = index + l_max * direction;
@@ -585,9 +614,9 @@ namespace bvh_morton_code_cpu
 			int t = l_max / divisor;
 			test_index = index + (l + t) * direction;
 
-			if (test_index < morton_codes_size && test_index >= 0)
+			if (test_index < node_num && test_index >= 0)
 			{
-				if (clz(current_morton_code ^ morton_codes[test_index]))
+				if (clz(current_morton_code ^ sorted_leaf_nodes[test_index].morton_code) > delta_min)
 				{
 					l = l + t;
 				}
@@ -602,5 +631,191 @@ namespace bvh_morton_code_cpu
 		{
 			return make_uint2(index + l * direction, index);
 		}
+	}
+
+	INTERNAL_FUNC void generate_internal_node(bvh_node* internal_nodes, bvh_node* leaf_nodes, uint leaf_node_num, uint index)
+	{
+		uint2 range = find_range(leaf_nodes, leaf_node_num, index);
+		uint split_index = find_split(leaf_nodes, range.x, range.y);
+
+		bvh_node* left;
+		bvh_node* right;
+
+		if (split_index == range.x)
+		{
+			left = &leaf_nodes[split_index];
+		}
+		else
+		{
+			left = &internal_nodes[split_index];
+		}
+
+		if (split_index + 1 == range.y)
+		{
+			right = &leaf_nodes[split_index + 1];
+		}
+		else
+		{
+			right = &internal_nodes[split_index + 1];
+		}
+
+		left->parent = &internal_nodes[index];
+		right->parent = &internal_nodes[index];
+
+		internal_nodes[index].left = left;
+		internal_nodes[index].right = right;
+	}
+
+	INTERNAL_FUNC void generate_bounding_box_for_internal_node(bvh_node* node)
+	{
+		if (node->is_leaf)
+		{
+			if (node->parent != nullptr)
+			{
+				generate_bounding_box_for_internal_node(node->parent);
+			}
+		}
+		else
+		{
+			bool is_ret = false;
+
+			#pragma omp critical(node)
+			{
+				if (!node->is_visited)
+				{
+					node->is_visited = true;
+					is_ret = true;
+				}
+			}
+
+			if (is_ret)
+			{
+				return;
+			}
+
+			node->box.get_bounding_box(node->left->box.left_bottom, node->left->box.right_top);
+			node->box.expand_to_fit_box(node->right->box.left_bottom, node->right->box.right_top);
+
+			node->triangle_indices.insert(node->triangle_indices.end(), node->left->triangle_indices.begin(), node->left->triangle_indices.end());
+			node->triangle_indices.insert(node->triangle_indices.end(), node->right->triangle_indices.begin(), node->right->triangle_indices.end());
+
+			if (node->parent != nullptr)
+			{
+				generate_bounding_box_for_internal_node(node->parent);
+			}
+		}
+	}
+
+	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index)
+	{
+		static int threadnum = omp_get_max_threads();
+
+		uint leaf_node_num = triangle_num / BVH_LEAF_NODE_TRIANGLE_NUM;
+		leaf_node_num = ((leaf_node_num == 0) ? 1 : leaf_node_num);
+		leaf_node_num = ((triangle_num % BVH_LEAF_NODE_TRIANGLE_NUM == 0) ? leaf_node_num : (leaf_node_num + 1));
+
+		uint internal_node_num = leaf_node_num - 1;
+
+		bvh_node* triangle_nodes = new bvh_node[triangle_num];
+		bvh_node* leaf_nodes = new bvh_node[leaf_node_num];
+		bvh_node* internal_nodes = new bvh_node[internal_node_num];
+
+		//Compute the total bounding box of the given mesh
+		internal_nodes[0].box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
+		for (int i = 1; i < triangle_num; i++)
+		{
+			internal_nodes[0].box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
+		}
+
+		//Compute the bounding box of each triangle on the given mesh
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < triangle_num; i++)
+		{
+			triangle_nodes[i].triangle_index = i + start_index;
+			triangle_nodes[i].box.get_bounding_box(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
+			triangle_nodes[i].morton_code = morton_code(
+				(triangle_nodes[i].box.centroid - internal_nodes[0].box.left_bottom) / 
+				(internal_nodes[0].box.right_top - internal_nodes [0].box.left_bottom)
+			);
+		}
+
+		//Sort the bvh_node according to the morton code of its centroid
+		std::sort(triangle_nodes, triangle_nodes + triangle_num, bvh_node_morton_node_comparator);
+
+		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
+		{
+			int triangle_start_index = i * BVH_LEAF_NODE_TRIANGLE_NUM;
+
+			leaf_nodes[i].triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+
+			leaf_nodes[i].is_leaf = true;
+			leaf_nodes[i].box.get_bounding_box(
+				triangle_nodes[triangle_start_index].box.left_bottom,
+				triangle_nodes[triangle_start_index].box.right_top
+			);
+			leaf_nodes[i].triangle_indices[0] = triangle_nodes[triangle_start_index].triangle_index;
+
+			for (int j = 1; j < BVH_LEAF_NODE_TRIANGLE_NUM; j++)
+			{
+				if (j + triangle_start_index < triangle_num)
+				{
+					leaf_nodes[i].box.expand_to_fit_box(triangle_nodes[j + triangle_start_index].box.left_bottom, triangle_nodes[j + triangle_start_index].box.right_top);
+					leaf_nodes[i].triangle_indices[j] = triangle_nodes[j + triangle_start_index].triangle_index;
+				}
+			}
+
+			leaf_nodes[i].morton_code = morton_code(
+				(leaf_nodes[i].box.centroid - internal_nodes[0].box.left_bottom) /
+				(internal_nodes[0].box.right_top - internal_nodes[0].box.left_bottom)
+			);
+		}
+
+		std::sort(leaf_nodes, leaf_nodes + leaf_node_num, bvh_node_morton_node_comparator);
+
+		//Generate the tree(Can be parallel)
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < static_cast<int>(internal_node_num); i++)
+		{
+			generate_internal_node(internal_nodes, leaf_nodes, leaf_node_num, i);
+		}
+
+		//Generate bounding box for the internal node of the tree
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
+		{
+			generate_bounding_box_for_internal_node(&leaf_nodes[i]);
+		}
+
+		SAFE_DELETE_ARRAY(triangle_nodes);
+
+		return &internal_nodes[0];
+	}
+
+	API_ENTRY void release_bvh(bvh_node* root_node)
+	{
+		bvh_node* leaf_nodes = root_node;
+		while (!leaf_nodes->is_leaf)
+		{
+			leaf_nodes = leaf_nodes->left;
+		}
+		SAFE_DELETE_ARRAY(leaf_nodes);
+		SAFE_DELETE_ARRAY(root_node);
+
+		bvh_naive_cpu::release_bvh(root_node);
+	}
+
+	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root)
+	{
+		return bvh_naive_cpu::build_bvh_device_data(root);
 	}
 }
