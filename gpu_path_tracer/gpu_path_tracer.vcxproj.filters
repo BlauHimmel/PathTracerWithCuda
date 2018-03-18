@@ -221,9 +221,21 @@
     <ClInclude Include="bvh.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="bvh_morton_code_kernel.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="bvh_node.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="bounding_box.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="path_tracer_kernel.cu">
+      <Filter>Kernel</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bvh_morton_code_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
   </ItemGroup>

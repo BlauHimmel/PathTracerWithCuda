@@ -9,7 +9,6 @@
 
 #include <vector>
 #include <stack>
-#include <bitset>
 #include <algorithm>
 
 #include <omp.h>
@@ -17,52 +16,15 @@
 #include "triangle.hpp"
 #include "utilities.hpp"
 #include "cuda_math.hpp"
+#include "configuration.hpp"
+#include "bvh_morton_code_kernel.h"
+#include "bounding_box.hpp"
+#include "bvh_node.h"
 
-#undef BVH_MORTON_CODE_BUILD_OPENMP			//used by bvh_morton_code_cpu
+#undef BVH_MORTON_CODE_BUILD_OPENMP				//used by bvh_morton_code_cpu
 #define BVH_LEAF_NODE_TRIANGLE_NUM 1			//used by bvh_naive_cpu and bvh_morton_code_cpu
 #define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12	//used by bvh_naive_cpu
-
-struct bounding_box
-{
-	float3 left_bottom;
-	float3 right_top;
-	float3 centroid;
-
-	bounding_box();
-	bounding_box(const float3& left_bottom, const float3& right_top);
-	void expand_to_fit_box(const float3& other_left_bottom, const float3& other_right_top);
-	void expand_to_fit_triangle(const float3& vertex0, const float3& vertex1, const float3& vertex2);
-	void get_bounding_box(const float3& other_left_bottom, const float3& other_right_top);
-	void get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2);
-	float get_surface_area();
-	float get_axis_length(int axis); //return- 0:x 1:y 2:z
-	bool is_thin_bounding_box();
-};
-
-struct bvh_node
-{
-	bounding_box box;
-	bvh_node* left = nullptr;
-	bvh_node* right = nullptr;
-	bool is_leaf = false;
-	int traversal_index = -1;
-	std::vector<int> triangle_indices;
-
-	uint morton_code = 0;		//used by bvh_morton_code_cpu
-	bvh_node* parent = nullptr;	//used by bvh_morton_code_cpu
-	bool is_visited = false;	//used by bvh_morton_code_cpu
-	int triangle_index = -1;	//used by bvh_morton_code_cpu
-};
-
-struct bvh_node_device
-{
-	bounding_box box;
-	int* triangle_indices = nullptr;	//length = BVH_LEAF_NODE_TRIANGLE_NUM, index equal -1 means no triangle
-	bool is_leaf = false;
-	int next_node_index = -1;
-};
-
-//For simplicity, I decide not to use the a series of classes here.
+#define BVH_BUILD_BLOCK_SIZE 32					//used by bvh_morton_code_cuda
 
 namespace bvh_naive_cpu
 {
@@ -112,6 +74,23 @@ namespace bvh_morton_code_cpu
 	INTERNAL_FUNC void generate_internal_node(bvh_node* internal_nodes, bvh_node* leaf_nodes, uint leaf_node_num, uint index);
 
 	INTERNAL_FUNC void generate_bounding_box_for_internal_node(bvh_node* node);
+
+	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index);
+
+	API_ENTRY void release_bvh(bvh_node* root_node);
+
+	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
+}
+
+namespace bvh_morton_code_cuda
+{
+	bool bvh_node_morton_node_comparator(const bvh_node_morton_code_cuda& left, const bvh_node_morton_code_cuda& right);
+
+	INTERNAL_FUNC void generate_bounding_box_for_internal_node(
+		bvh_node_morton_code_cuda* node, 
+		bvh_node_morton_code_cuda* leaf_nodes, 
+		bvh_node_morton_code_cuda* internal_nodes
+	);
 
 	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index);
 

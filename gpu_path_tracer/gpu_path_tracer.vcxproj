@@ -182,7 +182,10 @@
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bounding_box.hpp" />
     <ClInclude Include="bvh.h" />
+    <ClInclude Include="bvh_morton_code_kernel.h" />
+    <ClInclude Include="bvh_node.h" />
     <ClInclude Include="camera.hpp" />
     <ClInclude Include="basic_math.hpp" />
     <ClInclude Include="configuration.hpp" />
@@ -234,6 +237,7 @@
     <ClInclude Include="utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="bvh_morton_code_kernel.cu" />
     <CudaCompile Include="path_tracer_kernel.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

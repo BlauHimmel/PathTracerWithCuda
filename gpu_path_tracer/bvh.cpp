@@ -1,73 +1,5 @@
 #include "bvh.h"
 
-bounding_box::bounding_box()
-{
-	left_bottom.x = -1.0f;
-	left_bottom.y = -1.0f;
-	left_bottom.z = -1.0f;
-	right_top.x = -1.0f;
-	right_top.y = -1.0f;
-	right_top.z = -1.0f;
-	centroid.x = -1.0f;
-	centroid.y = -1.0f;
-	centroid.z = -1.0f;
-}
-
-bounding_box::bounding_box(const float3& left_bottom, const float3& right_top) :
-	left_bottom(left_bottom), right_top(right_top), centroid(0.5f * (right_top + left_bottom))
-{
-
-}
-
-void bounding_box::expand_to_fit_box(const float3& other_left_bottom, const float3& other_right_top)
-{
-	left_bottom = fminf(left_bottom, other_left_bottom);
-	right_top = fmaxf(right_top, other_right_top);
-	centroid = 0.5f * (right_top + left_bottom);
-}
-
-void bounding_box::expand_to_fit_triangle(const float3& vertex0, const float3& vertex1, const float3& vertex2)
-{
-	left_bottom = fminf(left_bottom, make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z)));
-	right_top = fmaxf(right_top, make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z)));
-	centroid = 0.5f * (right_top + left_bottom);
-}
-
-void bounding_box::get_bounding_box(const float3& other_left_bottom, const float3& other_right_top)
-{
-	left_bottom = other_left_bottom;
-	right_top = other_right_top;
-	centroid = 0.5f * (right_top + left_bottom);
-}
-
-void bounding_box::get_bounding_box(const float3& vertex0, const float3& vertex1, const float3& vertex2)
-{
-	left_bottom = make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z));
-	right_top = make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z));
-
-	centroid = 0.5f * (right_top + left_bottom);
-}
-
-float bounding_box::get_surface_area()
-{
-	return 2.0f * (right_top.x - left_bottom.x) * (right_top.y - left_bottom.y) * (right_top.z - left_bottom.z);
-}
-
-float bounding_box::get_axis_length(int axis)
-{
-	if (axis == 0)	return right_top.x - left_bottom.x;
-	else if (axis == 1) return right_top.y - left_bottom.y;
-	else return right_top.z - left_bottom.z;
-}
-
-bool bounding_box::is_thin_bounding_box()
-{
-	return
-		right_top.x == left_bottom.x ||
-		right_top.y == left_bottom.y ||
-		right_top.z == left_bottom.z;
-}
-
 namespace bvh_naive_cpu
 {
 
@@ -546,7 +478,7 @@ namespace bvh_morton_code_cpu
 	/*
 		From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 	*/
-	INTERNAL_FUNC uint2 find_range(bvh_node* sorted_leaf_nodes, uint node_num, uint index)//TODO:BUG
+	INTERNAL_FUNC uint2 find_range(bvh_node* sorted_leaf_nodes, uint node_num, uint index)
 	{
 		if (index == 0)
 		{
@@ -679,11 +611,13 @@ namespace bvh_morton_code_cpu
 		{
 			bool is_ret = false;
 
+			#ifdef BVH_MORTON_CODE_BUILD_OPENMP
 			#pragma omp critical(node)
+			#endif
 			{
-				if (!node->is_visited)
+				if (node->is_visited == 0)
 				{
-					node->is_visited = true;
+					node->is_visited = 1;
 					is_ret = true;
 				}
 			}
@@ -695,9 +629,6 @@ namespace bvh_morton_code_cpu
 
 			node->box.get_bounding_box(node->left->box.left_bottom, node->left->box.right_top);
 			node->box.expand_to_fit_box(node->right->box.left_bottom, node->right->box.right_top);
-
-			node->triangle_indices.insert(node->triangle_indices.end(), node->left->triangle_indices.begin(), node->left->triangle_indices.end());
-			node->triangle_indices.insert(node->triangle_indices.end(), node->right->triangle_indices.begin(), node->right->triangle_indices.end());
 
 			if (node->parent != nullptr)
 			{
@@ -808,12 +739,230 @@ namespace bvh_morton_code_cpu
 		{
 			leaf_nodes = leaf_nodes->left;
 		}
+		
 		SAFE_DELETE_ARRAY(leaf_nodes);
 		SAFE_DELETE_ARRAY(root_node);
-
-		bvh_naive_cpu::release_bvh(root_node);
 	}
 
+	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root)
+	{
+		return bvh_naive_cpu::build_bvh_device_data(root);
+	}
+}
+
+namespace bvh_morton_code_cuda
+{
+	bool bvh_node_morton_node_comparator(const bvh_node_morton_code_cuda& left, const bvh_node_morton_code_cuda& right)
+	{
+		return left.morton_code < right.morton_code;
+	}
+
+	INTERNAL_FUNC void generate_bounding_box_for_internal_node(
+		bvh_node_morton_code_cuda* node,
+		bvh_node_morton_code_cuda* leaf_nodes,
+		bvh_node_morton_code_cuda* internal_nodes
+	)
+	{
+		if (node->is_leaf)
+		{
+			if (node->parent_index != -1)
+			{
+				generate_bounding_box_for_internal_node(&internal_nodes[node->parent_index], leaf_nodes, internal_nodes);
+			}
+		}
+		else
+		{
+			bool is_ret = false;
+			#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+			#pragma omp critical(node)
+			#endif
+			{
+				if (node->is_visited == 0)
+				{
+					node->is_visited = 1;
+					is_ret = true;
+				}
+			}
+
+			if (is_ret)
+			{
+				return;
+			}
+
+			bvh_node_morton_code_cuda* left = node->is_left_leaf ? &leaf_nodes[node->left_index] : &internal_nodes[node->left_index];
+			bvh_node_morton_code_cuda* right = node->is_right_leaf ? &leaf_nodes[node->right_index] : &internal_nodes[node->right_index];
+
+			node->box.get_bounding_box(left->box.left_bottom, left->box.right_top);
+			node->box.expand_to_fit_box(right->box.left_bottom, right->box.right_top);
+
+			if (node->parent_index != -1)
+			{
+				generate_bounding_box_for_internal_node(&internal_nodes[node->parent_index], leaf_nodes, internal_nodes);
+			}
+		}
+	}
+
+	API_ENTRY bvh_node* build_bvh(triangle* triangles, int triangle_num, int start_index)
+	{
+		static int threadnum = omp_get_max_threads();
+
+		uint leaf_node_num = triangle_num / BVH_LEAF_NODE_TRIANGLE_NUM;
+		leaf_node_num = ((leaf_node_num == 0) ? 1 : leaf_node_num);
+		leaf_node_num = ((triangle_num % BVH_LEAF_NODE_TRIANGLE_NUM == 0) ? leaf_node_num : (leaf_node_num + 1));
+
+		uint internal_node_num = leaf_node_num - 1;
+
+		bvh_node_morton_code_cuda* triangle_morton_code_nodes_device = nullptr;
+		bvh_node_morton_code_cuda* leaf_morton_code_nodes_device = nullptr;
+		bvh_node_morton_code_cuda* internal_morton_code_nodes_device = nullptr;
+
+		bvh_node_morton_code_cuda* triangle_morton_code_nodes = new bvh_node_morton_code_cuda[triangle_num];
+		bvh_node_morton_code_cuda* leaf_morton_code_nodes = new bvh_node_morton_code_cuda[leaf_node_num];
+		bvh_node_morton_code_cuda* internal_morton_code_nodes = new bvh_node_morton_code_cuda[internal_node_num];
+
+		std::vector<int>* leaf_nodes_triangle_indices = new std::vector<int>[leaf_node_num];
+
+		CUDA_CALL(cudaMallocManaged((void**)&triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda)));
+		CUDA_CALL(cudaMallocManaged((void**)&leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda)));
+		CUDA_CALL(cudaMallocManaged((void**)&internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda)));
+
+		//Compute the total bounding box of the given mesh
+		internal_morton_code_nodes_device[0].box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
+		internal_morton_code_nodes_device[0].parent_index = -1;
+		for (int i = 1; i < triangle_num; i++)
+		{
+			internal_morton_code_nodes_device[0].box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
+		}
+
+		//Compute the bounding box of each triangle on the given mesh
+		compute_triangle_bounding_box_kernel(
+			triangles,
+			triangle_num,
+			triangle_morton_code_nodes_device,
+			&(internal_morton_code_nodes_device[0].box),
+			start_index
+		);
+
+		CUDA_CALL(cudaMemcpy(triangle_morton_code_nodes, triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+
+		//Sort the bvh_node according to the morton code of its centroid
+		std::sort(triangle_morton_code_nodes, triangle_morton_code_nodes + triangle_num, bvh_node_morton_node_comparator);
+
+		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
+		#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#endif
+		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
+		{
+			int triangle_start_index = i * BVH_LEAF_NODE_TRIANGLE_NUM;
+
+			leaf_nodes_triangle_indices[i].resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+
+			//triangle_index here is used to mark its corresponding index of leaf_nodes_triangle_indices
+			//because leaf_morton_code_nodes will be sorted and its sequence no longer match the leaf_morton_code_nodes
+			leaf_morton_code_nodes[i].triangle_index = i;	
+			leaf_morton_code_nodes[i].is_leaf = true;
+			leaf_morton_code_nodes[i].box.get_bounding_box(
+				triangle_morton_code_nodes[triangle_start_index].box.left_bottom,
+				triangle_morton_code_nodes[triangle_start_index].box.right_top
+			);
+			leaf_nodes_triangle_indices[i][0] = triangle_morton_code_nodes[triangle_start_index].triangle_index;
+
+			for (int j = 1; j < BVH_LEAF_NODE_TRIANGLE_NUM; j++)
+			{
+				if (j + triangle_start_index < triangle_num)
+				{
+					leaf_morton_code_nodes[i].box.expand_to_fit_box(
+						triangle_morton_code_nodes[j + triangle_start_index].box.left_bottom,
+						triangle_morton_code_nodes[j + triangle_start_index].box.right_top
+					);
+					leaf_nodes_triangle_indices[i][j] = triangle_morton_code_nodes[j + triangle_start_index].triangle_index;
+				}
+			}
+
+			leaf_morton_code_nodes[i].morton_code = bvh_morton_code_cpu::morton_code(
+				(leaf_morton_code_nodes[i].box.centroid - internal_morton_code_nodes_device[0].box.left_bottom) /
+				(internal_morton_code_nodes_device[0].box.right_top - internal_morton_code_nodes_device[0].box.left_bottom)
+			);
+		}
+		
+		std::sort(leaf_morton_code_nodes, leaf_morton_code_nodes + leaf_node_num, bvh_node_morton_node_comparator);
+		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes_device, leaf_morton_code_nodes, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+
+		//Generate the tree(Can be parallel)
+		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num);
+
+		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+		CUDA_CALL(cudaMemcpy(internal_morton_code_nodes, internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+
+		//Generate bounding box for the internal node of the tree
+		#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#endif
+		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
+		{
+			generate_bounding_box_for_internal_node(&leaf_morton_code_nodes[i], leaf_morton_code_nodes, internal_morton_code_nodes);
+		}
+
+		bvh_node* leaf_nodes = new bvh_node[leaf_node_num];
+		bvh_node* internal_nodes = new bvh_node[internal_node_num];
+
+		for (uint i = 0; i < leaf_node_num; i++)
+		{
+			leaf_nodes[i].box = leaf_morton_code_nodes[i].box;
+			leaf_nodes[i].is_leaf = true;
+			leaf_nodes[i].parent = &internal_nodes[leaf_morton_code_nodes[i].parent_index];
+			//because the sequence of leaf_morton_code_nodes not match leaf_morton_code_nodes, so the index of leaf_nodes_triangle_indices
+			//should be redirect
+			leaf_nodes[i].triangle_indices = leaf_nodes_triangle_indices[leaf_morton_code_nodes[i].triangle_index];
+		}
+
+		for (uint i = 0; i < internal_node_num; i++)
+		{
+			internal_nodes[i].box = internal_morton_code_nodes[i].box;
+
+			if (internal_morton_code_nodes[i].parent_index != -1)
+			{
+				internal_nodes[i].parent = &internal_nodes[internal_morton_code_nodes[i].parent_index];
+			}
+
+			if (internal_morton_code_nodes[i].is_left_leaf)
+			{
+				internal_nodes[i].left = &leaf_nodes[internal_morton_code_nodes[i].left_index];
+			}
+			else
+			{
+				internal_nodes[i].left = &internal_nodes[internal_morton_code_nodes[i].left_index];
+			}
+
+			if (internal_morton_code_nodes[i].is_right_leaf)
+			{
+				internal_nodes[i].right = &leaf_nodes[internal_morton_code_nodes[i].right_index];
+			}
+			else
+			{
+				internal_nodes[i].right = &internal_nodes[internal_morton_code_nodes[i].right_index];
+			}
+		}
+
+		CUDA_CALL(cudaFree(triangle_morton_code_nodes_device));
+		CUDA_CALL(cudaFree(leaf_morton_code_nodes_device));
+		CUDA_CALL(cudaFree(internal_morton_code_nodes_device));
+
+		SAFE_DELETE_ARRAY(triangle_morton_code_nodes);
+		SAFE_DELETE_ARRAY(leaf_morton_code_nodes);
+		SAFE_DELETE_ARRAY(internal_morton_code_nodes);
+		
+		SAFE_DELETE_ARRAY(leaf_nodes_triangle_indices);
+
+		return &internal_nodes[0];
+	}
+
+	API_ENTRY void release_bvh(bvh_node* root_node)
+	{
+		bvh_morton_code_cpu::release_bvh(root_node);
+	}
+	
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root)
 	{
 		return bvh_naive_cpu::build_bvh_device_data(root);

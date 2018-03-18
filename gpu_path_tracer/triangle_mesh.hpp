@@ -255,17 +255,17 @@ inline bool triangle_mesh::create_bvh_device_data()
 		bvh_node* root;
 		printf("[Info]Constructing bvh for mesh %s on cpu...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		root = bvh_morton_code_cpu::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		root = bvh_morton_code_cuda::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_device[index] = bvh_morton_code_cpu::build_bvh_device_data(root);
+		m_mesh_bvh_device[index] = bvh_morton_code_cuda::build_bvh_device_data(root);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-		bvh_morton_code_cpu::release_bvh(root);
+		bvh_morton_code_cuda::release_bvh(root);
 	}
 
 	return true;

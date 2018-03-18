@@ -23,7 +23,7 @@
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"
 #include "configuration.hpp"
-#include "bvh.h"
+#include "bvh_node.h"
 
 //TODO: Use unified memory managed
 

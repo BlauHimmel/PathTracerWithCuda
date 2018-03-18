@@ -62,7 +62,7 @@
 
 		{
 			"Material" : "red",
-			"Path" : "res\\obj\\monkey.obj",
+			"Path" : "res\\obj\\skeleton_hand.obj",
 			"Position" : "6.0 0.5 6.0",
 			"Scale" : "1.0 1.0 1.0"
 		},

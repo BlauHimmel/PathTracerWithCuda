@@ -9,8 +9,8 @@
 #include "camera.hpp"
 #include "cube_map.hpp"
 #include "triangle.hpp"
-#include "bvh.h"
 #include "configuration.hpp"
+#include "bvh_node.h"
 
 extern "C" void path_tracer_kernel(
 	int mesh_num,							//in
