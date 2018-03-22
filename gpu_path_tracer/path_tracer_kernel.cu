@@ -25,8 +25,6 @@
 #include "configuration.hpp"
 #include "bvh_node.h"
 
-//TODO: Use unified memory managed
-
 enum class object_type
 {
 	none,
@@ -46,8 +44,8 @@ struct is_negative_predicate
 //using a function instead of macro will cause a weird memory access violation bug, BOOOOOM!
 #define GET_DEFAULT_SCATERRING_DEVICE(air_scattering)\
 {\
-	air_scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);\
-	air_scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);\
+	air_scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;\
+	air_scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;\
 }\
 
 #define GET_DEFAULT_MEDIUM_DEVICE(air_medium)\
@@ -488,7 +486,6 @@ __host__ __device__ float3 get_background_color(
 	const float3& direction,		//in
 	cube_map* sky_cube_map,			//in
 	configuration* config			//in
-
 )
 {
 	if (config->use_sky_box)

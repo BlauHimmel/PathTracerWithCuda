@@ -244,7 +244,7 @@ namespace bvh_naive_cpu
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root)
 	{
 		std::stack<bvh_node*> stack;
-		std::vector<int> bvh_leaf_node_triangles_index_vec_device;
+		std::vector<int> bvh_leaf_node_triangles_index_vector;
 		int traversal_index = 0;
 		int node_num = 0;
 		stack.push(root);
@@ -259,7 +259,7 @@ namespace bvh_naive_cpu
 
 			if (current_node->is_leaf)
 			{
-				bvh_leaf_node_triangles_index_vec_device.insert(bvh_leaf_node_triangles_index_vec_device.end(),
+				bvh_leaf_node_triangles_index_vector.insert(bvh_leaf_node_triangles_index_vector.end(),
 					current_node->triangle_indices.begin(), current_node->triangle_indices.end());
 			
 				if (current_node->box.is_thin_bounding_box())
@@ -280,10 +280,10 @@ namespace bvh_naive_cpu
 		}
 
 		int* leaf_node_triangle_indices;
-		CUDA_CALL(cudaMallocManaged((void**)&leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vec_device.size() * sizeof(int)));
-		CUDA_CALL(cudaMemcpy(leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vec_device.data(), bvh_leaf_node_triangles_index_vec_device.size() * sizeof(int), cudaMemcpyDefault));
+		CUDA_CALL(cudaMallocManaged((void**)&leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vector.size() * sizeof(int)));
+		CUDA_CALL(cudaMemcpy(leaf_node_triangle_indices, bvh_leaf_node_triangles_index_vector.data(), bvh_leaf_node_triangles_index_vector.size() * sizeof(int), cudaMemcpyDefault));
 
-		std::vector<bvh_node_device> bvh_nodes_vec_device(node_num);
+		std::vector<bvh_node_device> bvh_nodes_device_vector(node_num);
 		traversal_index = -1;
 		int leaf_node_index = 0;
 		stack.push(root);
@@ -309,7 +309,7 @@ namespace bvh_naive_cpu
 			{
 				node_device.next_node_index = stack.top()->traversal_index;
 			}
-			bvh_nodes_vec_device[traversal_index] = node_device;
+			bvh_nodes_device_vector[traversal_index] = node_device;
 
 			if (current_node->right != nullptr)
 			{
@@ -323,9 +323,27 @@ namespace bvh_naive_cpu
 		}
 
 		bvh_node_device* bvh_nodes_array_device;
-		CUDA_CALL(cudaMallocManaged((void**)&bvh_nodes_array_device, bvh_nodes_vec_device.size() * sizeof(bvh_node_device)));
-		CUDA_CALL(cudaMemcpy(bvh_nodes_array_device, bvh_nodes_vec_device.data(), bvh_nodes_vec_device.size() * sizeof(bvh_node_device), cudaMemcpyDefault));
+		CUDA_CALL(cudaMallocManaged((void**)&bvh_nodes_array_device, bvh_nodes_device_vector.size() * sizeof(bvh_node_device)));
+		CUDA_CALL(cudaMemcpy(bvh_nodes_array_device, bvh_nodes_device_vector.data(), bvh_nodes_device_vector.size() * sizeof(bvh_node_device), cudaMemcpyDefault));
 		return bvh_nodes_array_device;
+	}
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position,
+		const float3& current_position,
+		const float3& previous_scale,
+		const float3& current_scale,
+		bvh_node_device* root
+	)
+	{
+		int node_num = root->next_node_index;
+
+		for (auto i = 0; i < node_num; i++)
+		{
+			root[i].box.left_bottom = ((root[i].box.left_bottom - previous_position) / previous_scale) * current_scale + current_position;
+			root[i].box.right_top = ((root[i].box.right_top - previous_position) / previous_scale) * current_scale + current_position;
+			root[i].box.centroid = 0.5f * (root[i].box.left_bottom + root[i].box.right_top);
+		}
 	}
 }
 
@@ -748,6 +766,17 @@ namespace bvh_morton_code_cpu
 	{
 		return bvh_naive_cpu::build_bvh_device_data(root);
 	}
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position, 
+		const float3& current_position, 
+		const float3& previous_scale,
+		const float3& current_scale,
+		bvh_node_device* root
+	)
+	{
+		return bvh_naive_cpu::update_bvh(previous_position, current_position, previous_scale, current_scale, root);
+	}
 }
 
 namespace bvh_morton_code_cuda
@@ -773,9 +802,9 @@ namespace bvh_morton_code_cuda
 		else
 		{
 			bool is_ret = false;
-			#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
 			#pragma omp critical(node)
-			#endif
+#endif
 			{
 				if (node->is_visited == 0)
 				{
@@ -849,9 +878,9 @@ namespace bvh_morton_code_cuda
 		std::sort(triangle_morton_code_nodes, triangle_morton_code_nodes + triangle_num, bvh_node_morton_node_comparator);
 
 		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
-		#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
 		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
-		#endif
+#endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
 			int triangle_start_index = i * BVH_LEAF_NODE_TRIANGLE_NUM;
@@ -896,9 +925,9 @@ namespace bvh_morton_code_cuda
 		CUDA_CALL(cudaMemcpy(internal_morton_code_nodes, internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 
 		//Generate bounding box for the internal node of the tree
-		#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
 		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
-		#endif
+#endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
 			generate_bounding_box_for_internal_node(&leaf_morton_code_nodes[i], leaf_morton_code_nodes, internal_morton_code_nodes);
@@ -907,7 +936,10 @@ namespace bvh_morton_code_cuda
 		bvh_node* leaf_nodes = new bvh_node[leaf_node_num];
 		bvh_node* internal_nodes = new bvh_node[internal_node_num];
 
-		for (uint i = 0; i < leaf_node_num; i++)
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
 			leaf_nodes[i].box = leaf_morton_code_nodes[i].box;
 			leaf_nodes[i].is_leaf = true;
@@ -917,7 +949,10 @@ namespace bvh_morton_code_cuda
 			leaf_nodes[i].triangle_indices = leaf_nodes_triangle_indices[leaf_morton_code_nodes[i].triangle_index];
 		}
 
-		for (uint i = 0; i < internal_node_num; i++)
+#ifdef BVH_MORTON_CODE_BUILD_OPENMP
+		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+#endif
+		for (int i = 0; i < static_cast<int>(internal_node_num); i++)
 		{
 			internal_nodes[i].box = internal_morton_code_nodes[i].box;
 
@@ -966,5 +1001,16 @@ namespace bvh_morton_code_cuda
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root)
 	{
 		return bvh_naive_cpu::build_bvh_device_data(root);
+	}
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position, 
+		const float3& current_position, 
+		const float3& previous_scale, 
+		const float3& current_scale,
+		bvh_node_device* root
+	)
+	{
+		bvh_naive_cpu::update_bvh(previous_position, current_position, previous_scale, current_scale, root);
 	}
 }

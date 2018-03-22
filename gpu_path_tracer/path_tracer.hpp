@@ -165,7 +165,7 @@ inline void path_tracer::render_ui()
 				
 				ImGui::Text("Base:");
 				is_modified = is_modified || ImGui::DragFloat3("Position", position, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Radius", &radius, 0.001f);
+				is_modified = is_modified || ImGui::DragFloat("Radius", &radius, 0.001f, 0.001f, INFINITY);
 
 				ImGui::Separator();
 
@@ -237,6 +237,7 @@ inline void path_tracer::render_ui()
 			sprintf(buffer, "Mesh-%d", i + 1);
 			if (ImGui::TreeNode(buffer))
 			{
+				bool is_bvh_update = false;
 				bool is_modified = false;
 
 				ImGui::Separator();
@@ -249,10 +250,9 @@ inline void path_tracer::render_ui()
 				ImGui::Text(buffer);
 				sprintf(buffer, "Facets: %d", m_scene.get_mesh_triangle_num(i));
 				ImGui::Text(buffer);
-				sprintf(buffer, "Position: (%.2f, %.2f, %.2f)", position.x, position.y, position.z);
-				ImGui::Text(buffer);
-				sprintf(buffer, "Scale: (%.2f, %.2f, %.2f)", scale.x, scale.y, scale.z);
-				ImGui::Text(buffer);
+
+				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Position", &position.x, 0.001f);
+				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Scale", &scale.x, 0.000001f, 0.000001f, INFINITY, "%.6f");
 
 				ImGui::Separator();
 
@@ -303,6 +303,14 @@ inline void path_tracer::render_ui()
 					new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
 
 					m_scene.set_mesh_material_device(i, new_mat);
+				}
+
+				if (is_bvh_update)
+				{
+					is_triangle_mesh_modified = true;
+					std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function =
+						BVH_BUILD_METHOD update_bvh;
+					m_scene.set_mesh_transform_device(i, position, clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)), bvh_update_function);
 				}
 
 				ImGui::TreePop();

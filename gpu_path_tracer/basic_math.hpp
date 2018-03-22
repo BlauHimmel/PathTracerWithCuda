@@ -19,7 +19,6 @@ using uchar = unsigned char;
 #define QUARTER_PI				0.0795774715459f
 #define E						2.7182818284590f
 #define SQRT_ONE_THIRD			0.5773502691896f
-#define AIR_REFRACTION_INDEX	1.000293f
 
 namespace math
 {

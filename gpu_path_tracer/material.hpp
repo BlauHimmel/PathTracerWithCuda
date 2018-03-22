@@ -6,6 +6,10 @@
 #include <cuda_runtime.h>
 #include "basic_math.hpp"
 
+#define AIR_REFRACTION_INDEX 1.000293f
+#define AIR_ABSORPTION_COEFFICIENT make_float3(0.0f, 0.0f, 0.0f)
+#define AIR_REDUCED_SCATTERING_COEFFICIENT make_float3(0.0f, 0.0f, 0.0f)
+
 //for conductors(e.g. metals like aluminum or copper) extinction is set to be greater than zero, otherwise it is considered as dielectrics
 //note : 
 //1> metal do not have diffuse color, and its specular color can be white or others, but for dielectrics the specular color can only be 
@@ -45,8 +49,8 @@ inline material get_default_material()
 	mat.roughness = 0.0f;
 	mat.medium.refraction_index = AIR_REFRACTION_INDEX;
 	mat.medium.extinction_coefficient = 0.0f;
-	mat.medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);
-	mat.medium.scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);
+	mat.medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
+	mat.medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
 	return mat;
 }
 
@@ -60,8 +64,8 @@ inline material* new_default_material()
 	mat->roughness = 0.0f;
 	mat->medium.refraction_index = AIR_REFRACTION_INDEX;
 	mat->medium.extinction_coefficient = 0.0f;
-	mat->medium.scattering.absorption_coefficient = make_float3(0.0f, 0.0f, 0.0f);
-	mat->medium.scattering.reduced_scattering_coefficient = make_float3(0.0f, 0.0f, 0.0f);
+	mat->medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
+	mat->medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
 	return mat;
 }
 
@@ -86,7 +90,7 @@ namespace material_data
 				false,										//transparent
 				0.3f,										//roughness
 				{
-					2.2670f,									//refraction index
+					2.2670f,								//refraction index
 					3.0385f,								//extinction coefficient
 					{
 						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient

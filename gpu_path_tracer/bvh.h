@@ -21,10 +21,11 @@
 #include "bounding_box.hpp"
 #include "bvh_node.h"
 
-#undef BVH_MORTON_CODE_BUILD_OPENMP				//used by bvh_morton_code_cpu
+#undef BVH_MORTON_CODE_BUILD_OPENMP				//used by bvh_morton_code_cpu and bvh_morton_code_cuda
 #define BVH_LEAF_NODE_TRIANGLE_NUM 1			//used by bvh_naive_cpu and bvh_morton_code_cpu
 #define BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM 12	//used by bvh_naive_cpu
 #define BVH_BUILD_BLOCK_SIZE 32					//used by bvh_morton_code_cuda
+#define BVH_BUILD_METHOD bvh_morton_code_cuda::
 
 namespace bvh_naive_cpu
 {
@@ -37,6 +38,14 @@ namespace bvh_naive_cpu
 	API_ENTRY void release_bvh(bvh_node* root_node);
 
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position,
+		const float3& current_position,
+		const float3& previous_scale,
+		const float3& current_scale,
+		bvh_node_device* root
+	);
 }
 
 namespace bvh_morton_code_cpu
@@ -80,6 +89,14 @@ namespace bvh_morton_code_cpu
 	API_ENTRY void release_bvh(bvh_node* root_node);
 
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position,
+		const float3& current_position,
+		const float3& previous_scale,
+		const float3& current_scale,
+		bvh_node_device* root
+	);
 }
 
 namespace bvh_morton_code_cuda
@@ -97,6 +114,14 @@ namespace bvh_morton_code_cuda
 	API_ENTRY void release_bvh(bvh_node* root_node);
 
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
+
+	API_ENTRY void update_bvh(
+		const float3& previous_position,
+		const float3& current_position,
+		const float3& previous_scale,
+		const float3& current_scale,
+		bvh_node_device* root
+	);
 }
 
 #endif // !__BVH__

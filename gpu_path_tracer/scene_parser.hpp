@@ -140,6 +140,12 @@ public:
 
 	void set_sphere_device(int index, const sphere& sphere);
 	void set_mesh_material_device(int index, const material& material);
+	void set_mesh_transform_device(
+		int index,
+		const float3& position,
+		const float3& scale,
+		std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+	);
 
 private:
 	void init_default_material(std::map<std::string, material>& materials);
@@ -273,7 +279,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 				parse_float3(emission_str),
 				parse_float3(specular_str),
 				parse_bool(transparent_str),
-				parse_float(roughness_str),
+				clamp(parse_float(roughness_str), 0.0f, 1.0f),
 				{
 					parse_float(refraction_index_str),
 					parse_float(extinction_coef_str),
@@ -283,6 +289,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 					}
 				}
 			};
+
 
 			materials[name_str] = mat;
 		}
@@ -307,7 +314,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 
 			sphere sphere;
 			sphere.center = parse_float3(center_str);
-			sphere.radius = parse_float(radius_str);
+			sphere.radius = clamp(parse_float(radius_str), 0.0f, INFINITY);
 			sphere.mat = get_default_material();
 
 			spheres.push_back(sphere);
@@ -338,7 +345,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			meshes_path.push_back(path_str);
 			meshes_mat.push_back(material_str);
 			meshes_position.push_back(parse_float3(position_str));
-			meshes_scale.push_back(parse_float3(scale_str));
+			meshes_scale.push_back(clamp(parse_float3(scale_str), make_float3(0.0f, 0.0f, 0.0f), make_float3(INFINITY, INFINITY, INFINITY)));
 		}
 	}
 
@@ -558,6 +565,16 @@ inline void scene_parser::set_sphere_device(int index, const sphere& sphere)
 inline void scene_parser::set_mesh_material_device(int index, const material& material)
 {
 	m_triangle_mesh.set_material_device(index, material);
+}
+
+inline void scene_parser::set_mesh_transform_device(
+	int index, 
+	const float3& position,
+	const float3& scale, 
+	std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+)
+{
+	m_triangle_mesh.set_transform_device(index, position, scale, bvh_update_function);
 }
 
 void scene_parser::init_default_material(std::map<std::string, material>& materials)

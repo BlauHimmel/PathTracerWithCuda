@@ -5,6 +5,7 @@
 
 #include <cuda_runtime.h>
 #include <iostream>
+#include <functional>
 #include <time.h>
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
 #include "triangle.hpp"
@@ -45,6 +46,12 @@ public:
 	void unload_obj();
 
 	void set_material_device(int index, const material& mat);
+	void set_transform_device(
+		int index, 
+		const float3& position, 
+		const float3& scale, 
+		std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+	);
 
 	int get_total_triangle_num() const;
 	int get_mesh_num() const;
@@ -133,9 +140,9 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 			);
 
 			triangle triangle;
- 			triangle.vertex0 = vertex[0] * scale + position;
-			triangle.vertex1 = vertex[1] * scale + position;
-			triangle.vertex2 = vertex[2] * scale + position;
+ 			triangle.vertex0 = vertex[0];
+			triangle.vertex1 = vertex[1];
+			triangle.vertex2 = vertex[2];
 
 			triangle.normal = normalize(cross(vertex[1] - vertex[0], vertex[2] - vertex[0]));
 			triangle.mat = mat;
@@ -187,6 +194,35 @@ inline void triangle_mesh::unload_obj()
 inline void triangle_mesh::set_material_device(int index, const material& mat)
 {
 	m_mat_device[index] = mat;
+}
+
+inline void triangle_mesh::set_transform_device(
+	int index, 
+	const float3& position,
+	const float3& scale,
+	std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+)
+{
+	float3 previous_position = m_mesh_position[index];
+	m_mesh_position[index] = position;
+
+	float3 previous_scale = m_mesh_scale[index];
+	m_mesh_scale[index] = scale;
+
+	int triangle_start_index = 0;
+	for (auto i = 0; i < index; i++)
+	{
+		triangle_start_index += m_mesh_triangles_num[i];
+	}
+
+	for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
+	{
+		m_mesh_device[i + triangle_start_index].vertex0 = m_triangles[i + triangle_start_index].vertex0 * scale + position;
+		m_mesh_device[i + triangle_start_index].vertex1 = m_triangles[i + triangle_start_index].vertex1 * scale + position;
+		m_mesh_device[i + triangle_start_index].vertex2 = m_triangles[i + triangle_start_index].vertex2 * scale + position;
+	}
+	
+	bvh_update_function(previous_position, position, previous_scale , scale, m_mesh_bvh_device[index]);
 }
 
 inline int triangle_mesh::get_total_triangle_num() const
@@ -255,17 +291,17 @@ inline bool triangle_mesh::create_bvh_device_data()
 		bvh_node* root;
 		printf("[Info]Constructing bvh for mesh %s on cpu...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		root = bvh_morton_code_cuda::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		root = BVH_BUILD_METHOD build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_device[index] = bvh_morton_code_cuda::build_bvh_device_data(root);
+		m_mesh_bvh_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-		bvh_morton_code_cuda::release_bvh(root);
+		BVH_BUILD_METHOD release_bvh(root);
 	}
 
 	return true;
@@ -313,9 +349,9 @@ inline bool triangle_mesh::create_mesh_device_data()
 		for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 		{
 			m_mesh_device[i + triangle_start_index].mat = m_mat_device + index;
-			//m_mesh_device[i + triangle_start_index].vertex0 = m_mesh_device[i + triangle_start_index].vertex0 * m_mesh_scale[index] + m_mesh_position[index];
-			//m_mesh_device[i + triangle_start_index].vertex1 = m_mesh_device[i + triangle_start_index].vertex1 * m_mesh_scale[index] + m_mesh_position[index];
-			//m_mesh_device[i + triangle_start_index].vertex2 = m_mesh_device[i + triangle_start_index].vertex2 * m_mesh_scale[index] + m_mesh_position[index];
+			m_mesh_device[i + triangle_start_index].vertex0 = m_triangles[i + triangle_start_index].vertex0 * m_mesh_scale[index] + m_mesh_position[index];
+			m_mesh_device[i + triangle_start_index].vertex1 = m_triangles[i + triangle_start_index].vertex1 * m_mesh_scale[index] + m_mesh_position[index];
+			m_mesh_device[i + triangle_start_index].vertex2 = m_triangles[i + triangle_start_index].vertex2 * m_mesh_scale[index] + m_mesh_position[index];
 		}
 	}
 	
