@@ -97,7 +97,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 
 	if (!is_success)
 	{
-		std::cout << "[Info]Load file " << mesh_name << "failed." << std::endl;
+		std::cout << "[Info]Load file " << mesh_name << " failed." << std::endl;
 		return false;
 	}
 

@@ -446,6 +446,25 @@ namespace material_data
 			};
 		}
 
+		static material wall_blue()
+		{
+			return material{
+				make_float3(0.4f, 0.6f, 0.8f),				//diffuse
+				make_float3(0.0f, 0.0f, 0.0f),				//emission
+				make_float3(0.0f, 0.0f, 0.0f),				//specular
+				false,										//transparent
+				0.01f,										//roughness
+			{
+				1.491f,									//refraction index
+				0.0f,									//extinction coefficient
+			{
+				make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+				make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+			}
+			}
+			};
+		}
+
 		static material marble()
 		{
 			return material{
@@ -507,7 +526,7 @@ namespace material_data
 		{
 			return material{
 				make_float3(0.0f, 0.0f, 0.0f),				//diffuse
-				make_float3(18.0f, 18.0f, 18.0f),			//emission
+				make_float3(13.0f, 13.0f, 11.0f),			//emission
 				make_float3(0.0f, 0.0f, 0.0f),				//specular
 				false,										//transparent
 				0.01f,										//roughness

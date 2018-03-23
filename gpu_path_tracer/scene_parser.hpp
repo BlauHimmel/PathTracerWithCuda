@@ -460,24 +460,26 @@ inline bool scene_parser::create_scene_data_device()
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	printf("[Info]Copy triangle data to gpu...\n");
-	TIME_COUNT_CALL_START();
-	if (!m_triangle_mesh.create_mesh_device_data())
+	if (m_triangle_mesh.get_mesh_num() > 0)
 	{
-		m_cube_map_loader.release_cube_device_data();
-		m_triangle_mesh.release_mesh_device_data();
-		return false;
-	}
-	TIME_COUNT_CALL_END(time);
-	printf("[Info]Completed, time consuming: %.4f ms\n", time);
+		printf("[Info]Copy triangle data to gpu...\n");
+		TIME_COUNT_CALL_START();
+		if (!m_triangle_mesh.create_mesh_device_data())
+		{
+			m_cube_map_loader.release_cube_device_data();
+			m_triangle_mesh.release_mesh_device_data();
+			return false;
+		}
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
-	{
-		m_triangle_mesh.create_bvh_device_data();
-		return true;
+		if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr && m_spheres_device != nullptr)
+		{
+			return m_triangle_mesh.create_bvh_device_data();
+		}
 	}
-	
-	return false;
+
+	return true;
 }
 
 inline void scene_parser::release_scene_data_device()
@@ -600,6 +602,7 @@ void scene_parser::init_default_material(std::map<std::string, material>& materi
 	materials.insert(std::make_pair("green",			material_data::dielectric::green()));
 	materials.insert(std::make_pair("orange",			material_data::dielectric::orange()));
 	materials.insert(std::make_pair("purple",			material_data::dielectric::purple()));
+	materials.insert(std::make_pair("wall_blue",		material_data::dielectric::wall_blue()));
 	materials.insert(std::make_pair("blue",				material_data::dielectric::blue()));
 	materials.insert(std::make_pair("marble",			material_data::dielectric::marble()));
 	materials.insert(std::make_pair("something_blue",	material_data::dielectric::something_blue()));

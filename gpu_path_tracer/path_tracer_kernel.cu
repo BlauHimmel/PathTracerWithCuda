@@ -429,7 +429,7 @@ __host__ __device__ fresnel get_fresnel_dielectrics(
 	float cos_theta_in = dot(normal, in_direction * -1.0f);
 	float cos_theta_out = dot(-1.0f * normal, refraction_direction);
 
-	//total internal reflection
+	//total internal reflection 
 	if (in_refraction_index > out_refraction_index && acosf(cos_theta_in) >= asinf(out_refraction_index / in_refraction_index))
 	{
 		fresnel.reflection_index = 1.0f;
@@ -437,7 +437,7 @@ __host__ __device__ fresnel get_fresnel_dielectrics(
 		return fresnel;
 	}
 
-	if (length(refraction_direction) <= 0.12345f || cos_theta_out < 0)
+	if (length(refraction_direction) <= 0.000005f || cos_theta_out < 0)
 	{
 		fresnel.reflection_index = 1.0f;
 		fresnel.refractive_index = 0.0f;
@@ -832,7 +832,7 @@ __global__ void trace_ray_kernel(
 
 		bool is_hit_on_back = dot(in_direction, min_normal) > 0;
 
-		if (is_hit_on_back)
+		if (is_hit_on_back && min_mat.is_transparent)
 		{
 			min_normal *= -1.0f;
 
@@ -842,7 +842,7 @@ __global__ void trace_ray_kernel(
 		}
 
 		float3 reflection_direction = get_reflection_direction(min_normal, in_direction);
-		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);//may be nan
+		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);
 		float3 bias_vector = config->vector_bias_length * min_normal;
 
 		fresnel fresnel;
