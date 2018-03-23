@@ -832,13 +832,16 @@ __global__ void trace_ray_kernel(
 
 		bool is_hit_on_back = dot(in_direction, min_normal) > 0;
 
-		if (is_hit_on_back && min_mat.is_transparent)
+		if (is_hit_on_back)
 		{
 			min_normal *= -1.0f;
 
-			medium temp = in_medium;
-			in_medium = out_medium;
-			out_medium = temp;
+			if (min_mat.is_transparent)
+			{
+				medium temp = in_medium;
+				in_medium = out_medium;
+				out_medium = temp;
+			}
 		}
 
 		float3 reflection_direction = get_reflection_direction(min_normal, in_direction);
