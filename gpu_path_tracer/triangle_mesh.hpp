@@ -115,6 +115,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 		for (auto f = 0; f < shapes[i].mesh.num_face_vertices.size(); f++)
 		{
 			float3 vertex[3];
+			float3 normal[3];
 			tinyobj::index_t index[3];
 
 			index[0] = shapes[i].mesh.indices[f * 3];
@@ -139,12 +140,31 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 				attrib.vertices[index[2].vertex_index * 3 + 2]
 			);
 
+			normal[0] = make_float3(
+				attrib.normals[index[0].normal_index * 3],
+				attrib.normals[index[0].normal_index * 3 + 1],
+				attrib.normals[index[0].normal_index * 3 + 2]
+			);
+
+			normal[1] = make_float3(
+				attrib.normals[index[1].normal_index * 3],
+				attrib.normals[index[1].normal_index * 3 + 1],
+				attrib.normals[index[1].normal_index * 3 + 2]
+			);
+
+			normal[2] = make_float3(
+				attrib.normals[index[2].normal_index * 3],
+				attrib.normals[index[2].normal_index * 3 + 1],
+				attrib.normals[index[2].normal_index * 3 + 2]
+			);
+
 			triangle triangle;
  			triangle.vertex0 = vertex[0];
 			triangle.vertex1 = vertex[1];
 			triangle.vertex2 = vertex[2];
-
-			triangle.normal = normalize(cross(vertex[1] - vertex[0], vertex[2] - vertex[0]));
+			triangle.normal0 = normal[0];
+			triangle.normal1 = normal[1];
+			triangle.normal2 = normal[2];
 			triangle.mat = mat;
 			
 			m_triangles.push_back(triangle);

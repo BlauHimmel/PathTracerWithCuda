@@ -63,6 +63,14 @@ struct is_negative_predicate
 	GET_DEFAULT_MEDIUM_DEVICE(material.medium);\
 }\
 
+__host__ __device__ float3 point_on_ray(
+	const ray& ray,	//in
+	float t			//in
+)
+{
+	return ray.origin + ray.direction * t;
+}
+
 __host__ __device__  bool intersect_ground(
 	float altitude,			//in 
 	const ray& ray,			//in
@@ -127,7 +135,9 @@ __host__ __device__  bool intersect_sphere(
 __host__ __device__ bool intersect_triangle(
 	const triangle& triangle,		//in
 	const ray& ray,					//in
-	float& hit_t					//out	
+	float& hit_t,					//out	
+	float& hit_t1,					//out
+	float& hit_t2					//out
 )
 {
 	float3 edge1 = triangle.vertex1 - triangle.vertex0;
@@ -152,6 +162,8 @@ __host__ __device__ bool intersect_triangle(
 	if (t1 >= 0.0f && t2 >= 0.0f && t1 + t2 <= 1.0f)
 	{
 		hit_t = t;
+		hit_t1 = t1;
+		hit_t2 = t2;
 		return true;
 	}
 
@@ -187,13 +199,19 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	int mesh_index,					//in
 	const ray& ray,					//in
 	float& hit_t,					//out	
+	float& hit_t1,					//out	
+	float& hit_t2,					//out	
 	int& hit_triangle_index			//out
 )
 {
 	float min_t = INFINITY;
+	float min_t1 = INFINITY;
+	float min_t2 = INFINITY;
 	int min_triangle_index;
 
 	float current_t = INFINITY;
+	float current_t1 = INFINITY;
+	float current_t2 = INFINITY;
 
 	bool is_hit = false;
 
@@ -216,9 +234,11 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
 					{
-						if (intersect_triangle(triangles[triangle_index], ray, current_t) && current_t > 0.0f && current_t < min_t)
+						if (intersect_triangle(triangles[triangle_index], ray, current_t, current_t1, current_t2) && current_t > 0.0f && current_t < min_t)
 						{
 							min_t = current_t;
+							min_t1 = current_t1;
+							min_t2 = current_t2;
 							min_triangle_index = triangle_index;
 							is_hit = true;
 						}
@@ -241,6 +261,8 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	if (is_hit)
 	{
 		hit_t = min_t;
+		hit_t1 = min_t1;
+		hit_t2 = min_t2;
 		hit_triangle_index = min_triangle_index;
 	}
 
@@ -582,14 +604,6 @@ __host__ __device__ float3 get_background_color(
 	return make_float3(0.0f, 0.0f, 0.0f);
 }
 
-__host__ __device__ float3 point_on_ray(
-	const ray& ray,	//in
-	float t			//in
-)
-{
-	return ray.origin + ray.direction * t;
-}
-
 __global__ void init_data_kernel(
 	int pixel_count,						//in
 	int* energy_exist_pixels,				//in out
@@ -726,11 +740,13 @@ __global__ void trace_ray_kernel(
 	thrust::default_random_engine random_engine(rand_hash(seed) * rand_hash(pixel_index) * rand_hash(depth));
 	thrust::uniform_real_distribution<float> uniform_distribution(0.0f, 1.0f);
 
-	float hit_t;
+	float hit_t, hit_t1, hit_t2;
 	float3 hit_point, hit_normal;
 	int hit_triangle_index;
 
 	float min_t = INFINITY;
+	float min_t1 = INFINITY;
+	float min_t2 = INFINITY;
 	float3 min_point = make_float3(0.0f, 0.0f, 0.0f);
 	float3 min_normal = make_float3(0.0f, 0.0f, 0.0f);
 	object_type min_type = object_type::none;
@@ -760,11 +776,12 @@ __global__ void trace_ray_kernel(
 	
 	for (int mesh_index = 0; mesh_index < mesh_num; mesh_index++)
 	{
-		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, hit_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, hit_t1, hit_t2, hit_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 		{
 			min_t = hit_t;
+			min_t1 = hit_t1;
+			min_t2 = hit_t2;
 			min_point = point_on_ray(tracing_ray, hit_t);
-			min_normal = triangles[hit_triangle_index].normal;
 			min_triangle_index = hit_triangle_index;
 			min_type = object_type::triangle;
 		}
@@ -822,6 +839,8 @@ __global__ void trace_ray_kernel(
 		else if (min_type == object_type::triangle)
 		{
 			min_mat = *(triangles[min_triangle_index].mat);
+			triangle hit_triangle = triangles[min_triangle_index];
+			min_normal = hit_triangle.normal0 * (1.0f - min_t1 - min_t2) + hit_triangle.normal1 * min_t1 + hit_triangle.normal2 * min_t2;
 		}
 
 		float3 in_direction = tracing_ray.direction;
