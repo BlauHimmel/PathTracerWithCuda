@@ -10,7 +10,7 @@
 
 #define MAX_APERTURE_RADIUS 1.0f
 
-//used by the path tracer
+//passed to cuda kernel for rendering, this structure is retrived from view_camera
 struct render_camera
 {
 	float3 eye;
@@ -22,7 +22,7 @@ struct render_camera
 	float focal_distance;
 };
 
-//used by openGL
+//used for glfw callback for interact
 struct view_camera
 {
 private:

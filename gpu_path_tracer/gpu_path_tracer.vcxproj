@@ -191,8 +191,9 @@
     <ClInclude Include="configuration.hpp" />
     <ClInclude Include="config_parser.hpp" />
     <ClInclude Include="cube_map.hpp" />
+    <ClInclude Include="cube_map_loader.hpp" />
     <ClInclude Include="cuda_math.hpp" />
-    <ClInclude Include="fresnel.h" />
+    <ClInclude Include="fresnel.hpp" />
     <ClInclude Include="image.hpp" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />

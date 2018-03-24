@@ -14,9 +14,6 @@
 #include "cuda_math.hpp"
 #include "bvh.h"
 
-struct bvh_node_device;
-struct bvh_node;
-
 class triangle_mesh
 {
 private:

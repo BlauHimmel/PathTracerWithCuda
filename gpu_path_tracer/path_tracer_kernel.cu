@@ -18,7 +18,7 @@
 #include "image.hpp"
 #include "ray.hpp"
 #include "camera.hpp"
-#include "fresnel.h"
+#include "fresnel.hpp"
 #include "material.hpp"
 #include "cube_map.hpp"
 #include "triangle_mesh.hpp"

@@ -7,7 +7,7 @@
 
 #include "sphere.hpp"
 #include "triangle_mesh.hpp"
-#include "cube_map.hpp"
+#include "cube_map_loader.hpp"
 #include "material.hpp"
 #include "bvh.h"
 

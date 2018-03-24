@@ -43,6 +43,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header\Bvh">
+      <UniqueIdentifier>{ae5cc3da-144b-464b-bfdc-270ae9c46368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Math">
+      <UniqueIdentifier>{c9cc1d9f-ae16-4612-9d04-6708f9b922b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Core">
+      <UniqueIdentifier>{fc3b2dbf-9571-4c93-9c31-42f7ff13ef13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Others">
+      <UniqueIdentifier>{49430132-ba35-47af-99d0-c323fe84f63e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -71,47 +83,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="cuda_math.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="utilities.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sphere.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ray.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="image.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="path_tracer_kernel.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="path_tracer.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="material.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="fresnel.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="lib\lodepng\lodepng.h">
       <Filter>Library\lodepng</Filter>
     </ClInclude>
     <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h">
       <Filter>Library\tiny_obj_loader</Filter>
-    </ClInclude>
-    <ClInclude Include="cube_map.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="triangle_mesh.hpp">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\imconfig.h">
       <Filter>Library\imgui</Filter>
@@ -133,15 +109,6 @@
     </ClInclude>
     <ClInclude Include="lib\imgui\imgui_impl_glfw_gl3.h">
       <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_parser.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="config_parser.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration.hpp">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="lib\json\adl_serializer.hpp">
       <Filter>Library\json</Filter>
@@ -212,23 +179,71 @@
     <ClInclude Include="lib\json\detail\parsing\parser.hpp">
       <Filter>Library\json\detail\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="triangle.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="basic_math.hpp">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="bvh.h">
-      <Filter>Header</Filter>
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
     <ClInclude Include="bvh_morton_code_kernel.h">
-      <Filter>Header</Filter>
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
     <ClInclude Include="bvh_node.h">
-      <Filter>Header</Filter>
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_math.hpp">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="cuda_math.hpp">
+      <Filter>Header\Math</Filter>
     </ClInclude>
     <ClInclude Include="bounding_box.hpp">
-      <Filter>Header</Filter>
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities.hpp">
+      <Filter>Header\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="path_tracer.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="path_tracer_kernel.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="material.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ray.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle_mesh.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_parser.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="configuration.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="config_parser.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="image.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_map_loader.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_map.hpp">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="fresnel.hpp">
+      <Filter>Header\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

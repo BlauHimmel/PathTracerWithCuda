@@ -99,6 +99,34 @@ namespace math
 		a = b;
 		b = temp;
 	}
+
+	inline float3 rotate(const float3& vertex, char axis, float radians)
+	{
+		float3 rotated_vertex = vertex;
+		float cos_theta = cosf(radians);
+		float sin_theta = sinf(radians);
+
+		if (axis == 'x' || axis == 'X')
+		{
+			rotated_vertex.x = vertex.x;
+			rotated_vertex.y = vertex.y * cos_theta - vertex.z * sin_theta;
+			rotated_vertex.z = vertex.y * sin_theta + vertex.z * cos_theta;
+		}
+		else if (axis == 'y' || axis == 'Y')
+		{
+			rotated_vertex.x = vertex.x * cos_theta + vertex.z * sin_theta;
+			rotated_vertex.y = vertex.y;
+			rotated_vertex.z = -vertex.x * sin_theta + vertex.z * cos_theta;
+		}
+		else if(axis == 'z' || axis == 'Z')
+		{
+			rotated_vertex.x = vertex.x * cos_theta - vertex.y * sin_theta;
+			rotated_vertex.y = vertex.x * sin_theta + vertex.y * cos_theta;
+			rotated_vertex.z = vertex.z;
+		}
+
+		return rotated_vertex;
+	}
 }
 
 #endif // !__MATH__
