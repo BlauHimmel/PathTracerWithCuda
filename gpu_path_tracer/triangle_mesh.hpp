@@ -370,9 +370,6 @@ inline bool triangle_mesh::create_bvh_device_data()
 		TIME_COUNT_CALL_START();
 		m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root); 
 		m_mesh_bvh_transformed_device[index] = m_mesh_bvh_initial_device[index] + m_mesh_bvh_initial_device[index]->next_node_index;
-		
-		//CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_transformed_device[index], m_mesh_bvh_initial_device[index]->next_node_index * sizeof(bvh_node_device)));
-		//CUDA_CALL(cudaMemcpy(m_mesh_bvh_transformed_device[index], m_mesh_bvh_initial_device[index], m_mesh_bvh_initial_device[index]->next_node_index * sizeof(bvh_node_device), cudaMemcpyDefault));
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -391,14 +388,6 @@ inline void triangle_mesh::release_bvh_device_data()
 			CUDA_CALL(cudaFree(m_mesh_bvh_initial_device[index]));
 		}
 		CUDA_CALL(cudaFree(m_mesh_bvh_initial_device));
-	}
-	if (m_mesh_bvh_transformed_device != nullptr)
-	{
-		for (auto index = 0; index < m_mesh_num; index++)
-		{
-			CUDA_CALL(cudaFree(m_mesh_bvh_transformed_device[index]));
-		}
-		CUDA_CALL(cudaFree(m_mesh_bvh_transformed_device));
 	}
 }
 
