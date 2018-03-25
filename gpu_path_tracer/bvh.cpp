@@ -323,26 +323,35 @@ namespace bvh_naive_cpu
 		}
 
 		bvh_node_device* bvh_nodes_array_device;
-		CUDA_CALL(cudaMallocManaged((void**)&bvh_nodes_array_device, bvh_nodes_device_vector.size() * sizeof(bvh_node_device)));
+		CUDA_CALL(cudaMallocManaged((void**)&bvh_nodes_array_device, 2 * bvh_nodes_device_vector.size() * sizeof(bvh_node_device)));
 		CUDA_CALL(cudaMemcpy(bvh_nodes_array_device, bvh_nodes_device_vector.data(), bvh_nodes_device_vector.size() * sizeof(bvh_node_device), cudaMemcpyDefault));
+		CUDA_CALL(cudaMemcpy(bvh_nodes_array_device + bvh_nodes_device_vector.size(), bvh_nodes_device_vector.data(), bvh_nodes_device_vector.size() * sizeof(bvh_node_device), cudaMemcpyDefault));
 		return bvh_nodes_array_device;
 	}
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position,
-		const float3& current_position,
-		const float3& previous_scale,
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	)
 	{
-		int node_num = root->next_node_index;
+		int node_num = initial_root->next_node_index;
 
 		for (auto i = 0; i < node_num; i++)
 		{
-			root[i].box.left_bottom = ((root[i].box.left_bottom - previous_position) / previous_scale) * current_scale + current_position;
-			root[i].box.right_top = ((root[i].box.right_top - previous_position) / previous_scale) * current_scale + current_position;
-			root[i].box.centroid = 0.5f * (root[i].box.left_bottom + root[i].box.right_top);
+			float3 left_bottom = initial_root[i].box.left_bottom;
+			float3 right_top = initial_root[i].box.right_top;
+
+			glm::vec4 left_bottom_vec4 = glm::vec4(left_bottom.x, left_bottom.y, left_bottom.z, 1.0f);
+			glm::vec4 right_top_vec4 = glm::vec4(right_top.x, right_top.y, right_top.z, 1.0f);
+
+			left_bottom_vec4 = transform_mat * initial_transform_mat * left_bottom_vec4;
+			right_top_vec4 = transform_mat * initial_transform_mat * right_top_vec4;
+
+			transformed_root[i].box.left_bottom = make_float3(left_bottom_vec4.x, left_bottom_vec4.y, left_bottom_vec4.z);
+			transformed_root[i].box.right_top = make_float3(right_top_vec4.x, right_top_vec4.y, right_top_vec4.z);
+			transformed_root[i].box.centroid = 0.5f * (transformed_root[i].box.left_bottom + transformed_root[i].box.right_top);
 		}
 	}
 }
@@ -768,14 +777,13 @@ namespace bvh_morton_code_cpu
 	}
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position, 
-		const float3& current_position, 
-		const float3& previous_scale,
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	)
 	{
-		return bvh_naive_cpu::update_bvh(previous_position, current_position, previous_scale, current_scale, root);
+		return bvh_naive_cpu::update_bvh(initial_transform_mat, transform_mat, initial_root, transformed_root);
 	}
 }
 
@@ -1004,13 +1012,12 @@ namespace bvh_morton_code_cuda
 	}
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position, 
-		const float3& current_position, 
-		const float3& previous_scale, 
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	)
 	{
-		bvh_naive_cpu::update_bvh(previous_position, current_position, previous_scale, current_scale, root);
+		bvh_naive_cpu::update_bvh(initial_transform_mat, transform_mat, initial_root, transformed_root);
 	}
 }

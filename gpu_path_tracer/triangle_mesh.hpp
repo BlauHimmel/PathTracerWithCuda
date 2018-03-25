@@ -7,6 +7,7 @@
 #include <iostream>
 #include <functional>
 #include <time.h>
+#include <glm\glm.hpp>
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
 #include "triangle.hpp"
 #include "material.hpp"
@@ -25,6 +26,10 @@ private:
 
 	std::vector<float3> m_mesh_position;
 	std::vector<float3> m_mesh_scale;
+	std::vector<float3> m_mesh_rotate;
+	std::vector<glm::mat4> m_mesh_initial_transform;
+	std::vector<glm::mat4> m_mesh_current_transform;
+
 	std::vector<material*> m_mesh_material;
 	std::vector<std::string> m_mesh_name;
 
@@ -36,10 +41,11 @@ private:
 	triangle* m_mesh_device = nullptr;
 	material* m_mat_device = nullptr;
 
-	bvh_node_device** m_mesh_bvh_device = nullptr;
+	bvh_node_device** m_mesh_bvh_initial_device = nullptr;
+	bvh_node_device** m_mesh_bvh_transformed_device = nullptr;
 
 public:
-	bool load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat);
+	bool load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat);
 	void unload_obj();
 
 	void set_material_device(int index, const material& mat);
@@ -47,13 +53,15 @@ public:
 		int index, 
 		const float3& position, 
 		const float3& scale, 
-		std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+		const float3& rotate,
+		std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 	);
 
 	int get_total_triangle_num() const;
 	int get_mesh_num() const;
 	float3 get_position(int index) const;
 	float3 get_scale(int index) const;
+	float3 get_rotate(int index) const;
 	material get_material(int index) const;
 	int get_triangle_num(int index) const;
 	int get_vertex_num(int index) const;
@@ -67,7 +75,7 @@ public:
 	void release_mesh_device_data();
 };
 
-inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, material* mat)
+inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat)
 {
 	if (mat == nullptr)
 	{
@@ -179,6 +187,14 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 	m_mesh_vertices_num.push_back(vertices_num);
 	m_mesh_position.push_back(position);
 	m_mesh_scale.push_back(scale);
+	m_mesh_rotate.push_back(rotate);
+
+	glm::mat4 transform_mat(1.0f);
+	transform_mat = glm::translate(transform_mat, glm::vec3(position.x, position.y, position.z));
+	transform_mat = glm::scale(transform_mat, glm::vec3(scale.x, scale.y, scale.z));
+
+	m_mesh_initial_transform.push_back(glm::inverse(transform_mat));
+	m_mesh_current_transform.push_back(transform_mat);
 	m_mesh_material.push_back(mat);
 	m_mesh_name.push_back(mesh_name);
 
@@ -217,14 +233,18 @@ inline void triangle_mesh::set_transform_device(
 	int index, 
 	const float3& position,
 	const float3& scale,
-	std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+	const float3& rotate,
+	std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 )
 {
-	float3 previous_position = m_mesh_position[index];
-	m_mesh_position[index] = position;
+	glm::mat4 transform_mat(1.0f);
+	transform_mat = glm::translate(transform_mat, glm::vec3(position.x, position.y, position.z));
+	transform_mat = glm::scale(transform_mat, glm::vec3(scale.x, scale.y, scale.z));
 
-	float3 previous_scale = m_mesh_scale[index];
+	m_mesh_current_transform[index] = transform_mat;
+	m_mesh_position[index] = position;
 	m_mesh_scale[index] = scale;
+	m_mesh_rotate[index] = rotate;
 
 	int triangle_start_index = 0;
 	for (auto i = 0; i < index; i++)
@@ -234,12 +254,40 @@ inline void triangle_mesh::set_transform_device(
 
 	for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 	{
-		m_mesh_device[i + triangle_start_index].vertex0 = m_triangles[i + triangle_start_index].vertex0 * scale + position;
-		m_mesh_device[i + triangle_start_index].vertex1 = m_triangles[i + triangle_start_index].vertex1 * scale + position;
-		m_mesh_device[i + triangle_start_index].vertex2 = m_triangles[i + triangle_start_index].vertex2 * scale + position;
+		float3 vertex0 = m_triangles[i + triangle_start_index].vertex0;
+		float3 vertex1 = m_triangles[i + triangle_start_index].vertex1;
+		float3 vertex2 = m_triangles[i + triangle_start_index].vertex2;
+
+		float3 normal0 = m_triangles[i + triangle_start_index].normal0;
+		float3 normal1 = m_triangles[i + triangle_start_index].normal1;
+		float3 normal2 = m_triangles[i + triangle_start_index].normal2;
+
+		glm::vec4 vertex0_vec4 = glm::vec4(vertex0.x, vertex0.y, vertex0.z, 1.0f);
+		glm::vec4 vertex1_vec4 = glm::vec4(vertex1.x, vertex1.y, vertex1.z, 1.0f);
+		glm::vec4 vertex2_vec4 = glm::vec4(vertex2.x, vertex2.y, vertex2.z, 1.0f);
+
+		glm::vec4 normal0_vec4 = glm::vec4(normal0.x, normal0.y, normal0.z, 0.0f);
+		glm::vec4 normal1_vec4 = glm::vec4(normal1.x, normal1.y, normal1.z, 0.0f);
+		glm::vec4 normal2_vec4 = glm::vec4(normal2.x, normal2.y, normal2.z, 0.0f);
+
+		vertex0_vec4 = m_mesh_current_transform[index] * vertex0_vec4;
+		vertex1_vec4 = m_mesh_current_transform[index] * vertex1_vec4;
+		vertex2_vec4 = m_mesh_current_transform[index] * vertex2_vec4;
+
+		glm::mat4 inverse_transpose_transform_mat = glm::transpose(glm::inverse(m_mesh_current_transform[index]));
+		normal0_vec4 = inverse_transpose_transform_mat * normal0_vec4;
+		normal1_vec4 = inverse_transpose_transform_mat * normal1_vec4;
+		normal2_vec4 = inverse_transpose_transform_mat * normal2_vec4;
+
+		m_mesh_device[i + triangle_start_index].vertex0 = make_float3(vertex0_vec4.x, vertex0_vec4.y, vertex0_vec4.z);
+		m_mesh_device[i + triangle_start_index].vertex1 = make_float3(vertex1_vec4.x, vertex1_vec4.y, vertex1_vec4.z);
+		m_mesh_device[i + triangle_start_index].vertex2 = make_float3(vertex2_vec4.x, vertex2_vec4.y, vertex2_vec4.z);
+		m_mesh_device[i + triangle_start_index].normal0 = normalize(make_float3(normal0_vec4.x, normal0_vec4.y, normal0_vec4.z));
+		m_mesh_device[i + triangle_start_index].normal1 = normalize(make_float3(normal1_vec4.x, normal1_vec4.y, normal1_vec4.z));
+		m_mesh_device[i + triangle_start_index].normal2 = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
 	}
 	
-	bvh_update_function(previous_position, position, previous_scale , scale, m_mesh_bvh_device[index]);
+	bvh_update_function(m_mesh_initial_transform[index], m_mesh_current_transform[index], m_mesh_bvh_initial_device[index], m_mesh_bvh_transformed_device[index]);
 }
 
 inline int triangle_mesh::get_total_triangle_num() const
@@ -260,6 +308,11 @@ inline float3 triangle_mesh::get_position(int index) const
 inline float3 triangle_mesh::get_scale(int index) const
 {
 	return m_mesh_scale[index];
+}
+
+inline float3 triangle_mesh::get_rotate(int index) const
+{
+	return m_mesh_rotate[index];
 }
 
 inline material triangle_mesh::get_material(int index) const
@@ -284,7 +337,7 @@ inline triangle* triangle_mesh::get_triangles_device() const
 
 inline bvh_node_device** triangle_mesh::get_bvh_node_device() const
 {
-	return m_mesh_bvh_device;
+	return m_mesh_bvh_transformed_device;
 }
 
 inline bool triangle_mesh::create_bvh_device_data()
@@ -294,7 +347,8 @@ inline bool triangle_mesh::create_bvh_device_data()
 		return false;
 	}
 
-	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_device, m_mesh_num * sizeof(bvh_node_device*)));
+	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_initial_device, m_mesh_num * sizeof(bvh_node_device*)));
+	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_transformed_device, m_mesh_num * sizeof(bvh_node_device*)));
 
 	for (auto index = 0; index < m_mesh_num; index++)
 	{
@@ -314,7 +368,11 @@ inline bool triangle_mesh::create_bvh_device_data()
 
 		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root);
+		m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root); 
+		m_mesh_bvh_transformed_device[index] = m_mesh_bvh_initial_device[index] + m_mesh_bvh_initial_device[index]->next_node_index;
+		
+		//CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_transformed_device[index], m_mesh_bvh_initial_device[index]->next_node_index * sizeof(bvh_node_device)));
+		//CUDA_CALL(cudaMemcpy(m_mesh_bvh_transformed_device[index], m_mesh_bvh_initial_device[index], m_mesh_bvh_initial_device[index]->next_node_index * sizeof(bvh_node_device), cudaMemcpyDefault));
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
@@ -326,13 +384,21 @@ inline bool triangle_mesh::create_bvh_device_data()
 
 inline void triangle_mesh::release_bvh_device_data()
 {
-	if (m_mesh_bvh_device != nullptr)
+	if (m_mesh_bvh_initial_device != nullptr)
 	{
 		for (auto index = 0; index < m_mesh_num; index++)
 		{
-			CUDA_CALL(cudaFree(m_mesh_bvh_device[index]));
+			CUDA_CALL(cudaFree(m_mesh_bvh_initial_device[index]));
 		}
-		CUDA_CALL(cudaFree(m_mesh_bvh_device));
+		CUDA_CALL(cudaFree(m_mesh_bvh_initial_device));
+	}
+	if (m_mesh_bvh_transformed_device != nullptr)
+	{
+		for (auto index = 0; index < m_mesh_num; index++)
+		{
+			CUDA_CALL(cudaFree(m_mesh_bvh_transformed_device[index]));
+		}
+		CUDA_CALL(cudaFree(m_mesh_bvh_transformed_device));
 	}
 }
 
@@ -366,9 +432,38 @@ inline bool triangle_mesh::create_mesh_device_data()
 		for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 		{
 			m_mesh_device[i + triangle_start_index].mat = m_mat_device + index;
-			m_mesh_device[i + triangle_start_index].vertex0 = m_triangles[i + triangle_start_index].vertex0 * m_mesh_scale[index] + m_mesh_position[index];
-			m_mesh_device[i + triangle_start_index].vertex1 = m_triangles[i + triangle_start_index].vertex1 * m_mesh_scale[index] + m_mesh_position[index];
-			m_mesh_device[i + triangle_start_index].vertex2 = m_triangles[i + triangle_start_index].vertex2 * m_mesh_scale[index] + m_mesh_position[index];
+
+			float3 vertex0 = m_triangles[i + triangle_start_index].vertex0;
+			float3 vertex1 = m_triangles[i + triangle_start_index].vertex1;
+			float3 vertex2 = m_triangles[i + triangle_start_index].vertex2;
+
+			float3 normal0 = m_triangles[i + triangle_start_index].normal0;
+			float3 normal1 = m_triangles[i + triangle_start_index].normal1;
+			float3 normal2 = m_triangles[i + triangle_start_index].normal2;
+
+			glm::vec4 vertex0_vec4 = glm::vec4(vertex0.x, vertex0.y, vertex0.z, 1.0f);
+			glm::vec4 vertex1_vec4 = glm::vec4(vertex1.x, vertex1.y, vertex1.z, 1.0f);
+			glm::vec4 vertex2_vec4 = glm::vec4(vertex2.x, vertex2.y, vertex2.z, 1.0f);
+
+			glm::vec4 normal0_vec4 = glm::vec4(normal0.x, normal0.y, normal0.z, 0.0f);
+			glm::vec4 normal1_vec4 = glm::vec4(normal1.x, normal1.y, normal1.z, 0.0f);
+			glm::vec4 normal2_vec4 = glm::vec4(normal2.x, normal2.y, normal2.z, 0.0f);
+
+			vertex0_vec4  = m_mesh_current_transform[index] * vertex0_vec4 ;
+			vertex1_vec4  = m_mesh_current_transform[index] * vertex1_vec4 ;
+			vertex2_vec4  = m_mesh_current_transform[index] * vertex2_vec4 ;
+
+			glm::mat4 inverse_transpose_transform_mat = glm::transpose(glm::inverse(m_mesh_current_transform[index]));
+			normal0_vec4 = inverse_transpose_transform_mat * normal0_vec4;
+			normal1_vec4 = inverse_transpose_transform_mat * normal1_vec4;
+			normal2_vec4 = inverse_transpose_transform_mat * normal2_vec4;
+
+			m_mesh_device[i + triangle_start_index].vertex0 = make_float3(vertex0_vec4.x, vertex0_vec4.y, vertex0_vec4.z);
+			m_mesh_device[i + triangle_start_index].vertex1 = make_float3(vertex1_vec4.x, vertex1_vec4.y, vertex1_vec4.z);
+			m_mesh_device[i + triangle_start_index].vertex2 = make_float3(vertex2_vec4.x, vertex2_vec4.y, vertex2_vec4.z);
+			m_mesh_device[i + triangle_start_index].normal0 = normalize(make_float3(normal0_vec4.x, normal0_vec4.y, normal0_vec4.z));
+			m_mesh_device[i + triangle_start_index].normal1 = normalize(make_float3(normal1_vec4.x, normal1_vec4.y, normal1_vec4.z));
+			m_mesh_device[i + triangle_start_index].normal2 = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
 		}
 	}
 	

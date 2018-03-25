@@ -55,6 +55,12 @@
     <Filter Include="Header\Others">
       <UniqueIdentifier>{49430132-ba35-47af-99d0-c323fe84f63e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Bvh">
+      <UniqueIdentifier>{eee87a57-2b7c-42f3-aa6a-34431da11e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Main">
+      <UniqueIdentifier>{2e44beb1-baf2-4075-ab08-048707afc2b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -75,11 +81,11 @@
     <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="bvh.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Bvh</Filter>
+    </ClCompile>
+    <ClCompile Include="window.cpp">
+      <Filter>Source\Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

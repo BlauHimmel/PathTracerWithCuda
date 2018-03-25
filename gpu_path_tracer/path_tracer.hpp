@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <glm\glm.hpp>
 
 #include "sphere.hpp"
 #include "image.hpp"
@@ -244,6 +245,7 @@ inline void path_tracer::render_ui()
 
 				float3 position = m_scene.get_mesh_position(i);
 				float3 scale = m_scene.get_mesh_scale(i);
+				float3 rotate = m_scene.get_mesh_rotate(i);
 
 				ImGui::Text("Base:");
 				sprintf(buffer, "Vertices: %d", m_scene.get_mesh_vertices_num(i));
@@ -253,6 +255,7 @@ inline void path_tracer::render_ui()
 
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Position", &position.x, 0.001f);
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Scale", &scale.x, 0.000001f, 0.000001f, INFINITY, "%.6f");
+				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Rotate", &rotate.x);
 
 				ImGui::Separator();
 
@@ -308,9 +311,15 @@ inline void path_tracer::render_ui()
 				if (is_bvh_update)
 				{
 					is_triangle_mesh_modified = true;
-					std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function =
+					std::function<void(const glm::mat4&, const glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function =
 						BVH_BUILD_METHOD update_bvh;
-					m_scene.set_mesh_transform_device(i, position, clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)), bvh_update_function);
+					m_scene.set_mesh_transform_device(
+						i, 
+						position, 
+						clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)), 
+						rotate, 
+						bvh_update_function
+					);
 				}
 
 				ImGui::TreePop();

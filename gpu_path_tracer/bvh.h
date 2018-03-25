@@ -6,11 +6,10 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <thrust\device_vector.h>
-
 #include <vector>
 #include <stack>
 #include <algorithm>
-
+#include <glm\glm.hpp>
 #include <omp.h>
 
 #include "triangle.hpp"
@@ -40,11 +39,10 @@ namespace bvh_naive_cpu
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position,
-		const float3& current_position,
-		const float3& previous_scale,
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	);
 }
 
@@ -91,11 +89,10 @@ namespace bvh_morton_code_cpu
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position,
-		const float3& current_position,
-		const float3& previous_scale,
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	);
 }
 
@@ -116,11 +113,10 @@ namespace bvh_morton_code_cuda
 	API_ENTRY bvh_node_device* build_bvh_device_data(bvh_node* root);
 
 	API_ENTRY void update_bvh(
-		const float3& previous_position,
-		const float3& current_position,
-		const float3& previous_scale,
-		const float3& current_scale,
-		bvh_node_device* root
+		const glm::mat4& initial_transform_mat,
+		const glm::mat4& transform_mat,
+		bvh_node_device* initial_root,
+		bvh_node_device* transformed_root
 	);
 }
 

@@ -13,6 +13,7 @@
 
 #include <exception>
 #include <fstream>
+#include <glm\glm.hpp>
 
 #define TOKEN_OBJECT_SPHERE "Sphere"
 #define TOKEN_OBJECT_SPHERE_CENTER "Center"
@@ -24,6 +25,7 @@
 #define TOKEN_OBJECT_MESH_MATERIAL "Material"
 #define TOKEN_OBJECT_MESH_POSITION "Position"
 #define TOKEN_OBJECT_MESH_SCALE "Scale"
+#define TOKEN_OBJECT_MESH_ROTATE "Rotate"
 
 #define TOKEN_BACKGROUND "Background"
 #define TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH "Path"
@@ -90,7 +92,8 @@
 			"Material" : "XXXX",							-- name of material(user declared or built-in material)
 			"Path" : "XXXX\\YYYY",
 			"Position" : "0.0 0.0 0.0",
-			"Scale" : "1.0 1.0 1.0"
+			"Scale" : "1.0 1.0 1.0",
+			"Rotate" : "0.0 0.0 0.0"
 		},
 		...
 	]
@@ -136,6 +139,7 @@ public:
 	float3 get_mesh_position(int index) const;
 	material get_mesh_material(int index) const;
 	float3 get_mesh_scale(int index) const;
+	float3 get_mesh_rotate(int index) const;
 	sphere get_sphere(int index) const;
 
 	void set_sphere_device(int index, const sphere& sphere);
@@ -144,7 +148,8 @@ public:
 		int index,
 		const float3& position,
 		const float3& scale,
-		std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+		const float3& rotate,
+		std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 	);
 
 private:
@@ -190,6 +195,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	std::vector<std::string> meshes_mat;
 	std::vector<float3> meshes_position;
 	std::vector<float3> meshes_scale;
+	std::vector<float3> meshes_rotate;
 
 	init_default_material(materials);
 
@@ -331,21 +337,25 @@ inline bool scene_parser::load_scene(const std::string& filename)
 			auto material = mesh_element[TOKEN_OBJECT_MESH_MATERIAL];
 			auto position = mesh_element[TOKEN_OBJECT_MESH_POSITION];
 			auto scale = mesh_element[TOKEN_OBJECT_MESH_SCALE];
+			auto rotate = mesh_element[TOKEN_OBJECT_MESH_ROTATE];
 
 			CHECK_PROPERTY(Mesh, path, TOKEN_OBJECT_MESH_PATH);
 			CHECK_PROPERTY(Mesh, material, TOKEN_OBJECT_MESH_MATERIAL);
 			CHECK_PROPERTY(Mesh, position, TOKEN_OBJECT_MESH_MATERIAL);
 			CHECK_PROPERTY(Mesh, scale, TOKEN_OBJECT_MESH_SCALE);
+			CHECK_PROPERTY(Mesh, rotate, TOKEN_OBJECT_MESH_ROTATE);
 
 			std::string path_str = path;
 			std::string material_str = material;
 			std::string position_str = position;
 			std::string scale_str = scale;
+			std::string rotate_str = rotate;
 
 			meshes_path.push_back(path_str);
 			meshes_mat.push_back(material_str);
 			meshes_position.push_back(parse_float3(position_str));
 			meshes_scale.push_back(clamp(parse_float3(scale_str), make_float3(0.0f, 0.0f, 0.0f), make_float3(INFINITY, INFINITY, INFINITY)));
+			meshes_rotate.push_back(parse_float3(rotate_str));
 		}
 	}
 
@@ -397,7 +407,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 	//Mesh
 	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], copy_material(materials[meshes_mat[i]]));
+		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], meshes_rotate[i],copy_material(materials[meshes_mat[i]]));
 
 		if (error)
 		{
@@ -557,6 +567,11 @@ inline float3 scene_parser::get_mesh_scale(int index) const
 	return m_triangle_mesh.get_scale(index);
 }
 
+inline float3 scene_parser::get_mesh_rotate(int index) const
+{
+	return m_triangle_mesh.get_rotate(index);
+}
+
 inline sphere scene_parser::get_sphere(int index) const
 {
 	return m_spheres_device[index];
@@ -575,11 +590,12 @@ inline void scene_parser::set_mesh_material_device(int index, const material& ma
 inline void scene_parser::set_mesh_transform_device(
 	int index, 
 	const float3& position,
-	const float3& scale, 
-	std::function<void(const float3&, const float3&, const float3&, const float3&, bvh_node_device*)> bvh_update_function
+	const float3& scale,
+	const float3& rotate,
+	std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 )
 {
-	m_triangle_mesh.set_transform_device(index, position, scale, bvh_update_function);
+	m_triangle_mesh.set_transform_device(index, position, scale, rotate, bvh_update_function);
 }
 
 void scene_parser::init_default_material(std::map<std::string, material>& materials)
