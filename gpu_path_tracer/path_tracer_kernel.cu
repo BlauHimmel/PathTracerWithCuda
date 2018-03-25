@@ -868,7 +868,7 @@ __global__ void trace_ray_kernel(
 		float3 bias_vector = config->vector_bias_length * min_normal;
 
 		fresnel fresnel;
-		if (min_mat.medium.extinction_coefficient == 0)
+		if (min_mat.medium.extinction_coefficient == 0 || min_mat.is_transparent)
 		{
 			fresnel = get_fresnel_dielectrics(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index, reflection_direction, refraction_direction);
 		}
