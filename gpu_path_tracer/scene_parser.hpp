@@ -140,6 +140,7 @@ public:
 	material get_mesh_material(int index) const;
 	float3 get_mesh_scale(int index) const;
 	float3 get_mesh_rotate(int index) const;
+	float3 get_mesh_rotate_applied(int index) const;
 	sphere get_sphere(int index) const;
 
 	void set_sphere_device(int index, const sphere& sphere);
@@ -148,9 +149,10 @@ public:
 		int index,
 		const float3& position,
 		const float3& scale,
-		const float3& rotate,
 		std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 	);
+	void set_mesh_rotate(int index, const float3& rotate);
+	void apply_mesh_rotate(int index);
 
 private:
 	void init_default_material(std::map<std::string, material>& materials);
@@ -296,6 +298,11 @@ inline bool scene_parser::load_scene(const std::string& filename)
 				}
 			};
 
+			if (mat.is_transparent && mat.medium.extinction_coefficient > 0.0f)
+			{
+				std::cout << "[Error]Materail <" << name_str << ">:Extinction coefficient of transparent material should be zero!" << std::endl;
+				return false;
+			}
 
 			materials[name_str] = mat;
 		}
@@ -572,6 +579,11 @@ inline float3 scene_parser::get_mesh_rotate(int index) const
 	return m_triangle_mesh.get_rotate(index);
 }
 
+inline float3 scene_parser::get_mesh_rotate_applied(int index) const
+{
+	return m_triangle_mesh.get_rotate_applied(index);
+}
+
 inline sphere scene_parser::get_sphere(int index) const
 {
 	return m_spheres_device[index];
@@ -591,11 +603,20 @@ inline void scene_parser::set_mesh_transform_device(
 	int index, 
 	const float3& position,
 	const float3& scale,
-	const float3& rotate,
 	std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
 )
 {
-	m_triangle_mesh.set_transform_device(index, position, scale, rotate, bvh_update_function);
+	m_triangle_mesh.set_transform_device(index, position, scale, bvh_update_function);
+}
+
+inline void scene_parser::set_mesh_rotate(int index, const float3& rotate)
+{
+	m_triangle_mesh.set_rotate(index, rotate);
+}
+
+inline void scene_parser::apply_mesh_rotate(int index)
+{
+	m_triangle_mesh.apply_rotate(index);
 }
 
 void scene_parser::init_default_material(std::map<std::string, material>& materials)

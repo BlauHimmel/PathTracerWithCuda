@@ -29,7 +29,6 @@ enum class object_type
 {
 	none,
 	sphere,
-	ground,
 	triangle
 };
 
@@ -69,27 +68,6 @@ __host__ __device__ float3 point_on_ray(
 )
 {
 	return ray.origin + ray.direction * t;
-}
-
-__host__ __device__  bool intersect_ground(
-	float altitude,			//in 
-	const ray& ray,			//in
-	float3& hit_point,		//out
-	float3& hit_normal,		//out
-	float& hit_t			//out
-)
-{
-	if (ray.direction.y != 0)
-	{
-		hit_t = (altitude - ray.origin.y) / ray.direction.y;
-		hit_point = ray.origin + ray.direction * hit_t;
-		hit_normal = make_float3(0.0f, 1.0f, 0.0f);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }
 
 __host__ __device__  bool intersect_sphere(
@@ -593,7 +571,7 @@ __host__ __device__ float3 get_background_color(
 		}
 	}
 
-	if (config->use_ground)
+	if (config->use_sky)
 	{
 		float t = (dot(direction, make_float3(-0.41f, 0.41f, -0.82f)) + 1.0f) / 2.0f;
 		float3 a = make_float3(0.15f, 0.3f, 0.5f);
@@ -753,15 +731,6 @@ __global__ void trace_ray_kernel(
 	int min_sphere_index = -1;
 	int min_triangle_index = -1;
 
-	//intersect with primitives in scene
-	if (config->use_ground && intersect_ground(-0.8f, tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
-	{
-		min_t = hit_t;
-		min_point = hit_point;
-		min_normal = hit_normal;
-		min_type = object_type::ground;
-	}
-
 	for (int i = 0; i < sphere_num; i++)
 	{
 		if (intersect_sphere(spheres[i], tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
@@ -827,12 +796,7 @@ __global__ void trace_ray_kernel(
 	if (min_type != object_type::none)
 	{
 		material min_mat;
-		if (min_type == object_type::ground)
-		{
-			GET_DEFAULT_MATERIAL_DEVICE(min_mat);
-			min_mat.diffuse_color = make_float3(0.455f, 0.43f, 0.39f);
-		}
-		else if (min_type == object_type::sphere)
+		if (min_type == object_type::sphere)
 		{
 			min_mat = spheres[min_sphere_index].mat;
 		}

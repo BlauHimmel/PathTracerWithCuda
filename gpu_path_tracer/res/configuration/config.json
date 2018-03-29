@@ -10,5 +10,5 @@
 	"SSSThreshold" : "0.000001",
 	"Skybox" : "true",
 	"BilinearSample" : "true",
-	"Ground" : "false"
+	"Sky" : "false"
 }

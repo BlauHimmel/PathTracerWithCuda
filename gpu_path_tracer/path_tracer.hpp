@@ -189,13 +189,16 @@ inline void path_tracer::render_ui()
 				float extinction_coefficient = mat.medium.extinction_coefficient;
 
 				is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+				if (!is_transparent)
+				{
+					is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+				}
 
 				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
 				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
 
 				is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient, 0.001f);
+				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient", &reduced_scattering_coefficient, 0.001f);
 
 				ImGui::Separator();
 
@@ -213,7 +216,14 @@ inline void path_tracer::render_ui()
 					mat.roughness = roughness;
 
 					mat.medium.refraction_index = refraction_index;
-					mat.medium.extinction_coefficient = extinction_coefficient;
+					if (!is_transparent)
+					{
+						mat.medium.extinction_coefficient = extinction_coefficient;
+					}
+					else
+					{
+						mat.medium.extinction_coefficient = 0.0f;
+					}
 					mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
 					mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
 
@@ -240,12 +250,14 @@ inline void path_tracer::render_ui()
 			{
 				bool is_bvh_update = false;
 				bool is_modified = false;
+				bool is_rotate_apply = false;
+				bool is_rotate_clear = false;
 
 				ImGui::Separator();
 
 				float3 position = m_scene.get_mesh_position(i);
 				float3 scale = m_scene.get_mesh_scale(i);
-				float3 rotate = m_scene.get_mesh_rotate(i);
+				float3 rotate = m_scene.get_mesh_rotate(i);;
 
 				ImGui::Text("Base:");
 				sprintf(buffer, "Vertices: %d", m_scene.get_mesh_vertices_num(i));
@@ -255,7 +267,18 @@ inline void path_tracer::render_ui()
 
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Position", &position.x, 0.001f);
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Scale", &scale.x, 0.000001f, 0.000001f, INFINITY, "%.6f");
-				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Rotate", &rotate.x);
+				is_modified = is_modified || ImGui::DragFloat3("Rotate", &rotate.x);
+
+				ImGui::SameLine();
+				is_rotate_apply = ImGui::Button("Apply");
+
+				ImGui::SameLine();
+				is_rotate_clear = ImGui::Button("Clear");
+				is_modified = is_modified || is_rotate_clear;
+				if (is_rotate_clear)
+				{
+					rotate = m_scene.get_mesh_rotate_applied(i);
+				}
 
 				ImGui::Separator();
 
@@ -278,13 +301,16 @@ inline void path_tracer::render_ui()
 				float extinction_coefficient = mat.medium.extinction_coefficient;
 
 				is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+				if (!is_transparent)
+				{
+					is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+				}
 
 				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
 				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
 
 				is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient Coefficient", &reduced_scattering_coefficient, 0.001f);
+				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient", &reduced_scattering_coefficient, 0.001f);
 
 				ImGui::Separator();
 
@@ -301,11 +327,19 @@ inline void path_tracer::render_ui()
 					new_mat.roughness = roughness;
 
 					new_mat.medium.refraction_index = refraction_index;
-					new_mat.medium.extinction_coefficient = extinction_coefficient;
+					if (!is_transparent)
+					{
+						new_mat.medium.extinction_coefficient = extinction_coefficient;
+					}
+					else
+					{
+						new_mat.medium.extinction_coefficient = 0.0f;
+					}
 					new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
 					new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
 
 					m_scene.set_mesh_material_device(i, new_mat);
+					m_scene.set_mesh_rotate(i, rotate);
 				}
 
 				if (is_bvh_update)
@@ -317,11 +351,16 @@ inline void path_tracer::render_ui()
 						i, 
 						position, 
 						clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)), 
-						rotate, 
 						bvh_update_function
 					);
 				}
 
+				if (is_rotate_apply)
+				{
+					is_triangle_mesh_modified = true;
+					m_scene.apply_mesh_rotate(i);
+				}
+				
 				ImGui::TreePop();
 			}
 		}

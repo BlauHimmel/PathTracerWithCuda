@@ -22,7 +22,7 @@
 #define TOKEN_CONFIG_SSS_THRESHOLD "SSSThreshold"
 #define TOKEN_CONFIG_SKY_BOX "Skybox"
 #define TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE "BilinearSample"
-#define TOKEN_CONFIG_GROUND "Ground"
+#define TOKEN_CONFIG_SKY "Sky"
 
 /*
 {
@@ -37,7 +37,7 @@
 	"SSSThreshold" : "0.000001",
 	"Skybox" : "true",
 	"BilinearSample" : "true",
-	"Ground" : "false"
+	"Sky" : "false"
 }
 */
 
@@ -55,8 +55,8 @@ private:
 	float m_energy_exist_threshold = 0.000001f;
 	float m_sss_threshold = 0.000001f;
 	bool m_use_sky_box = true;
-	bool m_use_ground = true;
 	bool m_use_bilinear = false;
+	bool m_use_sky = false;
 	//============================================
 
 	configuration* m_config_device = nullptr;
@@ -115,7 +115,7 @@ bool config_parser::load_config(const std::string& filename)
 	auto sss_threshold = m_json_parser[TOKEN_CONFIG_SSS_THRESHOLD];
 	auto use_sky_box = m_json_parser[TOKEN_CONFIG_SKY_BOX];
 	auto use_bilinear = m_json_parser[TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE];
-	auto use_ground = m_json_parser[TOKEN_CONFIG_GROUND];
+	auto use_sky = m_json_parser[TOKEN_CONFIG_SKY];
 
 	CHECK_PROPERTY(Config, height, TOKEN_CONFIG_HEIGHT);
 	CHECK_PROPERTY(Config, width, TOKEN_CONFIG_WIDTH);
@@ -128,7 +128,7 @@ bool config_parser::load_config(const std::string& filename)
 	CHECK_PROPERTY(Config, sss_threshold, TOKEN_CONFIG_SSS_THRESHOLD);
 	CHECK_PROPERTY(Config, use_sky_box, TOKEN_CONFIG_SKY_BOX);
 	CHECK_PROPERTY(Config, use_bilinear, TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE);
-	CHECK_PROPERTY(Config, use_ground, TOKEN_CONFIG_GROUND);
+	CHECK_PROPERTY(Config, use_sky, TOKEN_CONFIG_SKY);
 
 	std::string height_str = height;
 	std::string width_str = width;
@@ -141,7 +141,7 @@ bool config_parser::load_config(const std::string& filename)
 	std::string sss_threshold_str = sss_threshold;
 	std::string use_sky_box_str = use_sky_box;
 	std::string use_bilinear_str = use_bilinear;
-	std::string use_ground_str = use_ground;
+	std::string use_sky_str = use_sky;
 
 	m_height = parse_int(height_str);
 	m_width = parse_int(width_str);
@@ -154,7 +154,7 @@ bool config_parser::load_config(const std::string& filename)
 	m_sss_threshold = parse_float(sss_threshold_str);
 	m_use_sky_box = parse_bool(use_sky_box_str);
 	m_use_bilinear = parse_bool(use_bilinear_str);
-	m_use_ground = parse_bool(use_ground_str);
+	m_use_sky = parse_bool(use_sky_str);
 
 	m_is_loaded = true;
 
@@ -175,7 +175,7 @@ inline void config_parser::unload_config()
 	m_sss_threshold = 0.000001f;
 	m_use_sky_box = true;
 	m_use_bilinear = true;
-	m_use_ground = false;
+	m_use_sky = false;
 }
 
 inline configuration* config_parser::get_config_device_ptr()
@@ -198,7 +198,7 @@ inline void config_parser::create_config_device_data()
 	m_config_device->sss_threshold = m_sss_threshold;
 	m_config_device->use_sky_box = m_use_sky_box;
 	m_config_device->use_bilinear = m_use_bilinear;
-	m_config_device->use_ground = m_use_ground;
+	m_config_device->use_sky = m_use_sky;
 }
 
 inline void config_parser::release_config_device_data()

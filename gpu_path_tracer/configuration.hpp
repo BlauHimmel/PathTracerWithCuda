@@ -15,7 +15,7 @@ struct configuration
 	float energy_exist_threshold;
 	float sss_threshold;
 	bool use_sky_box;
-	bool use_ground;
+	bool use_sky;
 	bool use_bilinear;
 };
 
