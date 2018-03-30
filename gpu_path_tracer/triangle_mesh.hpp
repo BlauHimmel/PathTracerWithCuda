@@ -415,6 +415,8 @@ inline void triangle_mesh::apply_rotate(int index)
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
+	BVH_BUILD_METHOD release_bvh(root);
+
 	m_mesh_rotate_applied[index] = m_mesh_rotate[index];
 }
 
