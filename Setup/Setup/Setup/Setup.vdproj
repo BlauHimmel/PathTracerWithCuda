@@ -39,6 +39,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1E384782B8D642E598AA5907F3FF3552"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_24792DB5BCF64596B286676814745B96"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -471,6 +477,26 @@
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\human.obj"
             "TargetName" = "8:human.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1E384782B8D642E598AA5907F3FF3552"
+            {
+            "SourcePath" = "8:..\\..\\..\\x64\\Release\\res\\obj\\cornell.obj"
+            "TargetName" = "8:cornell.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
