@@ -932,16 +932,26 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 		}
 
 		color pixel = image_pixels[pixel_index] / (float)pass_counter;
+		float x, y, z;
 
-		float inverse_gamma = 0.45454545f;
-		color corrected_pixel;
-		corrected_pixel.x = std::expf(inverse_gamma * std::logf(pixel.x));
-		corrected_pixel.y = std::expf(inverse_gamma * std::logf(pixel.y));
-		corrected_pixel.z = std::expf(inverse_gamma * std::logf(pixel.z));
+		if (config->gamma_correction)
+		{
+			float inverse_gamma = 0.45454545f;
+			color corrected_pixel;
+			corrected_pixel.x = std::expf(inverse_gamma * std::logf(pixel.x));
+			corrected_pixel.y = std::expf(inverse_gamma * std::logf(pixel.y));
+			corrected_pixel.z = std::expf(inverse_gamma * std::logf(pixel.z));
 
-		float x = clamp(corrected_pixel.x * 255.0f, 0.0f, 255.0f);
-		float y = clamp(corrected_pixel.y * 255.0f, 0.0f, 255.0f);
-		float z = clamp(corrected_pixel.z * 255.0f, 0.0f, 255.0f);
+			x = clamp(corrected_pixel.x * 255.0f, 0.0f, 255.0f);
+			y = clamp(corrected_pixel.y * 255.0f, 0.0f, 255.0f);
+			z = clamp(corrected_pixel.z * 255.0f, 0.0f, 255.0f);
+		}
+		else
+		{
+			x = pixel.x;
+			y = pixel.y;
+			z = pixel.z;
+		}
 
 		color256 color_256;
 		color_256.x = (uchar)x;
@@ -953,7 +963,6 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 }
 
 //===============================================================================================================
-//TODO:BUILD SPATIAL STRUCTURE ON GPU
 
 extern "C" void path_tracer_kernel(
 	int mesh_num,							//in

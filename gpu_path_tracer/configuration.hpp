@@ -17,6 +17,7 @@ struct configuration
 	bool use_sky_box;
 	bool use_sky;
 	bool use_bilinear;
+	bool gamma_correction;
 };
 
 #endif // !__CONFIGURATION__

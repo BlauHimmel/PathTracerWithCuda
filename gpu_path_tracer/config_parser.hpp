@@ -23,6 +23,7 @@
 #define TOKEN_CONFIG_SKY_BOX "Skybox"
 #define TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE "BilinearSample"
 #define TOKEN_CONFIG_SKY "Sky"
+#define TOKEN_CONFIG_GAMMA_CORRECTION "GammaCorrection"
 
 /*
 {
@@ -37,7 +38,8 @@
 	"SSSThreshold" : "0.000001",
 	"Skybox" : "true",
 	"BilinearSample" : "true",
-	"Sky" : "false"
+	"Sky" : "false",
+	"GammaCorrection" : "true"
 }
 */
 
@@ -57,6 +59,7 @@ private:
 	bool m_use_sky_box = true;
 	bool m_use_bilinear = false;
 	bool m_use_sky = false;
+	bool m_gamma_correction = true;
 	//============================================
 
 	configuration* m_config_device = nullptr;
@@ -116,6 +119,7 @@ bool config_parser::load_config(const std::string& filename)
 	auto use_sky_box = m_json_parser[TOKEN_CONFIG_SKY_BOX];
 	auto use_bilinear = m_json_parser[TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE];
 	auto use_sky = m_json_parser[TOKEN_CONFIG_SKY];
+	auto gamma_correction = m_json_parser[TOKEN_CONFIG_GAMMA_CORRECTION];
 
 	CHECK_PROPERTY(Config, height, TOKEN_CONFIG_HEIGHT);
 	CHECK_PROPERTY(Config, width, TOKEN_CONFIG_WIDTH);
@@ -129,6 +133,7 @@ bool config_parser::load_config(const std::string& filename)
 	CHECK_PROPERTY(Config, use_sky_box, TOKEN_CONFIG_SKY_BOX);
 	CHECK_PROPERTY(Config, use_bilinear, TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE);
 	CHECK_PROPERTY(Config, use_sky, TOKEN_CONFIG_SKY);
+	CHECK_PROPERTY(Config, gamma_correction, TOKEN_CONFIG_GAMMA_CORRECTION);
 
 	std::string height_str = height;
 	std::string width_str = width;
@@ -142,6 +147,7 @@ bool config_parser::load_config(const std::string& filename)
 	std::string use_sky_box_str = use_sky_box;
 	std::string use_bilinear_str = use_bilinear;
 	std::string use_sky_str = use_sky;
+	std::string gamma_correction_str = gamma_correction;
 
 	m_height = parse_int(height_str);
 	m_width = parse_int(width_str);
@@ -155,6 +161,7 @@ bool config_parser::load_config(const std::string& filename)
 	m_use_sky_box = parse_bool(use_sky_box_str);
 	m_use_bilinear = parse_bool(use_bilinear_str);
 	m_use_sky = parse_bool(use_sky_str);
+	m_gamma_correction = parse_bool(gamma_correction_str);
 
 	m_is_loaded = true;
 
@@ -176,6 +183,7 @@ inline void config_parser::unload_config()
 	m_use_sky_box = true;
 	m_use_bilinear = true;
 	m_use_sky = false;
+	m_gamma_correction = true;
 }
 
 inline configuration* config_parser::get_config_device_ptr()
@@ -199,6 +207,7 @@ inline void config_parser::create_config_device_data()
 	m_config_device->use_sky_box = m_use_sky_box;
 	m_config_device->use_bilinear = m_use_bilinear;
 	m_config_device->use_sky = m_use_sky;
+	m_config_device->gamma_correction = m_gamma_correction;
 }
 
 inline void config_parser::release_config_device_data()
