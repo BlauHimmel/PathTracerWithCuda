@@ -948,9 +948,9 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 		}
 		else
 		{
-			x = pixel.x;
-			y = pixel.y;
-			z = pixel.z;
+			x = clamp(pixel.x * 255.0f, 0.0f, 255.0f);
+			y = clamp(pixel.y * 255.0f, 0.0f, 255.0f);
+			z = clamp(pixel.z * 255.0f, 0.0f, 255.0f);
 		}
 
 		color256 color_256;

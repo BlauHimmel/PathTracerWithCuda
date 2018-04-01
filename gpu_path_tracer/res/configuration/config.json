@@ -10,5 +10,6 @@
 	"SSSThreshold" : "0.000001",
 	"Skybox" : "true",
 	"BilinearSample" : "true",
-	"Sky" : "false"
+	"Sky" : "false",
+	"GammaCorrection" : "true"
 }

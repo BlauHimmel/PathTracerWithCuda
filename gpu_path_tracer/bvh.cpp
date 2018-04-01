@@ -885,7 +885,7 @@ namespace bvh_morton_code_cuda
 		//Sort the bvh_node according to the morton code of its centroid
 		std::sort(triangle_morton_code_nodes, triangle_morton_code_nodes + triangle_num, bvh_node_morton_node_comparator);
 
-		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
+		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
 		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
 #endif
@@ -926,7 +926,7 @@ namespace bvh_morton_code_cuda
 		std::sort(leaf_morton_code_nodes, leaf_morton_code_nodes + leaf_node_num, bvh_node_morton_node_comparator);
 		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes_device, leaf_morton_code_nodes, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 
-		//Generate the tree(Can be parallel)
+		//Generate the tree
 		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num);
 
 		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
