@@ -176,8 +176,10 @@ inline void cube_map_loader::unload_data()
 	m_y_negative_map.shrink_to_fit();
 	m_z_positive_map.shrink_to_fit();
 	m_z_negative_map.shrink_to_fit();
-
+	m_width = 0;
+	m_height = 0;
 	m_is_loaded = false;
+	std::cout << "[Info]Unload cube map data." << std::endl;
 }
 
 inline cube_map * cube_map_loader::get_cube_map_device() const
@@ -191,6 +193,10 @@ inline bool cube_map_loader::create_cube_device_data()
 	{
 		return false;
 	}
+
+	printf("[Info]Copy cube map data to gpu...\n");
+	double time;
+	TIME_COUNT_CALL_START();
 
 	CUDA_CALL(cudaMallocManaged((void**)&m_cube_map_device, sizeof(cube_map)));
 
@@ -209,6 +215,9 @@ inline bool cube_map_loader::create_cube_device_data()
 	CUDA_CALL(cudaMemcpy(m_cube_map_device->m_z_negative_map, m_z_negative_map.data(), m_width * m_height * 4 * sizeof(uchar), cudaMemcpyDefault));
 
 	m_cube_map_device->length = m_width;
+
+	TIME_COUNT_CALL_END(time);
+	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 	return true;
 }
@@ -229,6 +238,8 @@ inline void cube_map_loader::release_cube_device_data()
 	CUDA_CALL(cudaFree(m_cube_map_device));
 
 	m_cube_map_device = nullptr;
+
+	printf("[Info]Release cube map device data.\n");
 
 	return;
 }

@@ -39,6 +39,7 @@ private:
 	image* m_image = nullptr;
 
 	bool m_is_initiated = false;
+	bool m_is_scene_choose = false;
 
 	color* m_not_absorbed_colors_device = nullptr;
 	color* m_accumulated_colors_device = nullptr;
@@ -49,14 +50,14 @@ private:
 public:
 	~path_tracer();
 
-	void init(render_camera* render_camera, config_parser* config);
+	std::vector<std::string> init(render_camera* render_camera, config_parser* config, const std::string& scene_file_directory);
 	image* render();
 	void clear();
 
 	void render_ui();
 
-private:
-	bool init_scene_device_data();
+	void init_scene_device_data(int index);
+	void release_scene_device_data();
 };
 
 inline path_tracer::~path_tracer()
@@ -74,7 +75,7 @@ inline path_tracer::~path_tracer()
 	);
 }
 
-inline void path_tracer::init(render_camera* render_camera, config_parser* config)
+inline std::vector<std::string> path_tracer::init(render_camera* render_camera, config_parser* config, const std::string& scene_file_directory)
 {
 	m_config = config;
 	m_render_camera = render_camera;
@@ -87,17 +88,7 @@ inline void path_tracer::init(render_camera* render_camera, config_parser* confi
 		&m_scatterings_device,
 		m_image->pixel_count
 	);
-	if (!init_scene_device_data())
-	{
-		m_config = nullptr;
-		m_render_camera = nullptr;
-		m_is_initiated = false;
-		release_image(m_image);
-	}
-	else
-	{
-		m_is_initiated = true;
-	}
+	return m_scene.set_scene_file_directory(scene_file_directory);
 }
 
 inline image* path_tracer::render()
@@ -374,28 +365,39 @@ inline void path_tracer::render_ui()
 	}
 }
 
-inline bool path_tracer::init_scene_device_data()
+inline void path_tracer::init_scene_device_data(int index)
 {
 	double time;
 	printf("[Info]Load scene data...\n");
 	TIME_COUNT_CALL_START();
-	if (!m_scene.load_scene("res\\scene\\scene.json"))
+	if (!m_scene.load_scene(index))
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Load scene failed!" << std::endl;
-		return false;
+		return;
 	}
 	if (!m_scene.create_scene_data_device())
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Copy scene data on GPU failed!" << std::endl;
 		m_scene.release_scene_data_device();
-		return false;
+		return;
 	}
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Load scene completed, total time consuming: %.4f ms\n", time);
+	m_is_initiated = true;
+	return;
+}
 
-	return true;
+inline void path_tracer::release_scene_device_data()
+{
+	if (!m_is_initiated)
+	{
+		return;
+	}
+
+	m_scene.release_scene_data_device();
+	m_scene.unload_scene();
 }
 
 #endif // !__PATH_TRACER__

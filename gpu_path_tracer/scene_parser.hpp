@@ -6,6 +6,7 @@
 #include "lib\json\json.hpp"
 
 #include "sphere.hpp"
+#include "triangle.hpp"
 #include "triangle_mesh.hpp"
 #include "cube_map_loader.hpp"
 #include "material.hpp"
@@ -13,6 +14,8 @@
 
 #include <exception>
 #include <fstream>
+#include <Windows.h>
+#include <io.h>
 #include <glm\glm.hpp>
 
 #define TOKEN_OBJECT_SPHERE "Sphere"
@@ -100,12 +103,12 @@
 }
 */
 
-struct triangle;
-
 class scene_parser
 {
 private:
 	nlohmann::json m_json_parser;
+
+	std::vector<std::string> m_scene_files;
 
 	cube_map_loader m_cube_map_loader;
 
@@ -120,7 +123,9 @@ private:
 public:
 	~scene_parser();
 
-	bool load_scene(const std::string& filename);
+	std::vector<std::string> set_scene_file_directory(const std::string& scene_file_directory);
+
+	bool load_scene(int index);
 	void unload_scene();
 
 	bool create_scene_data_device();
@@ -168,21 +173,48 @@ inline scene_parser::~scene_parser()
 	unload_scene();
 }
 
-inline bool scene_parser::load_scene(const std::string& filename)
+inline std::vector<std::string> scene_parser::set_scene_file_directory(const std::string& scene_file_directory)
 {
-	if (m_is_loaded)
+	m_scene_files.clear();
+
+	std::string suffix = "*.json";
+	struct _finddata_t file_info;
+
+	auto file = _findfirst((scene_file_directory + "\\" + suffix).c_str(), &file_info);
+
+	do
+	{
+		if (strcmp(file_info.name, ".") != 0 && strcmp(file_info.name, "..") != 0)
+		{
+			m_scene_files.push_back(scene_file_directory + "\\" + file_info.name);
+		}
+		
+	} while (_findnext(file, &file_info) == 0);
+	_findclose(file);
+
+	if (m_scene_files.size() == 0)
+	{
+		std::cout << "[Warn]There exists no scene file!" << std::endl;
+	}
+
+	return m_scene_files;
+}
+
+inline bool scene_parser::load_scene(int index)
+{
+	if (m_is_loaded || index < 0 || index >= m_scene_files.size())
 	{
 		return false;
 	}
 
 	try
 	{
-		std::ifstream scene_file(filename, std::ios::in);
+		std::ifstream scene_file(m_scene_files[index], std::ios::in);
 		scene_file >> m_json_parser;
 	}
 	catch (nlohmann::detail::parse_error error)
 	{
-		std::cout << "[ERROR]" << error.what() << std::endl;
+		std::cout << "[Error]" << error.what() << std::endl;
 		return false;
 	}
 
@@ -441,6 +473,7 @@ inline bool scene_parser::load_scene(const std::string& filename)
 
 inline void scene_parser::unload_scene()
 {
+	printf("[Info]Unload scene data.\n");
 	if (m_is_loaded)
 	{
 		m_is_loaded = false;
@@ -460,15 +493,11 @@ inline bool scene_parser::create_scene_data_device()
 
 	double time;
 
-	printf("[Info]Copy background data to gpu...\n");
-	TIME_COUNT_CALL_START();
 	if (!m_cube_map_loader.create_cube_device_data())
 	{
 		m_cube_map_loader.release_cube_device_data();
 		return false;
 	}
-	TIME_COUNT_CALL_END(time);
-	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 	if (m_sphere_num > 0)
 	{
@@ -482,16 +511,12 @@ inline bool scene_parser::create_scene_data_device()
 
 	if (m_triangle_mesh.get_mesh_num() > 0)
 	{
-		printf("[Info]Copy triangle data to gpu...\n");
-		TIME_COUNT_CALL_START();
 		if (!m_triangle_mesh.create_mesh_device_data())
 		{
 			m_cube_map_loader.release_cube_device_data();
 			m_triangle_mesh.release_mesh_device_data();
 			return false;
 		}
-		TIME_COUNT_CALL_END(time);
-		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 		if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr)
 		{
@@ -504,6 +529,7 @@ inline bool scene_parser::create_scene_data_device()
 
 inline void scene_parser::release_scene_data_device()
 {
+	printf("[Info]Release scene device data.\n");
 	m_cube_map_loader.release_cube_device_data();
 	m_triangle_mesh.release_mesh_device_data();
 	m_triangle_mesh.release_bvh_device_data();

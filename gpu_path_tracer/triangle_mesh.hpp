@@ -247,6 +247,19 @@ inline void triangle_mesh::unload_obj()
 	m_mesh_vertices_num.shrink_to_fit();
 	m_mesh_position.clear();
 	m_mesh_position.shrink_to_fit();
+	m_mesh_scale.clear();
+	m_mesh_scale.shrink_to_fit();
+	m_mesh_rotate.clear();
+	m_mesh_rotate.shrink_to_fit();
+	m_mesh_rotate_applied.clear();
+	m_mesh_rotate_applied.shrink_to_fit();
+	m_mesh_initial_transform.clear();
+	m_mesh_initial_transform.shrink_to_fit();
+	m_mesh_current_transform.clear();
+	m_mesh_current_transform.shrink_to_fit();
+	m_mesh_name.clear();
+	m_mesh_name.shrink_to_fit();
+	m_mesh_num = 0;
 
 	for (auto mat : m_mesh_material)
 	{
@@ -256,6 +269,8 @@ inline void triangle_mesh::unload_obj()
 	m_mesh_material.shrink_to_fit();
 
 	m_is_loaded = false;
+
+	printf("[Info]Unload mesh data.\n");
 }
 
 inline void triangle_mesh::set_material_device(int index, const material& mat)
@@ -402,7 +417,7 @@ inline void triangle_mesh::apply_rotate(int index)
 
 	double time;
 	bvh_node* root;
-	printf("[Info]Apply rotate, reconstructing bvh for mesh %s on cpu...\n", m_mesh_name[index].c_str());
+	printf("[Info]Apply rotate, reconstructing bvh for mesh %s...\n", m_mesh_name[index].c_str());
 	TIME_COUNT_CALL_START();
 	root = BVH_BUILD_METHOD build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 	TIME_COUNT_CALL_END(time);
@@ -521,9 +536,14 @@ inline void triangle_mesh::release_bvh_device_data()
 		for (auto index = 0; index < m_mesh_num; index++)
 		{
 			CUDA_CALL(cudaFree(m_mesh_bvh_initial_device[index]));
+			m_mesh_bvh_initial_device[index] = nullptr;
+			m_mesh_bvh_transformed_device[index] = nullptr;
 		}
 		CUDA_CALL(cudaFree(m_mesh_bvh_initial_device));
+		m_mesh_bvh_initial_device = nullptr;
+		m_mesh_bvh_transformed_device = nullptr;
 	}
+	printf("[Info]Release bvh device data.\n");
 }
 
 inline bool triangle_mesh::create_mesh_device_data()
@@ -532,6 +552,10 @@ inline bool triangle_mesh::create_mesh_device_data()
 	{
 		return false;
 	}
+
+	printf("[Info]Copy mesh data to gpu...\n");
+	double time;
+	TIME_COUNT_CALL_START();
 
 	std::vector<material> materials(m_triangles.size());
 	for (auto i = 0; i < m_mesh_material.size(); i++)
@@ -591,6 +615,9 @@ inline bool triangle_mesh::create_mesh_device_data()
 		}
 	}
 	
+	TIME_COUNT_CALL_END(time);
+	printf("[Info]Completed, time consuming: %.4f ms\n", time);
+
 	return true;
 }
 
@@ -606,6 +633,8 @@ inline void triangle_mesh::release_mesh_device_data()
 		CUDA_CALL(cudaFree(m_mesh_device));
 		m_mesh_device = nullptr;
 	}
+
+	printf("[Info]Release mesh device data.\n");
 }
 
 #endif // !__TRIANGLE_MESH__
