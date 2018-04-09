@@ -827,6 +827,13 @@ __global__ void trace_ray_kernel(
 			}
 		}
 
+		if (length(min_mat.emission_color) > 0.0f)
+		{
+			accumulated_colors[pixel_index] += not_absorbed_colors[pixel_index] * min_mat.emission_color;
+			energy_exist_pixels[energy_exist_pixel_index] = -1;
+			return;
+		}
+
 		float3 reflection_direction = get_reflection_direction(min_normal, in_direction);
 		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);
 		float3 bias_vector = config->vector_bias_length * min_normal;
@@ -846,41 +853,34 @@ __global__ void trace_ray_kernel(
 		if (rand < fresnel.reflection_index)
 		{
 			//reflection
-			not_absorbed_colors[pixel_index] *= min_mat.specular_color;
-
 			float rand1 = uniform_distribution(random_engine);
 			float rand2 = uniform_distribution(random_engine);
 
-			float remap_roughness = powf(min_mat.roughness, 2.0f) / 2.0f;
+			float remap_roughness = powf(min_mat.roughness, 2.0f) * 0.3f;
 			float3 micro_normal = sample_on_hemisphere_ggx_weight(min_normal, remap_roughness, rand1, rand2);
 			float self_shadowing = compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, tracing_ray.direction);
 
-			float rand = uniform_distribution(random_engine);
-			if (rand < self_shadowing)
-			{
-				ray next_ray;
-				next_ray.origin = min_point + bias_vector;
-				next_ray.direction = get_reflection_direction(micro_normal, in_direction);
-				rays[pixel_index] = next_ray;
-			}
+			ray next_ray;
+			next_ray.origin = min_point + bias_vector;
+			next_ray.direction = get_reflection_direction(micro_normal, in_direction);
+			rays[pixel_index] = next_ray;
+
+			not_absorbed_colors[pixel_index] *= (min_mat.specular_color * self_shadowing);
 		}
 		else if (min_mat.is_transparent)
 		{
 			//refraction
-			//transmitted into a new medium
-			scatterings[pixel_index] = out_medium.scattering;
-
 			ray next_ray;
 			next_ray.origin = min_point - bias_vector;
 			next_ray.direction = refraction_direction;
 			rays[pixel_index] = next_ray;
+
+			//transmitted into a new medium
+			scatterings[pixel_index] = out_medium.scattering;
 		}
 		else
 		{
 			//diffuse
-			accumulated_colors[pixel_index] += not_absorbed_colors[pixel_index] * min_mat.emission_color;
-			not_absorbed_colors[pixel_index] *= min_mat.diffuse_color;
-
 			float rand1 = uniform_distribution(random_engine);
 			float rand2 = uniform_distribution(random_engine);
 
@@ -888,6 +888,8 @@ __global__ void trace_ray_kernel(
 			next_ray.origin = min_point + bias_vector;
 			next_ray.direction = sample_on_hemisphere_cosine_weight(min_normal, rand1, rand2);
 			rays[pixel_index] = next_ray;
+
+			not_absorbed_colors[pixel_index] *= min_mat.diffuse_color;
 		}
 
 		//kill the low energy ray
