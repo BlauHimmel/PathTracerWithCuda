@@ -8,7 +8,7 @@
 using uint = unsigned int;
 
 #ifndef __CUDACC__
-#include <math.h>
+#include <cmath>
 
 ////////////////////////////////////////////////////////////////////////////////
 // host implementations of CUDA functions

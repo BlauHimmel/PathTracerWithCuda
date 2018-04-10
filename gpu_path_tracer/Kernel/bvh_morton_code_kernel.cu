@@ -4,11 +4,11 @@
 #include <thrust\sort.h>
 #include <exception>
 
-#include "basic_math.hpp"
-#include "cuda_math.hpp"
-#include "bvh.h"
-#include "configuration.hpp"
-#include "triangle.hpp"
+#include "Math\basic_math.hpp"
+#include "Math\cuda_math.hpp"
+#include "Bvh\bvh.h"
+#include "Core\configuration.h"
+#include "Core\triangle.h"
 
 struct bvh_node_morton_node_predicate
 {

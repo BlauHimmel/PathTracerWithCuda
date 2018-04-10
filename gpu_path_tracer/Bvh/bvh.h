@@ -12,13 +12,13 @@
 #include <glm\glm.hpp>
 #include <omp.h>
 
-#include "triangle.hpp"
-#include "utilities.hpp"
-#include "cuda_math.hpp"
-#include "configuration.hpp"
-#include "bvh_morton_code_kernel.h"
-#include "bounding_box.hpp"
-#include "bvh_node.h"
+#include "Core\triangle.h"
+#include "Others\utilities.hpp"
+#include "Math\cuda_math.hpp"
+#include "Core\configuration.h"
+#include "Bvh\bvh_morton_code_kernel.h"
+#include "Bvh\bounding_box.h"
+#include "Bvh\bvh_node.h"
 
 #undef BVH_MORTON_CODE_BUILD_OPENMP					//used by bvh_morton_code_cpu and bvh_morton_code_cuda			
 #define BVH_BUILD_METHOD bvh_morton_code_cuda::

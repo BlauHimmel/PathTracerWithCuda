@@ -1,179 +1,12 @@
-#pragma once
+#include "Core\scene_parser.h"
 
-#ifndef __SCENE_PARSER__
-#define __SCENE_PARSER__
-
-#include "lib\json\json.hpp"
-
-#include "sphere.hpp"
-#include "triangle.hpp"
-#include "triangle_mesh.hpp"
-#include "cube_map_loader.hpp"
-#include "material.hpp"
-#include "bvh.h"
-
-#include <exception>
-#include <fstream>
-#include <Windows.h>
-#include <io.h>
-#include <glm\glm.hpp>
-
-#define TOKEN_OBJECT_SPHERE "Sphere"
-#define TOKEN_OBJECT_SPHERE_CENTER "Center"
-#define TOKEN_OBJECT_SPHERE_RADIUS "Radius"
-#define TOKEN_OBJECT_SPHERE_MATERIAL "Material"
-
-#define TOKEN_OBJECT_MESH "Mesh"
-#define TOKEN_OBJECT_MESH_PATH "Path"
-#define TOKEN_OBJECT_MESH_MATERIAL "Material"
-#define TOKEN_OBJECT_MESH_POSITION "Position"
-#define TOKEN_OBJECT_MESH_SCALE "Scale"
-#define TOKEN_OBJECT_MESH_ROTATE "Rotate"
-
-#define TOKEN_BACKGROUND "Background"
-#define TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH "Path"
-#define TOKEN_BACKGROUND_CUBE_MAP_NAME "Name"
-
-#define TOKEN_MATERIAL "Material"
-#define TOKEN_MATERIAL_NAME "Name"
-#define TOKEN_MATERIAL_DIFFUSE "Diffuse"
-#define TOKEN_MATERIAL_EMISSION "Emission"
-#define TOKEN_MATERIAL_SPECULAR "Specular"
-#define TOKEN_MATERIAL_TRANSPARENT "Transparent"
-#define TOKEN_MATERIAL_ROUGHNESS "Roughness"
-#define TOKEN_MATERIAL_REFRACTION_INDEX "RefractionIndex"
-#define TOKEN_MATERIAL_EXTINCTION_COEF "ExtinctionCoef"
-#define TOKEN_MATERIAL_ABSORPTION_COEF "AbsorptionCoef"
-#define TOKEN_MATERIAL_REDUCED_SCATTERING_COEF "ReducedScatteringCoef"
-
-/*
-{
-	"Background" : 
-	{
-		"Name" : "XXXX",
-		"Path" : "XXXX\\YYYY\\"
-	},
-
-	-- built-in material --
-	-- titanium, chromium, iron, nickel, platinum, copper, palladium, zinc, gold, aluminum, silver --
-	-- glass, green_glass, red, green, orange, purple, blue, marble, something_blue, something_red --
-	-- light --
-
-	-- optional --
-	"Material" :
-	[
-		{
-			"Name" : "XXXX",
-			"Diffuse" : "0.0 0.0 0.0",					-- each component >= 0.0 --
-			"Emission" : "0.0 0.0 0.0",					-- each component >= 0.0 --
-			"Specular" : "0.0 0.0 0.0",					-- each component >= 0.0 --
-			"Transparent" : "true",						-- true or false --
-			"Roughness" : "0.0",						-- from 0.0 to 1.0 --
-			"RefractionIndex" : "0.0",					-- any value >= 0.0 --
-			"ExtinctionCoef" : "0.0",					-- any value >= 0.0 --
-			"AbsorptionCoef" : "0.0 0.0 0.0",			-- each component >= 0.0 --
-			"ReducedScatteringCoef" : "0.0 0.0 0.0"		-- each component >= 0.0 --
-		},
-		...
-	],
-
-	-- optional --
-	"Sphere" :
-	[
-		{
-			"Material" : "XXXX",						-- name of material(user declared or built-in material)
-			"Center" : "0.0 0.0 0.0",
-			"Radius" : "0.0"							-- any value >= 0.0 --
-		},
-		...
-	],
-
-	-- optional --
-	"Mesh" :
-	[
-		{
-			"Material" : "XXXX",							-- name of material(user declared or built-in material)
-			"Path" : "XXXX\\YYYY",
-			"Position" : "0.0 0.0 0.0",
-			"Scale" : "1.0 1.0 1.0",
-			"Rotate" : "0.0 0.0 0.0"
-		},
-		...
-	]
-}
-*/
-
-class scene_parser
-{
-private:
-	nlohmann::json m_json_parser;
-
-	std::vector<std::string> m_scene_files;
-
-	cube_map_loader m_cube_map_loader;
-
-	triangle_mesh m_triangle_mesh;
-
-	sphere* m_spheres = nullptr;
-	int m_sphere_num = 0;
-	sphere* m_spheres_device = nullptr;
-
-	bool m_is_loaded = false;
-
-public:
-	~scene_parser();
-
-	std::vector<std::string> set_scene_file_directory(const std::string& scene_file_directory);
-
-	bool load_scene(int index);
-	void unload_scene();
-
-	bool create_scene_data_device();
-	void release_scene_data_device();
-
-	cube_map* get_cube_map_device_ptr();
-	triangle* get_triangles_device_ptr();
-	bvh_node_device** get_bvh_node_device_ptr();
-	sphere* get_sphere_device_ptr();
-
-	int get_mesh_num() const;
-	int get_triangles_num() const;
-	int get_mesh_triangle_num(int index) const;
-	int get_mesh_vertices_num(int index) const;
-	int get_sphere_num() const;
-	float3 get_mesh_position(int index) const;
-	material get_mesh_material(int index) const;
-	float3 get_mesh_scale(int index) const;
-	float3 get_mesh_rotate(int index) const;
-	float3 get_mesh_rotate_applied(int index) const;
-	sphere get_sphere(int index) const;
-
-	void set_sphere_device(int index, const sphere& sphere);
-	void set_mesh_material_device(int index, const material& material);
-	void set_mesh_transform_device(
-		int index,
-		const float3& position,
-		const float3& scale,
-		std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
-	);
-	void set_mesh_rotate(int index, const float3& rotate);
-	void apply_mesh_rotate(int index);
-
-private:
-	void init_default_material(std::map<std::string, material>& materials);
-
-	float3 parse_float3(const std::string& text);
-	float parse_float(const std::string& text);
-	bool parse_bool(const std::string& text);
-};
-
-inline scene_parser::~scene_parser()
+scene_parser::~scene_parser()
 {
 	release_scene_data_device();
 	unload_scene();
 }
 
-inline std::vector<std::string> scene_parser::set_scene_file_directory(const std::string& scene_file_directory)
+std::vector<std::string> scene_parser::set_scene_file_directory(const std::string& scene_file_directory)
 {
 	m_scene_files.clear();
 
@@ -188,7 +21,7 @@ inline std::vector<std::string> scene_parser::set_scene_file_directory(const std
 		{
 			m_scene_files.push_back(scene_file_directory + "\\" + file_info.name);
 		}
-		
+
 	} while (_findnext(file, &file_info) == 0);
 	_findclose(file);
 
@@ -200,7 +33,7 @@ inline std::vector<std::string> scene_parser::set_scene_file_directory(const std
 	return m_scene_files;
 }
 
-inline bool scene_parser::load_scene(int index)
+bool scene_parser::load_scene(int index)
 {
 	if (m_is_loaded || index < 0 || index >= m_scene_files.size())
 	{
@@ -255,7 +88,7 @@ inline bool scene_parser::load_scene(int index)
 	{
 		auto name = background_object[TOKEN_BACKGROUND_CUBE_MAP_NAME];
 		auto root_path = background_object[TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH];
-		
+
 		CHECK_PROPERTY(Background, name, TOKEN_BACKGROUND_CUBE_MAP_NAME);
 		CHECK_PROPERTY(Background, root_path, TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH);
 
@@ -297,7 +130,7 @@ inline bool scene_parser::load_scene(int index)
 			CHECK_PROPERTY(Material, extinction_coef, TOKEN_MATERIAL_EXTINCTION_COEF);
 			CHECK_PROPERTY(Material, absorption_coef, TOKEN_MATERIAL_ABSORPTION_COEF);
 			CHECK_PROPERTY(Material, reduced_scattering_coef, TOKEN_MATERIAL_REDUCED_SCATTERING_COEF);
-			
+
 			std::string name_str = name;
 			std::string diffuse_str = diffuse;
 			std::string emission_str = emission;
@@ -320,14 +153,14 @@ inline bool scene_parser::load_scene(int index)
 				parse_float3(specular_str),
 				parse_bool(transparent_str),
 				clamp(parse_float(roughness_str), 0.0f, 1.0f),
-				{
-					parse_float(refraction_index_str),
-					parse_float(extinction_coef_str),
-					{
-						parse_float3(absorption_coef_str),
-						parse_float3(reduced_scattering_coef_str)
-					}
-				}
+			{
+				parse_float(refraction_index_str),
+				parse_float(extinction_coef_str),
+			{
+				parse_float3(absorption_coef_str),
+				parse_float3(reduced_scattering_coef_str)
+			}
+			}
 			};
 
 			if (mat.is_transparent && mat.medium.extinction_coefficient > 0.0f)
@@ -446,7 +279,7 @@ inline bool scene_parser::load_scene(int index)
 	//Mesh
 	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], meshes_rotate[i],copy_material(materials[meshes_mat[i]]));
+		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], meshes_rotate[i], copy_material(materials[meshes_mat[i]]));
 
 		if (error)
 		{
@@ -471,7 +304,7 @@ inline bool scene_parser::load_scene(int index)
 	return true;
 }
 
-inline void scene_parser::unload_scene()
+void scene_parser::unload_scene()
 {
 	printf("[Info]Unload scene data.\n");
 	if (m_is_loaded)
@@ -484,7 +317,7 @@ inline void scene_parser::unload_scene()
 	}
 }
 
-inline bool scene_parser::create_scene_data_device()
+bool scene_parser::create_scene_data_device()
 {
 	if (!m_is_loaded)
 	{
@@ -527,7 +360,7 @@ inline bool scene_parser::create_scene_data_device()
 	return true;
 }
 
-inline void scene_parser::release_scene_data_device()
+void scene_parser::release_scene_data_device()
 {
 	printf("[Info]Release scene device data.\n");
 	m_cube_map_loader.release_cube_device_data();
@@ -540,93 +373,93 @@ inline void scene_parser::release_scene_data_device()
 	}
 }
 
-inline cube_map* scene_parser::get_cube_map_device_ptr()
+cube_map* scene_parser::get_cube_map_device_ptr()
 {
 	return m_cube_map_loader.get_cube_map_device();
 }
 
-inline triangle* scene_parser::get_triangles_device_ptr()
+triangle* scene_parser::get_triangles_device_ptr()
 {
 	return m_triangle_mesh.get_triangles_device();
 }
 
-inline bvh_node_device** scene_parser::get_bvh_node_device_ptr()
+bvh_node_device** scene_parser::get_bvh_node_device_ptr()
 {
 	return m_triangle_mesh.get_bvh_node_device();
 }
 
-inline sphere* scene_parser::get_sphere_device_ptr()
+sphere* scene_parser::get_sphere_device_ptr()
 {
 	return m_spheres_device;
 }
 
-inline int scene_parser::get_mesh_num() const
+int scene_parser::get_mesh_num() const
 {
 	return m_triangle_mesh.get_mesh_num();
 }
 
-inline int scene_parser::get_triangles_num() const
+int scene_parser::get_triangles_num() const
 {
 	return m_triangle_mesh.get_total_triangle_num();
 }
 
-inline int scene_parser::get_mesh_triangle_num(int index) const
+int scene_parser::get_mesh_triangle_num(int index) const
 {
 	return m_triangle_mesh.get_triangle_num(index);
 }
 
-inline int scene_parser::get_mesh_vertices_num(int index) const
+int scene_parser::get_mesh_vertices_num(int index) const
 {
 	return m_triangle_mesh.get_vertex_num(index);
 }
 
-inline int scene_parser::get_sphere_num() const
+int scene_parser::get_sphere_num() const
 {
 	return m_sphere_num;
 }
 
-inline float3 scene_parser::get_mesh_position(int index) const
+float3 scene_parser::get_mesh_position(int index) const
 {
 	return m_triangle_mesh.get_position(index);
 }
 
-inline material scene_parser::get_mesh_material(int index) const
+material scene_parser::get_mesh_material(int index) const
 {
 	return m_triangle_mesh.get_material(index);
 }
 
-inline float3 scene_parser::get_mesh_scale(int index) const
+float3 scene_parser::get_mesh_scale(int index) const
 {
 	return m_triangle_mesh.get_scale(index);
 }
 
-inline float3 scene_parser::get_mesh_rotate(int index) const
+float3 scene_parser::get_mesh_rotate(int index) const
 {
 	return m_triangle_mesh.get_rotate(index);
 }
 
-inline float3 scene_parser::get_mesh_rotate_applied(int index) const
+float3 scene_parser::get_mesh_rotate_applied(int index) const
 {
 	return m_triangle_mesh.get_rotate_applied(index);
 }
 
-inline sphere scene_parser::get_sphere(int index) const
+sphere scene_parser::get_sphere(int index) const
 {
 	return m_spheres_device[index];
 }
 
-inline void scene_parser::set_sphere_device(int index, const sphere& sphere)
+void scene_parser::set_sphere_device(int index, const sphere& sphere)
 {
 	m_spheres_device[index] = sphere;
 }
 
-inline void scene_parser::set_mesh_material_device(int index, const material& material)
+void scene_parser::set_mesh_material_device(int index, const material& material)
 {
 	m_triangle_mesh.set_material_device(index, material);
 }
 
-inline void scene_parser::set_mesh_transform_device(
-	int index, 
+void scene_parser::set_mesh_transform_device(
+	int index,
 	const float3& position,
 	const float3& scale,
 	std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
@@ -635,12 +468,12 @@ inline void scene_parser::set_mesh_transform_device(
 	m_triangle_mesh.set_transform_device(index, position, scale, bvh_update_function);
 }
 
-inline void scene_parser::set_mesh_rotate(int index, const float3& rotate)
+void scene_parser::set_mesh_rotate(int index, const float3& rotate)
 {
 	m_triangle_mesh.set_rotate(index, rotate);
 }
 
-inline void scene_parser::apply_mesh_rotate(int index)
+void scene_parser::apply_mesh_rotate(int index)
 {
 	m_triangle_mesh.apply_rotate(index);
 }
@@ -649,35 +482,35 @@ void scene_parser::init_default_material(std::map<std::string, material>& materi
 {
 	materials.clear();
 
-	materials.insert(std::make_pair("titanium",			material_data::metal::titanium()));
-	materials.insert(std::make_pair("chromium",			material_data::metal::chromium()));
-	materials.insert(std::make_pair("iron",				material_data::metal::iron()));
-	materials.insert(std::make_pair("nickel",			material_data::metal::nickel()));
-	materials.insert(std::make_pair("platinum",			material_data::metal::platinum()));
-	materials.insert(std::make_pair("copper",			material_data::metal::copper()));
-	materials.insert(std::make_pair("palladium",		material_data::metal::palladium()));
-	materials.insert(std::make_pair("zinc",				material_data::metal::zinc()));
-	materials.insert(std::make_pair("gold",				material_data::metal::gold()));
-	materials.insert(std::make_pair("aluminum",			material_data::metal::aluminum()));
-	materials.insert(std::make_pair("silver",			material_data::metal::silver()));
+	materials.insert(std::make_pair("titanium", material_data::metal::titanium()));
+	materials.insert(std::make_pair("chromium", material_data::metal::chromium()));
+	materials.insert(std::make_pair("iron", material_data::metal::iron()));
+	materials.insert(std::make_pair("nickel", material_data::metal::nickel()));
+	materials.insert(std::make_pair("platinum", material_data::metal::platinum()));
+	materials.insert(std::make_pair("copper", material_data::metal::copper()));
+	materials.insert(std::make_pair("palladium", material_data::metal::palladium()));
+	materials.insert(std::make_pair("zinc", material_data::metal::zinc()));
+	materials.insert(std::make_pair("gold", material_data::metal::gold()));
+	materials.insert(std::make_pair("aluminum", material_data::metal::aluminum()));
+	materials.insert(std::make_pair("silver", material_data::metal::silver()));
 
-	materials.insert(std::make_pair("glass",			material_data::dielectric::glass()));
-	materials.insert(std::make_pair("green_glass",		material_data::dielectric::green_glass()));
-	materials.insert(std::make_pair("diamond",			material_data::dielectric::diamond()));
-	materials.insert(std::make_pair("red",				material_data::dielectric::red()));
-	materials.insert(std::make_pair("green",			material_data::dielectric::green()));
-	materials.insert(std::make_pair("orange",			material_data::dielectric::orange()));
-	materials.insert(std::make_pair("purple",			material_data::dielectric::purple()));
-	materials.insert(std::make_pair("wall_blue",		material_data::dielectric::wall_blue()));
-	materials.insert(std::make_pair("blue",				material_data::dielectric::blue()));
-	materials.insert(std::make_pair("marble",			material_data::dielectric::marble()));
-	materials.insert(std::make_pair("something_blue",	material_data::dielectric::something_blue()));
-	materials.insert(std::make_pair("something_red",	material_data::dielectric::something_red()));
+	materials.insert(std::make_pair("glass", material_data::dielectric::glass()));
+	materials.insert(std::make_pair("green_glass", material_data::dielectric::green_glass()));
+	materials.insert(std::make_pair("diamond", material_data::dielectric::diamond()));
+	materials.insert(std::make_pair("red", material_data::dielectric::red()));
+	materials.insert(std::make_pair("green", material_data::dielectric::green()));
+	materials.insert(std::make_pair("orange", material_data::dielectric::orange()));
+	materials.insert(std::make_pair("purple", material_data::dielectric::purple()));
+	materials.insert(std::make_pair("wall_blue", material_data::dielectric::wall_blue()));
+	materials.insert(std::make_pair("blue", material_data::dielectric::blue()));
+	materials.insert(std::make_pair("marble", material_data::dielectric::marble()));
+	materials.insert(std::make_pair("something_blue", material_data::dielectric::something_blue()));
+	materials.insert(std::make_pair("something_red", material_data::dielectric::something_red()));
 
-	materials.insert(std::make_pair("light",			material_data::dielectric::light()));
+	materials.insert(std::make_pair("light", material_data::dielectric::light()));
 }
 
-inline float3 scene_parser::parse_float3(const std::string& text)
+float3 scene_parser::parse_float3(const std::string& text)
 {
 	std::istringstream stream(text);
 	float x, y, z;
@@ -685,7 +518,7 @@ inline float3 scene_parser::parse_float3(const std::string& text)
 	return make_float3(x, y, z);
 }
 
-inline float scene_parser::parse_float(const std::string& text)
+float scene_parser::parse_float(const std::string& text)
 {
 	std::istringstream stream(text);
 	float value;
@@ -693,7 +526,7 @@ inline float scene_parser::parse_float(const std::string& text)
 	return value;
 }
 
-inline bool scene_parser::parse_bool(const std::string& text)
+bool scene_parser::parse_bool(const std::string& text)
 {
 	if (text == "true")
 	{
@@ -704,5 +537,3 @@ inline bool scene_parser::parse_bool(const std::string& text)
 		return false;
 	}
 }
-
-#endif // !__SCENE_PARSER__

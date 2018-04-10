@@ -1,66 +1,11 @@
-#pragma once
+#include "Core\cube_map_loader.h"
 
-#ifndef __CUBE_MAP_LOADER__
-#define __CUBE_MAP_LOADER__
-
-#include <cuda_runtime.h>
-
-#include <iostream>
-#include <vector>
-#include "basic_math.hpp"
-#include "cube_map.hpp"
-#include "lib\lodepng\lodepng.h"
-#include "utilities.hpp"
-
-class cube_map_loader
-{
-private:
-	//============================================
-	std::vector<uchar> m_x_positive_map;
-	std::vector<uchar> m_x_negative_map;
-	std::vector<uchar> m_y_positive_map;
-	std::vector<uchar> m_y_negative_map;
-	std::vector<uchar> m_z_positive_map;
-	std::vector<uchar> m_z_negative_map;
-	//============================================
-
-	cube_map* m_cube_map_device = nullptr;
-	
-	bool m_is_loaded = false;
-	int m_width, m_height;
-
-public:
-	bool load_data(
-		const std::string& filename_x_positive,
-		const std::string& filename_x_negative,
-		const std::string& filename_y_positive,
-		const std::string& filename_y_negative,
-		const std::string& filename_z_positive,
-		const std::string& filename_z_negative
-	);
-	void unload_data();
-
-	cube_map* get_cube_map_device() const;
-
-	bool create_cube_device_data();
-	void release_cube_device_data();
-
-private:
-	bool decode_bmp(
-		const std::vector<uchar>& bmp,	//in
-		std::vector<uchar>& image,		//out
-		int& width,						//out
-		int& height						//out
-	);
-
-};
-
-inline bool cube_map_loader::load_data(
-	const std::string& filename_x_positive, 
-	const std::string& filename_x_negative, 
-	const std::string& filename_y_positive, 
-	const std::string& filename_y_negative, 
-	const std::string& filename_z_positive, 
+bool cube_map_loader::load_data(
+	const std::string& filename_x_positive,
+	const std::string& filename_x_negative,
+	const std::string& filename_y_positive,
+	const std::string& filename_y_negative,
+	const std::string& filename_z_positive,
 	const std::string& filename_z_negative
 )
 {
@@ -162,7 +107,7 @@ inline bool cube_map_loader::load_data(
 	return true;
 }
 
-inline void cube_map_loader::unload_data()
+void cube_map_loader::unload_data()
 {
 	m_x_positive_map.clear();
 	m_x_negative_map.clear();
@@ -181,12 +126,12 @@ inline void cube_map_loader::unload_data()
 	m_is_loaded = false;
 }
 
-inline cube_map * cube_map_loader::get_cube_map_device() const
+cube_map * cube_map_loader::get_cube_map_device() const
 {
 	return m_cube_map_device;
 }
 
-inline bool cube_map_loader::create_cube_device_data()
+bool cube_map_loader::create_cube_device_data()
 {
 	if (!m_is_loaded)
 	{
@@ -221,7 +166,7 @@ inline bool cube_map_loader::create_cube_device_data()
 	return true;
 }
 
-inline void cube_map_loader::release_cube_device_data()
+void cube_map_loader::release_cube_device_data()
 {
 	if (m_cube_map_device == nullptr)
 	{
@@ -241,7 +186,7 @@ inline void cube_map_loader::release_cube_device_data()
 	return;
 }
 
-inline bool cube_map_loader::decode_bmp(
+bool cube_map_loader::decode_bmp(
 	const std::vector<uchar>& bmp,	//in
 	std::vector<uchar>& image,		//out
 	int& width,						//out
@@ -261,14 +206,14 @@ inline bool cube_map_loader::decode_bmp(
 	}
 
 	auto pixel_offset = bmp[10] + 256 * bmp[11];	//where the pixel data starts
-														//read width and height from BMP header
+													//read width and height from BMP header
 	width = bmp[18] + bmp[19] * 256;
 	height = bmp[22] + bmp[23] * 256;
 	//read number of channels from BMP header
 	if (bmp[28] != 24 && bmp[28] != 32)
 	{
 		//only 24-bit and 32-bit BMPs are supported.
-		return false; 
+		return false;
 	}
 
 	auto num_channels = bmp[28] / 8;
@@ -285,7 +230,7 @@ inline bool cube_map_loader::decode_bmp(
 	if (bmp.size() < data_size + pixel_offset)
 	{
 		//BMP file too small to contain all pixels
-		return false; 
+		return false;
 	}
 
 	image.resize(width * height * 4);
@@ -323,5 +268,3 @@ inline bool cube_map_loader::decode_bmp(
 	}
 	return true;
 }
-
-#endif // !__CUBE_MAP_LOADER__

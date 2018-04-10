@@ -1,66 +1,6 @@
-#pragma once
+#include "Core\path_tracer.h"
 
-#ifndef __PATH_TRACER__
-#define __PATH_TRACER__
-
-#include <cuda_runtime.h>
-
-#include <string.h>
-#include <stdio.h>
-#include <time.h>
-#include <glm\glm.hpp>
-
-#include "sphere.hpp"
-#include "image.hpp"
-#include "ray.hpp"
-#include "camera.hpp"
-#include "material.hpp"
-#include "cuda_math.hpp"
-#include "utilities.hpp"
-#include "basic_math.hpp"
-#include "path_tracer_kernel.h"
-#include "material.hpp"
-#include "cube_map.hpp"
-#include "triangle_mesh.hpp"
-#include "bvh.h"
-#include "scene_parser.hpp"
-#include "config_parser.hpp"
-
-#include "lib\imgui\imgui.h"
-#include "lib\imgui\imgui_impl_glfw_gl3.h"
-
-class path_tracer
-{
-private:
-	scene_parser m_scene;
-
-	config_parser* m_config = nullptr;
-	render_camera* m_render_camera = nullptr;
-	image* m_image = nullptr;
-
-	bool m_is_initiated = false;
-	bool m_is_scene_choose = false;
-
-	color* m_not_absorbed_colors_device = nullptr;
-	color* m_accumulated_colors_device = nullptr;
-	ray* m_rays_device = nullptr;
-	int* m_energy_exist_pixels_device = nullptr;
-	scattering* m_scatterings_device = nullptr;
-
-public:
-	~path_tracer();
-
-	std::vector<std::string> init(render_camera* render_camera, config_parser* config, const std::string& scene_file_directory);
-	image* render();
-	void clear();
-
-	void render_ui();
-
-	void init_scene_device_data(int index);
-	void release_scene_device_data();
-};
-
-inline path_tracer::~path_tracer()
+path_tracer::~path_tracer()
 {
 	if (m_is_initiated)
 	{
@@ -75,7 +15,7 @@ inline path_tracer::~path_tracer()
 	);
 }
 
-inline std::vector<std::string> path_tracer::init(render_camera* render_camera, config_parser* config, const std::string& scene_file_directory)
+std::vector<std::string> path_tracer::init(render_camera* render_camera, config_parser* config, const std::string& scene_file_directory)
 {
 	m_config = config;
 	m_render_camera = render_camera;
@@ -97,7 +37,7 @@ inline std::vector<std::string> path_tracer::init(render_camera* render_camera, 
 	return m_scene.set_scene_file_directory(scene_file_directory);
 }
 
-inline image* path_tracer::render()
+image* path_tracer::render()
 {
 	if (m_is_initiated)
 	{
@@ -131,7 +71,7 @@ inline image* path_tracer::render()
 	}
 }
 
-inline void path_tracer::clear()
+void path_tracer::clear()
 {
 	if (m_is_initiated)
 	{
@@ -139,7 +79,7 @@ inline void path_tracer::clear()
 	}
 }
 
-inline void path_tracer::render_ui()
+void path_tracer::render_ui()
 {
 	char buffer[2048];
 
@@ -160,7 +100,7 @@ inline void path_tracer::render_ui()
 
 				float position[3] = { sphere.center.x, sphere.center.y ,sphere.center.z };
 				float radius = sphere.radius;
-				
+
 				ImGui::Text("Base:");
 				is_modified = is_modified || ImGui::DragFloat3("Position", position, 0.001f);
 				is_modified = is_modified || ImGui::DragFloat("Radius", &radius, 0.001f, 0.001f, INFINITY);
@@ -237,7 +177,7 @@ inline void path_tracer::render_ui()
 	}
 
 	bool is_triangle_mesh_modified = false;
-	
+
 	if (m_scene.get_mesh_num() > 0 && ImGui::TreeNode("Mesh"))
 	{
 		for (auto i = 0; i < m_scene.get_mesh_num(); i++)
@@ -345,9 +285,9 @@ inline void path_tracer::render_ui()
 					std::function<void(const glm::mat4&, const glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function =
 						BVH_BUILD_METHOD update_bvh;
 					m_scene.set_mesh_transform_device(
-						i, 
-						position, 
-						clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)), 
+						i,
+						position,
+						clamp(scale, make_float3(0.000001f, 0.000001f, 0.000001f), make_float3(INFINITY, INFINITY, INFINITY)),
 						bvh_update_function
 					);
 				}
@@ -357,7 +297,7 @@ inline void path_tracer::render_ui()
 					is_triangle_mesh_modified = true;
 					m_scene.apply_mesh_rotate(i);
 				}
-				
+
 				ImGui::TreePop();
 			}
 		}
@@ -371,7 +311,7 @@ inline void path_tracer::render_ui()
 	}
 }
 
-inline void path_tracer::init_scene_device_data(int index)
+void path_tracer::init_scene_device_data(int index)
 {
 	double time;
 	printf("[Info]Load scene data...\n");
@@ -395,7 +335,7 @@ inline void path_tracer::init_scene_device_data(int index)
 	return;
 }
 
-inline void path_tracer::release_scene_device_data()
+void path_tracer::release_scene_device_data()
 {
 	if (!m_is_initiated)
 	{
@@ -405,5 +345,3 @@ inline void path_tracer::release_scene_device_data()
 	m_scene.release_scene_data_device();
 	m_scene.unload_scene();
 }
-
-#endif // !__PATH_TRACER__

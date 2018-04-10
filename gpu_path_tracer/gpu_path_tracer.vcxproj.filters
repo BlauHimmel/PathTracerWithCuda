@@ -61,6 +61,9 @@
     <Filter Include="Source\Main">
       <UniqueIdentifier>{2e44beb1-baf2-4075-ab08-048707afc2b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{dfdb1ed5-587b-4e5e-a0bf-0dd72a5fae8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -81,10 +84,37 @@
     <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="bvh.cpp">
+    <ClCompile Include="Bvh\bounding_box.cpp">
       <Filter>Source\Bvh</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
+    <ClCompile Include="Bvh\bvh.cpp">
+      <Filter>Source\Bvh</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\triangle_mesh.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\scene_parser.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\path_tracer.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\material.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\image.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\cube_map_loader.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\config_parser.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\camera.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\window.cpp">
       <Filter>Source\Main</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,78 +215,78 @@
     <ClInclude Include="lib\json\detail\parsing\parser.hpp">
       <Filter>Library\json\detail\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="bvh.h">
-      <Filter>Header\Bvh</Filter>
+    <ClInclude Include="Core\camera.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="bvh_morton_code_kernel.h">
-      <Filter>Header\Bvh</Filter>
+    <ClInclude Include="Core\config_parser.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="bvh_node.h">
-      <Filter>Header\Bvh</Filter>
+    <ClInclude Include="Core\configuration.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="basic_math.hpp">
-      <Filter>Header\Math</Filter>
+    <ClInclude Include="Core\cube_map.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="cuda_math.hpp">
-      <Filter>Header\Math</Filter>
+    <ClInclude Include="Core\cube_map_loader.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="bounding_box.hpp">
-      <Filter>Header\Bvh</Filter>
+    <ClInclude Include="Core\fresnel.h">
+      <Filter>Header\Core</Filter>
     </ClInclude>
-    <ClInclude Include="utilities.hpp">
+    <ClInclude Include="Core\image.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\material.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\path_tracer.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\path_tracer_kernel.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ray.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\scene_parser.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\sphere.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\triangle.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\triangle_mesh.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\utilities.hpp">
       <Filter>Header\Others</Filter>
     </ClInclude>
-    <ClInclude Include="path_tracer.hpp">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Math\basic_math.hpp">
+      <Filter>Header\Math</Filter>
     </ClInclude>
-    <ClInclude Include="path_tracer_kernel.h">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Math\cuda_math.hpp">
+      <Filter>Header\Math</Filter>
     </ClInclude>
-    <ClInclude Include="camera.hpp">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Bvh\bvh.h">
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
-    <ClInclude Include="material.hpp">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Bvh\bvh_morton_code_kernel.h">
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
-    <ClInclude Include="ray.hpp">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Bvh\bvh_node.h">
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
-    <ClInclude Include="sphere.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="triangle.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="triangle_mesh.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_parser.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="config_parser.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="image.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="cube_map_loader.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="cube_map.hpp">
-      <Filter>Header\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="fresnel.hpp">
-      <Filter>Header\Core</Filter>
+    <ClInclude Include="Bvh\bounding_box.h">
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="path_tracer_kernel.cu">
+    <CudaCompile Include="Kernel\bvh_morton_code_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
-    <CudaCompile Include="bvh_morton_code_kernel.cu">
+    <CudaCompile Include="Kernel\path_tracer_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
   </ItemGroup>

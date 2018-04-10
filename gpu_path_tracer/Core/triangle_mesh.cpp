@@ -1,96 +1,17 @@
-#pragma once
+#include "Core\triangle_mesh.h"
 
-#ifndef __TRIANGLE_MESH__
-#define __TRIANGLE_MESH__
-
-#include <cuda_runtime.h>
-#include <iostream>
-#include <functional>
-#include <time.h>
-#include <glm\glm.hpp>
-#include "lib\tiny_obj_loader\tiny_obj_loader.h"
-#include "triangle.hpp"
-#include "material.hpp"
-#include "utilities.hpp"
-#include "cuda_math.hpp"
-#include "bvh.h"
-
-class triangle_mesh
-{
-private:
-	//============================================
-	std::vector<triangle> m_triangles;
-
-	std::vector<int> m_mesh_triangles_num;
-	std::vector<int> m_mesh_vertices_num;
-
-	std::vector<float3> m_mesh_position;
-	std::vector<float3> m_mesh_scale;
-	std::vector<float3> m_mesh_rotate;
-	std::vector<float3> m_mesh_rotate_applied;
-
-	std::vector<glm::mat4> m_mesh_initial_transform;
-	std::vector<glm::mat4> m_mesh_current_transform;
-
-	std::vector<material*> m_mesh_material;
-	std::vector<std::string> m_mesh_name;
-
-	int m_mesh_num = 0;
-	//============================================
-
-	bool m_is_loaded = false;
-
-	triangle* m_mesh_device = nullptr;
-	material* m_mat_device = nullptr;
-
-	bvh_node_device** m_mesh_bvh_initial_device = nullptr;
-	bvh_node_device** m_mesh_bvh_transformed_device = nullptr;
-
-public:
-	bool load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat);
-	void unload_obj();
-
-	void set_material_device(int index, const material& mat);
-	void set_transform_device(
-		int index, 
-		const float3& position, 
-		const float3& scale, 
-		std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
-	);
-	void set_rotate(int index, const float3& rotate);
-	void apply_rotate(int index);
-
-	int get_total_triangle_num() const;
-	int get_mesh_num() const;
-	float3 get_position(int index) const;
-	float3 get_scale(int index) const;
-	float3 get_rotate(int index) const;
-	float3 get_rotate_applied(int index) const;
-	material get_material(int index) const;
-	int get_triangle_num(int index) const;
-	int get_vertex_num(int index) const;
-	triangle* get_triangles_device() const;
-	bvh_node_device** get_bvh_node_device() const;
-
-	bool create_bvh_device_data();
-	void release_bvh_device_data();
-
-	bool create_mesh_device_data();
-	void release_mesh_device_data();
-};
-
-inline bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat)
+bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat)
 {
 	if (mat == nullptr)
 	{
 		return false;
 	}
 
-	std::string mesh_name =filename.substr(filename.find_last_of('\\') + 1);
+	std::string mesh_name = filename.substr(filename.find_last_of('\\') + 1);
 
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
-	tinyobj::attrib_t attrib; 
+	tinyobj::attrib_t attrib;
 	std::string error;
 
 	int triangle_num = 0;
@@ -142,7 +63,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 				attrib.vertices[index[1].vertex_index * 3 + 1],
 				attrib.vertices[index[1].vertex_index * 3 + 2]
 			);
-			
+
 			vertex[2] = make_float3(
 				attrib.vertices[index[2].vertex_index * 3],
 				attrib.vertices[index[2].vertex_index * 3 + 1],
@@ -195,7 +116,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 			normal[0] = normalize(make_float3(normal0_vec4.x, normal0_vec4.y, normal0_vec4.z));
 			normal[1] = normalize(make_float3(normal1_vec4.x, normal1_vec4.y, normal1_vec4.z));
 			normal[2] = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
-			
+
 			triangle triangle;
 			triangle.vertex0 = vertex[0];
 			triangle.vertex1 = vertex[1];
@@ -237,7 +158,7 @@ inline bool triangle_mesh::load_obj(const std::string& filename, const float3& p
 	return true;
 }
 
-inline void triangle_mesh::unload_obj()
+void triangle_mesh::unload_obj()
 {
 	m_triangles.clear();
 	m_triangles.shrink_to_fit();
@@ -271,13 +192,13 @@ inline void triangle_mesh::unload_obj()
 	m_is_loaded = false;
 }
 
-inline void triangle_mesh::set_material_device(int index, const material& mat)
+void triangle_mesh::set_material_device(int index, const material& mat)
 {
 	m_mat_device[index] = mat;
 }
 
-inline void triangle_mesh::set_transform_device(
-	int index, 
+void triangle_mesh::set_transform_device(
+	int index,
 	const float3& position,
 	const float3& scale,
 	std::function<void(const glm::mat4&, glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function
@@ -331,16 +252,16 @@ inline void triangle_mesh::set_transform_device(
 		m_mesh_device[i + triangle_start_index].normal1 = normalize(make_float3(normal1_vec4.x, normal1_vec4.y, normal1_vec4.z));
 		m_mesh_device[i + triangle_start_index].normal2 = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
 	}
-	
+
 	bvh_update_function(m_mesh_initial_transform[index], m_mesh_current_transform[index], m_mesh_bvh_initial_device[index], m_mesh_bvh_transformed_device[index]);
 }
 
-inline void triangle_mesh::set_rotate(int index, const float3& rotate)
+void triangle_mesh::set_rotate(int index, const float3& rotate)
 {
 	m_mesh_rotate[index] = rotate;
 }
 
-inline void triangle_mesh::apply_rotate(int index)
+void triangle_mesh::apply_rotate(int index)
 {
 	if (m_mesh_bvh_initial_device == nullptr)
 	{
@@ -373,7 +294,7 @@ inline void triangle_mesh::apply_rotate(int index)
 		glm::vec4 normal1_vec4 = glm::vec4(normal1.x, normal1.y, normal1.z, 0.0f);
 		glm::vec4 normal2_vec4 = glm::vec4(normal2.x, normal2.y, normal2.z, 0.0f);
 
-		glm::mat4 rotate_mat(1.0f); 
+		glm::mat4 rotate_mat(1.0f);
 		rotate_mat = glm::rotate(rotate_mat, glm::radians(m_mesh_rotate[index].z - m_mesh_rotate_applied[index].z), glm::vec3(0.0f, 0.0f, 1.0f));
 		rotate_mat = glm::rotate(rotate_mat, glm::radians(m_mesh_rotate[index].y - m_mesh_rotate_applied[index].y), glm::vec3(0.0f, 1.0f, 0.0f));
 		rotate_mat = glm::rotate(rotate_mat, glm::radians(m_mesh_rotate[index].x - m_mesh_rotate_applied[index].x), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -409,7 +330,7 @@ inline void triangle_mesh::apply_rotate(int index)
 		m_mesh_device[i + triangle_start_index].normal0 = normalize(make_float3(normal0_vec4.x, normal0_vec4.y, normal0_vec4.z));
 		m_mesh_device[i + triangle_start_index].normal1 = normalize(make_float3(normal1_vec4.x, normal1_vec4.y, normal1_vec4.z));
 		m_mesh_device[i + triangle_start_index].normal2 = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
-	}	
+	}
 
 	m_mesh_initial_transform[index] = glm::inverse(m_mesh_current_transform[index]);
 
@@ -433,62 +354,62 @@ inline void triangle_mesh::apply_rotate(int index)
 	m_mesh_rotate_applied[index] = m_mesh_rotate[index];
 }
 
-inline int triangle_mesh::get_total_triangle_num() const
+int triangle_mesh::get_total_triangle_num() const
 {
 	return static_cast<int>(m_triangles.size());
 }
 
-inline int triangle_mesh::get_mesh_num() const
+int triangle_mesh::get_mesh_num() const
 {
 	return m_mesh_num;
 }
 
-inline float3 triangle_mesh::get_position(int index) const
+float3 triangle_mesh::get_position(int index) const
 {
 	return m_mesh_position[index];
 }
 
-inline float3 triangle_mesh::get_scale(int index) const
+float3 triangle_mesh::get_scale(int index) const
 {
 	return m_mesh_scale[index];
 }
 
-inline float3 triangle_mesh::get_rotate(int index) const
+float3 triangle_mesh::get_rotate(int index) const
 {
 	return m_mesh_rotate[index];
 }
 
-inline float3 triangle_mesh::get_rotate_applied(int index) const
+float3 triangle_mesh::get_rotate_applied(int index) const
 {
 	return m_mesh_rotate_applied[index];
 }
 
-inline material triangle_mesh::get_material(int index) const
+material triangle_mesh::get_material(int index) const
 {
 	return m_mat_device[index];
 }
 
-inline int triangle_mesh::get_triangle_num(int index) const
+int triangle_mesh::get_triangle_num(int index) const
 {
 	return m_mesh_triangles_num[index];
 }
 
-inline int triangle_mesh::get_vertex_num(int index) const
+int triangle_mesh::get_vertex_num(int index) const
 {
 	return m_mesh_vertices_num[index];
 }
 
-inline triangle* triangle_mesh::get_triangles_device() const
+triangle* triangle_mesh::get_triangles_device() const
 {
 	return m_mesh_device;
 }
 
-inline bvh_node_device** triangle_mesh::get_bvh_node_device() const
+bvh_node_device** triangle_mesh::get_bvh_node_device() const
 {
 	return m_mesh_bvh_transformed_device;
 }
 
-inline bool triangle_mesh::create_bvh_device_data()
+bool triangle_mesh::create_bvh_device_data()
 {
 	if (m_mesh_num == 0 || m_mesh_device == nullptr)
 	{
@@ -516,7 +437,7 @@ inline bool triangle_mesh::create_bvh_device_data()
 
 		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root); 
+		m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root);
 		m_mesh_bvh_transformed_device[index] = m_mesh_bvh_initial_device[index] + m_mesh_bvh_initial_device[index]->next_node_index;
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
@@ -527,7 +448,7 @@ inline bool triangle_mesh::create_bvh_device_data()
 	return true;
 }
 
-inline void triangle_mesh::release_bvh_device_data()
+void triangle_mesh::release_bvh_device_data()
 {
 	if (m_mesh_bvh_initial_device != nullptr)
 	{
@@ -543,7 +464,7 @@ inline void triangle_mesh::release_bvh_device_data()
 	}
 }
 
-inline bool triangle_mesh::create_mesh_device_data()
+bool triangle_mesh::create_mesh_device_data()
 {
 	if (!m_is_loaded)
 	{
@@ -565,7 +486,7 @@ inline bool triangle_mesh::create_mesh_device_data()
 
 	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_device, m_triangles.size() * sizeof(triangle)));
 	CUDA_CALL(cudaMemcpy(m_mesh_device, m_triangles.data(), m_triangles.size() * sizeof(triangle), cudaMemcpyDefault));
-		
+
 	for (auto index = 0; index < m_mesh_num; index++)
 	{
 		int triangle_start_index = 0;
@@ -573,7 +494,7 @@ inline bool triangle_mesh::create_mesh_device_data()
 		{
 			triangle_start_index += m_mesh_triangles_num[i];
 		}
-		
+
 		for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 		{
 			m_mesh_device[i + triangle_start_index].mat = m_mat_device + index;
@@ -594,9 +515,9 @@ inline bool triangle_mesh::create_mesh_device_data()
 			glm::vec4 normal1_vec4 = glm::vec4(normal1.x, normal1.y, normal1.z, 0.0f);
 			glm::vec4 normal2_vec4 = glm::vec4(normal2.x, normal2.y, normal2.z, 0.0f);
 
-			vertex0_vec4  = m_mesh_current_transform[index] * vertex0_vec4;
-			vertex1_vec4  = m_mesh_current_transform[index] * vertex1_vec4;
-			vertex2_vec4  = m_mesh_current_transform[index] * vertex2_vec4;
+			vertex0_vec4 = m_mesh_current_transform[index] * vertex0_vec4;
+			vertex1_vec4 = m_mesh_current_transform[index] * vertex1_vec4;
+			vertex2_vec4 = m_mesh_current_transform[index] * vertex2_vec4;
 
 			glm::mat4 inverse_transpose_transform_mat = glm::transpose(glm::inverse(m_mesh_current_transform[index]));
 			normal0_vec4 = inverse_transpose_transform_mat * normal0_vec4;
@@ -611,14 +532,14 @@ inline bool triangle_mesh::create_mesh_device_data()
 			m_mesh_device[i + triangle_start_index].normal2 = normalize(make_float3(normal2_vec4.x, normal2_vec4.y, normal2_vec4.z));
 		}
 	}
-	
+
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 	return true;
 }
 
-inline void triangle_mesh::release_mesh_device_data()
+void triangle_mesh::release_mesh_device_data()
 {
 	if (m_mat_device != nullptr)
 	{
@@ -631,5 +552,3 @@ inline void triangle_mesh::release_mesh_device_data()
 		m_mesh_device = nullptr;
 	}
 }
-
-#endif // !__TRIANGLE_MESH__

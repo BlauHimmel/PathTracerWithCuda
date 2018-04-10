@@ -10,20 +10,20 @@
 #include "curand.h"
 #include "curand_kernel.h"
 
-#include "basic_math.hpp"
-#include "cuda_math.hpp"
+#include "Math\basic_math.hpp"
+#include "Math\cuda_math.hpp"
 
-#include "sphere.hpp"
-#include "triangle.hpp"
-#include "image.hpp"
-#include "ray.hpp"
-#include "camera.hpp"
-#include "fresnel.hpp"
-#include "material.hpp"
-#include "cube_map.hpp"
-#include "triangle_mesh.hpp"
-#include "configuration.hpp"
-#include "bvh_node.h"
+#include "Core\sphere.h"
+#include "Core\triangle.h"
+#include "Core\image.h"
+#include "Core\ray.h"
+#include "Core\camera.h"
+#include "Core\fresnel.h"
+#include "Core\material.h"
+#include "Core\cube_map.h"
+#include "Core\triangle_mesh.h"
+#include "Core\configuration.h"
+#include "Bvh\bvh_node.h"
 
 enum class object_type
 {
@@ -1061,4 +1061,35 @@ extern "C" void path_tracer_kernel(
 		);
 
 	CUDA_CALL(cudaDeviceSynchronize());
+}
+
+extern "C" void path_tracer_kernel_memory_allocate(
+	color** not_absorbed_colors_device,		//in out
+	color** accumulated_colors_device,		//in out
+	ray** rays_device,						//in out
+	int** energy_exist_pixels_device,		//in out
+	scattering** scatterings_device,		//in out
+	int pixel_count							//in
+)
+{
+	CUDA_CALL(cudaMallocManaged((void**)not_absorbed_colors_device, pixel_count * sizeof(color)));
+	CUDA_CALL(cudaMallocManaged((void**)accumulated_colors_device, pixel_count * sizeof(color)));
+	CUDA_CALL(cudaMallocManaged((void**)rays_device, pixel_count * sizeof(ray)));
+	CUDA_CALL(cudaMallocManaged((void**)energy_exist_pixels_device, pixel_count * sizeof(int)));
+	CUDA_CALL(cudaMallocManaged((void**)scatterings_device, pixel_count * sizeof(scattering)));
+}
+
+extern "C" void path_tracer_kernel_memory_free(
+	color* not_absorbed_colors_device,	//in out
+	color* accumulated_colors_device,	//in out
+	ray* rays_device,					//in out
+	int* energy_exist_pixels_device,	//in out
+	scattering* scatterings_device		//in out
+)
+{
+	CUDA_CALL(cudaFree(not_absorbed_colors_device));
+	CUDA_CALL(cudaFree(accumulated_colors_device));
+	CUDA_CALL(cudaFree(rays_device));
+	CUDA_CALL(cudaFree(energy_exist_pixels_device));
+	CUDA_CALL(cudaFree(scatterings_device));
 }

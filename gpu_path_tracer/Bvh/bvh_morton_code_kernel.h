@@ -3,9 +3,9 @@
 #ifndef __BVH_MORTON_CODE_KERNEL__
 #define __BVH_MORTON_CODE_KERNEL__
 
-#include "bvh_node.h"
-#include "configuration.hpp"
-#include "triangle.hpp"
+#include "Bvh\bvh_node.h"
+#include "Core\configuration.h"
+#include "Core\triangle.h"
 
 extern "C" void compute_triangle_bounding_box_kernel(
 	triangle* triangles_device,							//in

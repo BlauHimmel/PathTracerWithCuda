@@ -5,8 +5,8 @@
 
 #include <vector>
 
-#include "cuda_math.hpp"
-#include "bounding_box.hpp"
+#include "Math\cuda_math.hpp"
+#include "Bvh\bounding_box.h"
 
 struct bvh_node
 {

@@ -3,14 +3,14 @@
 #ifndef __PATH_TRACER_KERNEL__
 #define __PATH_TRACER_KERNEL__
 
-#include "sphere.hpp"
-#include "image.hpp"
-#include "ray.hpp"
-#include "camera.hpp"
-#include "cube_map.hpp"
-#include "triangle.hpp"
-#include "configuration.hpp"
-#include "bvh_node.h"
+#include "Core\sphere.h"
+#include "Core\image.h"
+#include "Core\ray.h"
+#include "Core\camera.h"
+#include "Core\cube_map.h"
+#include "Core\triangle.h"
+#include "Core\configuration.h"
+#include "Bvh\bvh_node.h"
 
 extern "C" void path_tracer_kernel(
 	int mesh_num,							//in
@@ -39,14 +39,7 @@ extern "C" void path_tracer_kernel_memory_allocate(
 	int** energy_exist_pixels_device,		//in out
 	scattering** scatterings_device,		//in out
 	int pixel_count							//in
-)
-{
-	CUDA_CALL(cudaMallocManaged((void**)not_absorbed_colors_device, pixel_count * sizeof(color)));
-	CUDA_CALL(cudaMallocManaged((void**)accumulated_colors_device, pixel_count * sizeof(color)));
-	CUDA_CALL(cudaMallocManaged((void**)rays_device, pixel_count * sizeof(ray)));
-	CUDA_CALL(cudaMallocManaged((void**)energy_exist_pixels_device, pixel_count * sizeof(int)));
-	CUDA_CALL(cudaMallocManaged((void**)scatterings_device, pixel_count * sizeof(scattering)));
-}
+);
 
 extern "C" void path_tracer_kernel_memory_free(
 	color* not_absorbed_colors_device,	//in out
@@ -54,13 +47,6 @@ extern "C" void path_tracer_kernel_memory_free(
 	ray* rays_device,					//in out
 	int* energy_exist_pixels_device,	//in out
 	scattering* scatterings_device		//in out
-)
-{
-	CUDA_CALL(cudaFree(not_absorbed_colors_device));
-	CUDA_CALL(cudaFree(accumulated_colors_device));
-	CUDA_CALL(cudaFree(rays_device));
-	CUDA_CALL(cudaFree(energy_exist_pixels_device));
-	CUDA_CALL(cudaFree(scatterings_device));
-}
+);
 
 #endif // !__PATH_TRACER_KERNEL__

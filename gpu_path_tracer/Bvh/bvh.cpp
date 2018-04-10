@@ -1,4 +1,4 @@
-#include "bvh.h"
+#include "Bvh\bvh.h"
 
 int bvh_build_config::bvh_leaf_node_triangle_num = 1;
 int bvh_build_config::bvh_bucket_max_divide_internal_num = 12;

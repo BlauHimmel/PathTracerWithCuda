@@ -3,7 +3,7 @@
 #ifndef __CUBE_MAP__
 #define __CUBE_MAP__
 
-#include "basic_math.hpp"
+#include "Math\basic_math.hpp"
 
 struct cube_map
 {

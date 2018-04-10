@@ -88,7 +88,7 @@
     <LinkIncremental>false</LinkIncremental>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
     <ExecutablePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -172,29 +172,44 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bvh.cpp" />
-    <ClCompile Include="window.cpp" />
+    <ClCompile Include="Bvh\bounding_box.cpp" />
+    <ClCompile Include="Bvh\bvh.cpp" />
+    <ClCompile Include="Core\camera.cpp" />
+    <ClCompile Include="Core\config_parser.cpp" />
+    <ClCompile Include="Core\cube_map_loader.cpp" />
+    <ClCompile Include="Core\image.cpp" />
+    <ClCompile Include="Core\material.cpp" />
+    <ClCompile Include="Core\path_tracer.cpp" />
+    <ClCompile Include="Core\scene_parser.cpp" />
+    <ClCompile Include="Core\triangle_mesh.cpp" />
     <ClCompile Include="lib\imgui\imgui.cpp" />
     <ClCompile Include="lib\imgui\imgui_demo.cpp" />
     <ClCompile Include="lib\imgui\imgui_draw.cpp" />
     <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="lib\lodepng\lodepng.cpp" />
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
+    <ClCompile Include="Main\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bounding_box.hpp" />
-    <ClInclude Include="bvh.h" />
-    <ClInclude Include="bvh_morton_code_kernel.h" />
-    <ClInclude Include="bvh_node.h" />
-    <ClInclude Include="camera.hpp" />
-    <ClInclude Include="basic_math.hpp" />
-    <ClInclude Include="configuration.hpp" />
-    <ClInclude Include="config_parser.hpp" />
-    <ClInclude Include="cube_map.hpp" />
-    <ClInclude Include="cube_map_loader.hpp" />
-    <ClInclude Include="cuda_math.hpp" />
-    <ClInclude Include="fresnel.hpp" />
-    <ClInclude Include="image.hpp" />
+    <ClInclude Include="Bvh\bounding_box.h" />
+    <ClInclude Include="Bvh\bvh.h" />
+    <ClInclude Include="Bvh\bvh_morton_code_kernel.h" />
+    <ClInclude Include="Bvh\bvh_node.h" />
+    <ClInclude Include="Core\camera.h" />
+    <ClInclude Include="Core\configuration.h" />
+    <ClInclude Include="Core\config_parser.h" />
+    <ClInclude Include="Core\cube_map.h" />
+    <ClInclude Include="Core\cube_map_loader.h" />
+    <ClInclude Include="Core\fresnel.h" />
+    <ClInclude Include="Core\image.h" />
+    <ClInclude Include="Core\material.h" />
+    <ClInclude Include="Core\path_tracer.h" />
+    <ClInclude Include="Core\path_tracer_kernel.h" />
+    <ClInclude Include="Core\ray.h" />
+    <ClInclude Include="Core\scene_parser.h" />
+    <ClInclude Include="Core\sphere.h" />
+    <ClInclude Include="Core\triangle.h" />
+    <ClInclude Include="Core\triangle_mesh.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />
     <ClInclude Include="lib\imgui\imgui_impl_glfw_gl3.h" />
@@ -227,19 +242,13 @@
     <ClInclude Include="lib\json\json_fwd.hpp" />
     <ClInclude Include="lib\lodepng\lodepng.h" />
     <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h" />
-    <ClInclude Include="material.hpp" />
-    <ClInclude Include="path_tracer.hpp" />
-    <ClInclude Include="path_tracer_kernel.h" />
-    <ClInclude Include="ray.hpp" />
-    <ClInclude Include="scene_parser.hpp" />
-    <ClInclude Include="sphere.hpp" />
-    <ClInclude Include="triangle.hpp" />
-    <ClInclude Include="triangle_mesh.hpp" />
-    <ClInclude Include="utilities.hpp" />
+    <ClInclude Include="Math\basic_math.hpp" />
+    <ClInclude Include="Math\cuda_math.hpp" />
+    <ClInclude Include="Others\utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="bvh_morton_code_kernel.cu" />
-    <CudaCompile Include="path_tracer_kernel.cu" />
+    <CudaCompile Include="Kernel\bvh_morton_code_kernel.cu" />
+    <CudaCompile Include="Kernel\path_tracer_kernel.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
