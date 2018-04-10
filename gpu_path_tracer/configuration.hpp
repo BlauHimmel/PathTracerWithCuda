@@ -18,6 +18,9 @@ struct configuration
 	bool use_sky;
 	bool use_bilinear;
 	bool gamma_correction;
+	int bvh_leaf_node_triangle_num;
+	int bvh_bucket_max_divide_internal_num;
+	int bvh_build_block_size;
 };
 
 #endif // !__CONFIGURATION__

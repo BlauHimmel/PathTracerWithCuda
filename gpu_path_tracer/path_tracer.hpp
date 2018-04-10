@@ -88,6 +88,12 @@ inline std::vector<std::string> path_tracer::init(render_camera* render_camera, 
 		&m_scatterings_device,
 		m_image->pixel_count
 	);
+
+	configuration* config_device = m_config->get_config_device_ptr();
+	bvh_build_config::bvh_leaf_node_triangle_num = config_device->bvh_leaf_node_triangle_num;
+	bvh_build_config::bvh_bucket_max_divide_internal_num = config_device->bvh_bucket_max_divide_internal_num;
+	bvh_build_config::bvh_build_block_size = config_device->bvh_build_block_size;
+
 	return m_scene.set_scene_file_directory(scene_file_directory);
 }
 

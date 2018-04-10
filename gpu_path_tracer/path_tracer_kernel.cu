@@ -176,6 +176,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	bvh_node_device** bvh_nodes,	//in
 	int mesh_index,					//in
 	const ray& ray,					//in
+	configuration* config,			//in
 	float& hit_t,					//out	
 	float& hit_t1,					//out	
 	float& hit_t2,					//out	
@@ -207,7 +208,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 			if (current_node.is_leaf)
 			{
 				//intersect with each triangles in the leaf node and update the relevant minimal parameters
-				for (int i = 0; i < BVH_LEAF_NODE_TRIANGLE_NUM; i++)
+				for (int i = 0; i < config->bvh_leaf_node_triangle_num; i++)
 				{
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
@@ -745,7 +746,7 @@ __global__ void trace_ray_kernel(
 	
 	for (int mesh_index = 0; mesh_index < mesh_num; mesh_index++)
 	{
-		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, hit_t, hit_t1, hit_t2, hit_triangle_index) && hit_t < min_t && hit_t > 0.0f)
+		if (intersect_triangle_mesh_bvh(triangles, bvh_nodes, mesh_index, tracing_ray, config, hit_t, hit_t1, hit_t2, hit_triangle_index) && hit_t < min_t && hit_t > 0.0f)
 		{
 			min_t = hit_t;
 			min_t1 = hit_t1;

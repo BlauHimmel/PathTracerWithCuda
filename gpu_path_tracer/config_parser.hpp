@@ -24,6 +24,9 @@
 #define TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE "BilinearSample"
 #define TOKEN_CONFIG_SKY "Sky"
 #define TOKEN_CONFIG_GAMMA_CORRECTION "GammaCorrection"
+#define TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM "BvhLeafNodeTriangleNum"
+#define TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM "BvhBucketMaxDivideInternalNum"
+#define TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE "BvhBuildBlockSize"
 
 /*
 {
@@ -39,7 +42,10 @@
 	"Skybox" : "true",
 	"BilinearSample" : "true",
 	"Sky" : "false",
-	"GammaCorrection" : "true"
+	"GammaCorrection" : "true",
+	"BvhLeafNodeTriangleNum" : "1",
+	"BvhBucketMaxDivideInternalNum" : "12",
+	"BvhBuildBlockSize" : "32
 }
 */
 
@@ -60,6 +66,9 @@ private:
 	bool m_use_bilinear = false;
 	bool m_use_sky = false;
 	bool m_gamma_correction = true;
+	int m_bvh_leaf_node_triangle_num = 1;
+	int m_bvh_bucket_max_divide_internal_num = 12;
+	int m_bvh_build_block_size = 32;
 	//============================================
 
 	configuration* m_config_device = nullptr;
@@ -120,6 +129,9 @@ bool config_parser::load_config(const std::string& filename)
 	auto use_bilinear = m_json_parser[TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE];
 	auto use_sky = m_json_parser[TOKEN_CONFIG_SKY];
 	auto gamma_correction = m_json_parser[TOKEN_CONFIG_GAMMA_CORRECTION];
+	auto bvh_leaf_node_triangle_num = m_json_parser[TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM];
+	auto bvh_bucket_max_divide_internal_num = m_json_parser[TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+	auto bvh_build_block_size = m_json_parser[TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE];
 
 	CHECK_PROPERTY(Config, height, TOKEN_CONFIG_HEIGHT);
 	CHECK_PROPERTY(Config, width, TOKEN_CONFIG_WIDTH);
@@ -134,6 +146,9 @@ bool config_parser::load_config(const std::string& filename)
 	CHECK_PROPERTY(Config, use_bilinear, TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE);
 	CHECK_PROPERTY(Config, use_sky, TOKEN_CONFIG_SKY);
 	CHECK_PROPERTY(Config, gamma_correction, TOKEN_CONFIG_GAMMA_CORRECTION);
+	CHECK_PROPERTY(Config, bvh_leaf_node_triangle_num, TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM);
+	CHECK_PROPERTY(Config, bvh_bucket_max_divide_internal_num, TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM);
+	CHECK_PROPERTY(Config, bvh_build_block_size, TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE);
 
 	std::string height_str = height;
 	std::string width_str = width;
@@ -148,6 +163,9 @@ bool config_parser::load_config(const std::string& filename)
 	std::string use_bilinear_str = use_bilinear;
 	std::string use_sky_str = use_sky;
 	std::string gamma_correction_str = gamma_correction;
+	std::string bvh_leaf_node_triangle_num_str = bvh_leaf_node_triangle_num;
+	std::string bvh_bucket_max_divide_internal_num_str = bvh_bucket_max_divide_internal_num;
+	std::string bvh_build_block_size_str = bvh_build_block_size;
 
 	m_height = parse_int(height_str);
 	m_width = parse_int(width_str);
@@ -162,6 +180,9 @@ bool config_parser::load_config(const std::string& filename)
 	m_use_bilinear = parse_bool(use_bilinear_str);
 	m_use_sky = parse_bool(use_sky_str);
 	m_gamma_correction = parse_bool(gamma_correction_str);
+	m_bvh_leaf_node_triangle_num = parse_int(bvh_leaf_node_triangle_num_str);
+	m_bvh_bucket_max_divide_internal_num = parse_int(bvh_bucket_max_divide_internal_num_str);
+	m_bvh_build_block_size = parse_int(bvh_build_block_size_str);
 
 	m_is_loaded = true;
 
@@ -184,6 +205,9 @@ inline void config_parser::unload_config()
 	m_use_bilinear = true;
 	m_use_sky = false;
 	m_gamma_correction = true;
+	m_bvh_leaf_node_triangle_num = 1;
+	m_bvh_bucket_max_divide_internal_num = 12;
+	m_bvh_build_block_size = 32;
 }
 
 inline configuration* config_parser::get_config_device_ptr()
@@ -208,6 +232,9 @@ inline void config_parser::create_config_device_data()
 	m_config_device->use_bilinear = m_use_bilinear;
 	m_config_device->use_sky = m_use_sky;
 	m_config_device->gamma_correction = m_gamma_correction;
+	m_config_device->bvh_leaf_node_triangle_num = m_bvh_leaf_node_triangle_num;
+	m_config_device->bvh_bucket_max_divide_internal_num = m_bvh_bucket_max_divide_internal_num;
+	m_config_device->bvh_build_block_size = m_bvh_build_block_size;
 }
 
 inline void config_parser::release_config_device_data()

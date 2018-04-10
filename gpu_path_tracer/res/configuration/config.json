@@ -11,5 +11,8 @@
 	"Skybox" : "true",
 	"BilinearSample" : "true",
 	"Sky" : "false",
-	"GammaCorrection" : "true"
+	"GammaCorrection" : "true",
+	"BvhLeafNodeTriangleNum" : "1",
+	"BvhBucketMaxDivideInternalNum" : "12",
+	"BvhBuildBlockSize" : "32"
 }

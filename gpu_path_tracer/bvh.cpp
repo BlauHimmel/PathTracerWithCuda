@@ -1,5 +1,9 @@
 #include "bvh.h"
 
+int bvh_build_config::bvh_leaf_node_triangle_num = 1;
+int bvh_build_config::bvh_bucket_max_divide_internal_num = 12;
+int bvh_build_config::bvh_build_block_size = 32;
+
 namespace bvh_naive_cpu
 {
 
@@ -19,10 +23,10 @@ namespace bvh_naive_cpu
 		stack.push(node);
 
 		bvh_node* internals[3];
-		internals[0] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
-		internals[1] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
-		internals[2] = new bvh_node[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
-		bool* is_box_init = new bool[BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
+		internals[0] = new bvh_node[bvh_build_config::bvh_bucket_max_divide_internal_num];
+		internals[1] = new bvh_node[bvh_build_config::bvh_bucket_max_divide_internal_num];
+		internals[2] = new bvh_node[bvh_build_config::bvh_bucket_max_divide_internal_num];
+		bool* is_box_init = new bool[bvh_build_config::bvh_bucket_max_divide_internal_num];
 
 		while (!stack.empty())
 		{
@@ -42,7 +46,7 @@ namespace bvh_naive_cpu
 			{
 				float axis_length = current_node->box.get_axis_length(axis);
 
-				int divide_internal_num = min(static_cast<int>(BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM), static_cast<int>(current_node->triangle_indices.size()));
+				int divide_internal_num = min(bvh_build_config::bvh_bucket_max_divide_internal_num, static_cast<int>(current_node->triangle_indices.size()));
 				float internal_length = axis_length / static_cast<float>(divide_internal_num);
 
 				for (int i = 0; i < divide_internal_num; i++)
@@ -139,10 +143,10 @@ namespace bvh_naive_cpu
 				{
 					left->triangle_indices.insert(left->triangle_indices.end(), internals[split_axis][i].triangle_indices.begin(), internals[split_axis][i].triangle_indices.end());
 				}
-				if (split_triangle_num_left <= BVH_LEAF_NODE_TRIANGLE_NUM)
+				if (split_triangle_num_left <= bvh_build_config::bvh_leaf_node_triangle_num)
 				{
 					left->is_leaf = true;
-					left->triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+					left->triangle_indices.resize(bvh_build_config::bvh_leaf_node_triangle_num, -1);
 				}
 				else
 				{
@@ -161,10 +165,10 @@ namespace bvh_naive_cpu
 				{
 					right->triangle_indices.insert(right->triangle_indices.end(), internals[split_axis][i].triangle_indices.begin(), internals[split_axis][i].triangle_indices.end());
 				}
-				if (split_triangle_num_right <= BVH_LEAF_NODE_TRIANGLE_NUM)
+				if (split_triangle_num_right <= bvh_build_config::bvh_leaf_node_triangle_num)
 				{
 					right->is_leaf = true;
-					right->triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+					right->triangle_indices.resize(bvh_build_config::bvh_leaf_node_triangle_num, -1);
 				}
 				else
 				{
@@ -198,7 +202,7 @@ namespace bvh_naive_cpu
 			root_node->triangle_indices.push_back(i + start_index);
 		}
 
-		if (root_node->triangle_indices.size() <= BVH_LEAF_NODE_TRIANGLE_NUM)
+		if (root_node->triangle_indices.size() <= bvh_build_config::bvh_leaf_node_triangle_num)
 		{
 			root_node->is_leaf = true;
 			return root_node;
@@ -297,7 +301,7 @@ namespace bvh_naive_cpu
 
 			if (current_node->is_leaf)
 			{
-				node_device.triangle_indices = leaf_node_triangle_indices + leaf_node_index * BVH_LEAF_NODE_TRIANGLE_NUM;
+				node_device.triangle_indices = leaf_node_triangle_indices + leaf_node_index * bvh_build_config::bvh_leaf_node_triangle_num;
 				leaf_node_index++;
 			}
 
@@ -668,9 +672,9 @@ namespace bvh_morton_code_cpu
 	{
 		static int threadnum = omp_get_max_threads();
 
-		uint leaf_node_num = triangle_num / BVH_LEAF_NODE_TRIANGLE_NUM;
+		uint leaf_node_num = triangle_num / bvh_build_config::bvh_leaf_node_triangle_num;
 		leaf_node_num = ((leaf_node_num == 0) ? 1 : leaf_node_num);
-		leaf_node_num = ((triangle_num % BVH_LEAF_NODE_TRIANGLE_NUM == 0) ? leaf_node_num : (leaf_node_num + 1));
+		leaf_node_num = ((triangle_num % bvh_build_config::bvh_leaf_node_triangle_num == 0) ? leaf_node_num : (leaf_node_num + 1));
 
 		uint internal_node_num = leaf_node_num - 1;
 
@@ -708,9 +712,9 @@ namespace bvh_morton_code_cpu
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
-			int triangle_start_index = i * BVH_LEAF_NODE_TRIANGLE_NUM;
+			int triangle_start_index = i * bvh_build_config::bvh_leaf_node_triangle_num;
 
-			leaf_nodes[i].triangle_indices.resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+			leaf_nodes[i].triangle_indices.resize(bvh_build_config::bvh_leaf_node_triangle_num, -1);
 
 			leaf_nodes[i].is_leaf = true;
 			leaf_nodes[i].box.get_bounding_box(
@@ -719,7 +723,7 @@ namespace bvh_morton_code_cpu
 			);
 			leaf_nodes[i].triangle_indices[0] = triangle_nodes[triangle_start_index].triangle_index;
 
-			for (int j = 1; j < BVH_LEAF_NODE_TRIANGLE_NUM; j++)
+			for (int j = 1; j < bvh_build_config::bvh_leaf_node_triangle_num; j++)
 			{
 				if (j + triangle_start_index < triangle_num)
 				{
@@ -843,9 +847,9 @@ namespace bvh_morton_code_cuda
 	{
 		static int threadnum = omp_get_max_threads();
 
-		uint leaf_node_num = triangle_num / BVH_LEAF_NODE_TRIANGLE_NUM;
+		uint leaf_node_num = triangle_num / bvh_build_config::bvh_leaf_node_triangle_num;
 		leaf_node_num = ((leaf_node_num == 0) ? 1 : leaf_node_num);
-		leaf_node_num = ((triangle_num % BVH_LEAF_NODE_TRIANGLE_NUM == 0) ? leaf_node_num : (leaf_node_num + 1));
+		leaf_node_num = ((triangle_num % bvh_build_config::bvh_leaf_node_triangle_num == 0) ? leaf_node_num : (leaf_node_num + 1));
 
 		uint internal_node_num = leaf_node_num - 1;
 
@@ -877,7 +881,8 @@ namespace bvh_morton_code_cuda
 			triangle_num,
 			triangle_morton_code_nodes_device,
 			&(internal_morton_code_nodes_device[0].box),
-			start_index
+			start_index,
+			bvh_build_config::bvh_build_block_size
 		);
 
 		CUDA_CALL(cudaMemcpy(triangle_morton_code_nodes, triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
@@ -891,9 +896,9 @@ namespace bvh_morton_code_cuda
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
-			int triangle_start_index = i * BVH_LEAF_NODE_TRIANGLE_NUM;
+			int triangle_start_index = i * bvh_build_config::bvh_leaf_node_triangle_num;
 
-			leaf_nodes_triangle_indices[i].resize(BVH_LEAF_NODE_TRIANGLE_NUM, -1);
+			leaf_nodes_triangle_indices[i].resize(bvh_build_config::bvh_leaf_node_triangle_num, -1);
 
 			//triangle_index here is used to mark its corresponding index of leaf_nodes_triangle_indices
 			//because leaf_morton_code_nodes will be sorted and its sequence no longer match the leaf_morton_code_nodes
@@ -905,7 +910,7 @@ namespace bvh_morton_code_cuda
 			);
 			leaf_nodes_triangle_indices[i][0] = triangle_morton_code_nodes[triangle_start_index].triangle_index;
 
-			for (int j = 1; j < BVH_LEAF_NODE_TRIANGLE_NUM; j++)
+			for (int j = 1; j < bvh_build_config::bvh_leaf_node_triangle_num; j++)
 			{
 				if (j + triangle_start_index < triangle_num)
 				{
@@ -927,7 +932,7 @@ namespace bvh_morton_code_cuda
 		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes_device, leaf_morton_code_nodes, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 
 		//Generate the tree
-		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num);
+		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num, bvh_build_config::bvh_build_block_size);
 
 		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 		CUDA_CALL(cudaMemcpy(internal_morton_code_nodes, internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));

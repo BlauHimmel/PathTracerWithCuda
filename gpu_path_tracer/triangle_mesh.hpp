@@ -269,8 +269,6 @@ inline void triangle_mesh::unload_obj()
 	m_mesh_material.shrink_to_fit();
 
 	m_is_loaded = false;
-
-	printf("[Info]Unload mesh data.\n");
 }
 
 inline void triangle_mesh::set_material_device(int index, const material& mat)
@@ -543,7 +541,6 @@ inline void triangle_mesh::release_bvh_device_data()
 		m_mesh_bvh_initial_device = nullptr;
 		m_mesh_bvh_transformed_device = nullptr;
 	}
-	printf("[Info]Release bvh device data.\n");
 }
 
 inline bool triangle_mesh::create_mesh_device_data()
@@ -633,8 +630,6 @@ inline void triangle_mesh::release_mesh_device_data()
 		CUDA_CALL(cudaFree(m_mesh_device));
 		m_mesh_device = nullptr;
 	}
-
-	printf("[Info]Release mesh device data.\n");
 }
 
 #endif // !__TRIANGLE_MESH__

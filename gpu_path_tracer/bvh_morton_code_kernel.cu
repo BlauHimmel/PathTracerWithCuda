@@ -353,13 +353,14 @@ __global__ void __compute_triangle_bounding_box_kernel(
 	int triangle_num,									//in
 	bvh_node_morton_code_cuda* triangle_nodes_device,	//in
 	bounding_box* mesh_box,								//in
-	int start_index										//in
+	int start_index,									//in
+	int block_size										//in
 )
 {
 	int block_x = blockIdx.x;
 	int thread_x = threadIdx.x;
 
-	int triangle_node_index = BVH_BUILD_BLOCK_SIZE * block_x + thread_x;
+	int triangle_node_index = block_size * block_x + thread_x;
 	bool is_index_valid = triangle_node_index < triangle_num;
 
 	if (is_index_valid)
@@ -382,13 +383,14 @@ __global__ void __generate_internal_node_kernel(
 	bvh_node_morton_code_cuda* internal_nodes_device,	//in
 	uint internal_node_num,								//in
 	bvh_node_morton_code_cuda* leaf_nodes_device,		//in
-	uint leaf_node_num									//in
+	uint leaf_node_num,									//in
+	int block_size										//in
 )
 {
 	int block_x = blockIdx.x;
 	int thread_x = threadIdx.x;
 
-	int internal_node_index = BVH_BUILD_BLOCK_SIZE * block_x + thread_x;
+	int internal_node_index = block_size * block_x + thread_x;
 	bool is_index_valid = internal_node_index < internal_node_num;
 
 	if (is_index_valid)
@@ -402,10 +404,11 @@ extern "C" void compute_triangle_bounding_box_kernel(
 	int triangle_num,									//in
 	bvh_node_morton_code_cuda* triangle_nodes_device,	//in
 	bounding_box* mesh_box,								//in
-	int start_index										//in
+	int start_index,									//in
+	int block_size										//in
 )
 {
-	int threads_num_per_block = BVH_BUILD_BLOCK_SIZE;
+	int threads_num_per_block = block_size;
 	int total_blocks_num_per_gird = (triangle_num + threads_num_per_block - 1) / threads_num_per_block;
 
 	__compute_triangle_bounding_box_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
@@ -413,7 +416,8 @@ extern "C" void compute_triangle_bounding_box_kernel(
 		triangle_num,
 		triangle_nodes_device,
 		mesh_box,
-		start_index
+		start_index,
+		block_size
 		);
 
 	CUDA_CALL(cudaDeviceSynchronize());
@@ -423,17 +427,19 @@ extern "C" void generate_internal_node_kernel(
 	bvh_node_morton_code_cuda* internal_nodes_device,	//in
 	uint internal_node_num,								//in
 	bvh_node_morton_code_cuda* leaf_nodes_device,		//in
-	uint leaf_node_num									//in
+	uint leaf_node_num,									//in
+	int block_size										//in
 )
 {
-	int threads_num_per_block = BVH_BUILD_BLOCK_SIZE;
+	int threads_num_per_block = block_size;
 	int total_blocks_num_per_gird = (internal_node_num + threads_num_per_block - 1) / threads_num_per_block;
 
 	__generate_internal_node_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
 		internal_nodes_device,
 		internal_node_num,
 		leaf_nodes_device,
-		leaf_node_num
+		leaf_node_num,
+		block_size
 		);
 
 	CUDA_CALL(cudaDeviceSynchronize());

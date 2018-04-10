@@ -179,7 +179,6 @@ inline void cube_map_loader::unload_data()
 	m_width = 0;
 	m_height = 0;
 	m_is_loaded = false;
-	std::cout << "[Info]Unload cube map data." << std::endl;
 }
 
 inline cube_map * cube_map_loader::get_cube_map_device() const
@@ -238,8 +237,6 @@ inline void cube_map_loader::release_cube_device_data()
 	CUDA_CALL(cudaFree(m_cube_map_device));
 
 	m_cube_map_device = nullptr;
-
-	printf("[Info]Release cube map device data.\n");
 
 	return;
 }
