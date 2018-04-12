@@ -1,0 +1,42 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Material" :
+	[
+		{
+			"Name" : "DragonGreen",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "20.0 3.0 13.0",
+			"ReducedScatteringCoef" : "100.0 100.0 100.0"
+		},
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 10.18 0.0",
+			"Scale" : "1.5 0.01 1.5",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Material" : ["DragonGreen", "copper"],
+			"Path" : "res\\obj\\dragon_on_table.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "1.0 1.0 1.0",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}

@@ -1,7 +1,7 @@
 {
 	"Background" :
 	{
-		"Name" : "lobby",
+		"Name" : "yokohama",
 		"Path" : "res\\texture\\"
 	},
 
@@ -95,7 +95,7 @@
 	"Mesh" :
 	[
 		{
-			"Material" : "wall_blue",
+			"Material" : ["wall_blue"],
 			"Path" : "res\\obj\\cornell.obj",
 			"Position" : "0.0 -0.8 0.0",
 			"Scale" : "0.1 0.1 0.5",
@@ -103,7 +103,7 @@
 		},
 
 		{
-			"Material" : "light",
+			"Material" : ["light"],
 			"Path" : "res\\obj\\cube.obj",
 			"Position" : "0.0 3.18 0.0",
 			"Scale" : "1.5 0.01 1.5",
@@ -111,7 +111,7 @@
 		},
 
 		{
-			"Material" : "something_red",
+			"Material" : ["something_red"],
 			"Path" : "res\\obj\\lucy.obj",
 			"Position" : "1.021 -0.801 3.838",
 			"Scale" : "0.0025 0.0025 0.0025",

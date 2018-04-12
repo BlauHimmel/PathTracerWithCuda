@@ -64,6 +64,12 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{dfdb1ed5-587b-4e5e-a0bf-0dd72a5fae8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\free_image">
+      <UniqueIdentifier>{dbb712c8-7294-4fc3-b772-73c50e6b307e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Others">
+      <UniqueIdentifier>{061e654d-dc9a-4c37-99b2-ded2b68b2de9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\lodepng\lodepng.cpp">
@@ -116,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Main\window.cpp">
       <Filter>Source\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Others\image_loader.cpp">
+      <Filter>Source\Others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="Bvh\bounding_box.h">
       <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\texture.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\image_loader.h">
+      <Filter>Header\Others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

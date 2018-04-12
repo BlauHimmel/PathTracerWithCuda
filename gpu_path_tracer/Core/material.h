@@ -5,6 +5,7 @@
 
 #include <cuda_runtime.h>
 #include "Math\basic_math.hpp"
+#include "Core\texture.h"
 
 #define AIR_REFRACTION_INDEX 1.000293f
 #define AIR_ABSORPTION_COEFFICIENT make_float3(0.0f, 0.0f, 0.0f)
@@ -37,6 +38,8 @@ struct material
 	float roughness;
 	
 	medium medium;
+
+	int diffuse_texture_id;
 };
 
 material get_default_material();

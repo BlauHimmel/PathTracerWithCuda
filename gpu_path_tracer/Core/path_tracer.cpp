@@ -60,6 +60,7 @@ image* path_tracer::render()
 			m_rays_device,
 			m_energy_exist_pixels_device,
 			m_scatterings_device,
+			m_scene.get_mesh_texture_device_ptr(),
 			m_config->get_config_device_ptr()
 		);
 
@@ -186,7 +187,8 @@ void path_tracer::render_ui()
 			if (ImGui::TreeNode(buffer))
 			{
 				bool is_bvh_update = false;
-				bool is_modified = false;
+				bool is_rotate = false;
+				bool is_material_modify = false;
 				bool is_rotate_apply = false;
 				bool is_rotate_clear = false;
 
@@ -201,17 +203,19 @@ void path_tracer::render_ui()
 				ImGui::Text(buffer);
 				sprintf(buffer, "Facets: %d", m_scene.get_mesh_triangle_num(i));
 				ImGui::Text(buffer);
+				sprintf(buffer, "Shapes: %d", m_scene.get_mesh_shape_num(i));
+				ImGui::Text(buffer);
 
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Position", &position.x, 0.001f);
 				is_bvh_update = is_bvh_update || ImGui::DragFloat3("Scale", &scale.x, 0.000001f, 0.000001f, INFINITY, "%.6f");
-				is_modified = is_modified || ImGui::DragFloat3("Rotate", &rotate.x);
+				is_rotate = is_rotate || ImGui::DragFloat3("Rotate", &rotate.x);
 
 				ImGui::SameLine();
 				is_rotate_apply = ImGui::Button("Apply");
 
 				ImGui::SameLine();
 				is_rotate_clear = ImGui::Button("Clear");
-				is_modified = is_modified || is_rotate_clear;
+				is_rotate = is_rotate || is_rotate_clear;
 				if (is_rotate_clear)
 				{
 					rotate = m_scene.get_mesh_rotate_applied(i);
@@ -219,63 +223,84 @@ void path_tracer::render_ui()
 
 				ImGui::Separator();
 
-				material mat = m_scene.get_mesh_material(i);
+				std::vector<material> mats = m_scene.get_mesh_material(i);
 
-				float diffuse[3] = { mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z };
-				float specular[3] = { mat.specular_color.x, mat.specular_color.y, mat.specular_color.z };
-				float emission[3] = { mat.emission_color.x, mat.emission_color.y, mat.emission_color.z };
-				bool is_transparent = mat.is_transparent;
-				float roughness = mat.roughness;
-
-				ImGui::Text("Material:");
-				is_modified = is_modified || ImGui::ColorEdit3("Diffuse", diffuse);
-				is_modified = is_modified || ImGui::ColorEdit3("Specular", specular);
-				is_modified = is_modified || ImGui::ColorEdit3("Emission", emission);
-				is_modified = is_modified || ImGui::Checkbox("Transparent", &is_transparent);
-				is_modified = is_modified || ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
-
-				float refraction_index = mat.medium.refraction_index;
-				float extinction_coefficient = mat.medium.extinction_coefficient;
-
-				is_modified = is_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
-				if (!is_transparent)
+				for (auto j = 0; j < mats.size(); j++)
 				{
-					is_modified = is_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+					sprintf(buffer, "Mateiral-%d", j + 1);
+
+					if (ImGui::TreeNode(buffer))
+					{
+						bool is_this_material_modified = false;
+
+						float diffuse[3] = { mats[j].diffuse_color.x, mats[j].diffuse_color.y, mats[j].diffuse_color.z };
+						float specular[3] = { mats[j].specular_color.x, mats[j].specular_color.y, mats[j].specular_color.z };
+						float emission[3] = { mats[j].emission_color.x, mats[j].emission_color.y, mats[j].emission_color.z };
+						bool is_transparent = mats[j].is_transparent;
+						float roughness = mats[j].roughness;
+
+						is_this_material_modified = is_this_material_modified || ImGui::ColorEdit3("Diffuse", diffuse);
+						is_this_material_modified = is_this_material_modified || ImGui::ColorEdit3("Specular", specular);
+						is_this_material_modified = is_this_material_modified || ImGui::ColorEdit3("Emission", emission);
+						is_this_material_modified = is_this_material_modified || ImGui::Checkbox("Transparent", &is_transparent);
+						is_this_material_modified = is_this_material_modified || ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f);
+
+						float refraction_index = mats[j].medium.refraction_index;
+						float extinction_coefficient = mats[j].medium.extinction_coefficient;
+
+						is_this_material_modified = is_this_material_modified || ImGui::DragFloat("Refraction Index", &refraction_index, 0.001f);
+						if (!is_transparent)
+						{
+							is_this_material_modified = is_this_material_modified || ImGui::DragFloat("Extinction Coefficient", &extinction_coefficient, 0.001f);
+						}
+
+						float absorption_coefficient[] = { mats[j].medium.scattering.absorption_coefficient.x, mats[j].medium.scattering.absorption_coefficient.y, mats[j].medium.scattering.absorption_coefficient.z };
+						float reduced_scattering_coefficient = mats[j].medium.scattering.reduced_scattering_coefficient.x;
+
+						is_this_material_modified = is_this_material_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
+						is_this_material_modified = is_this_material_modified || ImGui::DragFloat("Reduced Scattering Coefficient", &reduced_scattering_coefficient, 0.001f);
+
+						is_material_modify = is_material_modify || is_this_material_modified;
+
+						if (is_this_material_modified)
+						{
+							material new_mat = get_default_material();
+
+							new_mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
+							new_mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
+							new_mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
+							new_mat.is_transparent = is_transparent;
+							new_mat.roughness = roughness;
+
+							new_mat.medium.refraction_index = refraction_index;
+							if (!is_transparent)
+							{
+								new_mat.medium.extinction_coefficient = extinction_coefficient;
+							}
+							else
+							{
+								new_mat.medium.extinction_coefficient = 0.0f;
+							}
+							new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
+							new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+
+							mats[j] = new_mat;
+						}
+
+						ImGui::Separator();
+						ImGui::TreePop();
+					}
 				}
 
-				float absorption_coefficient[] = { mat.medium.scattering.absorption_coefficient.x, mat.medium.scattering.absorption_coefficient.y, mat.medium.scattering.absorption_coefficient.z };
-				float reduced_scattering_coefficient = mat.medium.scattering.reduced_scattering_coefficient.x;
-
-				is_modified = is_modified || ImGui::DragFloat3("Absorption Coefficient", absorption_coefficient, 0.001f);
-				is_modified = is_modified || ImGui::DragFloat("Reduced Scattering Coefficient", &reduced_scattering_coefficient, 0.001f);
-
-				ImGui::Separator();
-
-				if (is_modified)
+				if (is_material_modify)
 				{
 					is_triangle_mesh_modified = true;
+					m_scene.set_mesh_material_device(i, mats);
+				}
 
-					material new_mat = get_default_material();
-
-					new_mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
-					new_mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
-					new_mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
-					new_mat.is_transparent = is_transparent;
-					new_mat.roughness = roughness;
-
-					new_mat.medium.refraction_index = refraction_index;
-					if (!is_transparent)
-					{
-						new_mat.medium.extinction_coefficient = extinction_coefficient;
-					}
-					else
-					{
-						new_mat.medium.extinction_coefficient = 0.0f;
-					}
-					new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
-					new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
-
-					m_scene.set_mesh_material_device(i, new_mat);
+				if (is_rotate)
+				{
+					is_triangle_mesh_modified = true;
 					m_scene.set_mesh_rotate(i, rotate);
 				}
 

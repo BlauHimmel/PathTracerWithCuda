@@ -52,6 +52,7 @@ bool scene_parser::load_scene(int index)
 	}
 
 	std::vector<std::string> cubemap_pathes(6);
+	std::vector<std::string> texture_pathes;
 
 	std::map<std::string, material> materials;
 
@@ -59,7 +60,7 @@ bool scene_parser::load_scene(int index)
 	std::vector<std::string> spheres_mat;
 
 	std::vector<std::string> meshes_path;
-	std::vector<std::string> meshes_mat;
+	std::vector<std::vector<std::string>> meshes_mat;
 	std::vector<float3> meshes_position;
 	std::vector<float3> meshes_scale;
 	std::vector<float3> meshes_rotate;
@@ -72,6 +73,7 @@ bool scene_parser::load_scene(int index)
 	auto mesh_object = m_json_parser[TOKEN_OBJECT_MESH];
 	auto background_object = m_json_parser[TOKEN_BACKGROUND];
 	auto material_object = m_json_parser[TOKEN_MATERIAL];
+	auto texture_object = m_json_parser[TOKEN_TEXTURE];
 
 	//Background
 	if (background_object.is_null())
@@ -104,9 +106,31 @@ bool scene_parser::load_scene(int index)
 		cubemap_pathes[5] = path + "\\zneg.bmp";
 	}
 
+	//Texture
+	if (!texture_object.is_null())
+	{
+		if (!texture_object.is_array())
+		{
+			std::cout << "[Error]Texture must be array!" << std::endl;
+			return false;
+		}
+
+		for (auto texture_element : texture_object)
+		{
+			std::string texture_path = texture_element;
+			texture_pathes.push_back(texture_path);
+		}
+	}
+
 	//Material
 	if (!material_object.is_null())
 	{
+		if (!material_object.is_array())
+		{
+			std::cout << "[Error]Material must be array!" << std::endl;
+			return false;
+		}
+
 		for (auto material_element : material_object)
 		{
 			auto name = material_element[TOKEN_MATERIAL_NAME];
@@ -119,6 +143,7 @@ bool scene_parser::load_scene(int index)
 			auto extinction_coef = material_element[TOKEN_MATERIAL_EXTINCTION_COEF];
 			auto absorption_coef = material_element[TOKEN_MATERIAL_ABSORPTION_COEF];
 			auto reduced_scattering_coef = material_element[TOKEN_MATERIAL_REDUCED_SCATTERING_COEF];
+			auto diffuse_texture_id = material_element[TOKEN_MATERIAL_DIFFUSE_TEXTURE_ID];
 
 			CHECK_PROPERTY(Material, name, TOKEN_MATERIAL_NAME);
 			CHECK_PROPERTY(Material, diffuse, TOKEN_MATERIAL_DIFFUSE);
@@ -153,19 +178,34 @@ bool scene_parser::load_scene(int index)
 				parse_float3(specular_str),
 				parse_bool(transparent_str),
 				clamp(parse_float(roughness_str), 0.0f, 1.0f),
-			{
-				parse_float(refraction_index_str),
-				parse_float(extinction_coef_str),
-			{
-				parse_float3(absorption_coef_str),
-				parse_float3(reduced_scattering_coef_str)
-			}
-			}
+				{
+					parse_float(refraction_index_str),
+					parse_float(extinction_coef_str),
+					{
+						parse_float3(absorption_coef_str),
+						parse_float3(reduced_scattering_coef_str)
+					}
+				},
+				-1
 			};
+
+			if (!diffuse_texture_id.is_null())
+			{
+				std::string diffuse_texture_id_str = diffuse_texture_id;
+				int diffuse_texture_id = parse_int(diffuse_texture_id_str);
+
+				if (diffuse_texture_id != -1 && (diffuse_texture_id >= texture_pathes.size() || diffuse_texture_id < 0))
+				{
+					std::cout << "[Error]Materail <" << name_str << ">: Texture index out of range!" << std::endl;
+					return false;
+				}
+
+				mat.diffuse_texture_id = diffuse_texture_id;
+			}
 
 			if (mat.is_transparent && mat.medium.extinction_coefficient > 0.0f)
 			{
-				std::cout << "[Error]Materail <" << name_str << ">:Extinction coefficient of transparent material should be zero!" << std::endl;
+				std::cout << "[Error]Materail <" << name_str << ">: Extinction coefficient of transparent material should be zero!" << std::endl;
 				return false;
 			}
 
@@ -176,6 +216,12 @@ bool scene_parser::load_scene(int index)
 	//Sphere
 	if (!sphere_object.is_null())
 	{
+		if (!sphere_object.is_array())
+		{
+			std::cout << "[Error]Sphere must be array!" << std::endl;
+			return false;
+		}
+
 		for (auto sphere_element : sphere_object)
 		{
 			auto center = sphere_element[TOKEN_OBJECT_SPHERE_CENTER];
@@ -203,6 +249,12 @@ bool scene_parser::load_scene(int index)
 	//Mesh
 	if (!mesh_object.is_null())
 	{
+		if (!mesh_object.is_array())
+		{
+			std::cout << "[Error]Mesh must be array!" << std::endl;
+			return false;
+		}
+
 		for (auto mesh_element : mesh_object)
 		{
 			auto path = mesh_element[TOKEN_OBJECT_MESH_PATH];
@@ -218,13 +270,27 @@ bool scene_parser::load_scene(int index)
 			CHECK_PROPERTY(Mesh, rotate, TOKEN_OBJECT_MESH_ROTATE);
 
 			std::string path_str = path;
-			std::string material_str = material;
 			std::string position_str = position;
 			std::string scale_str = scale;
 			std::string rotate_str = rotate;
 
+			if (material.is_array())
+			{
+				std::vector<std::string> mats;
+				for (auto mat : material)
+				{
+					std::string mat_str = mat;
+					mats.push_back(mat_str);
+				}
+				meshes_mat.push_back(mats);
+			}
+			else
+			{
+				std::cout << "[Error]Material of mesh must be array!" << std::endl;
+				return false;
+			}
+
 			meshes_path.push_back(path_str);
-			meshes_mat.push_back(material_str);
 			meshes_position.push_back(parse_float3(position_str));
 			meshes_scale.push_back(clamp(parse_float3(scale_str), make_float3(0.0f, 0.0f, 0.0f), make_float3(INFINITY, INFINITY, INFINITY)));
 			meshes_rotate.push_back(parse_float3(rotate_str));
@@ -251,6 +317,35 @@ bool scene_parser::load_scene(int index)
 		return false;
 	}
 
+	//Texture
+	uint width, height;
+	std::vector<uchar> buffer;
+	m_mesh_textures = new texture_wrapper[texture_pathes.size()];
+	textures_num = static_cast<int>(texture_pathes.size());
+	memset(m_mesh_textures, 0, texture_pathes.size() * sizeof(texture_wrapper));
+	for (auto i = 0; i < texture_pathes.size(); i++)
+	{
+		if (image_loader::load_image(texture_pathes[i], width, height, buffer))
+		{
+			m_mesh_textures[i].width = width;
+			m_mesh_textures[i].height = height;
+			m_mesh_textures[i].pixels = new uchar[width * height * 4];
+			memcpy(m_mesh_textures[i].pixels, buffer.data(), width * height * 4 * sizeof(uchar));
+		}
+		else
+		{
+			m_cube_map_loader.unload_data();
+			for (auto j = 0; j < i; j++)
+			{
+				SAFE_DELETE(m_mesh_textures[j].pixels);
+			}
+			SAFE_DELETE_ARRAY(m_mesh_textures);
+			m_mesh_textures = nullptr;
+			std::cout << "[Error]Texture " << texture_pathes[i] << " load fail." << std::endl;
+			return false;
+		}
+	}
+
 	//Material
 	for (auto sphere_mat : spheres_mat)
 	{
@@ -261,12 +356,15 @@ bool scene_parser::load_scene(int index)
 		}
 	}
 
-	for (auto mesh_mat : meshes_mat)
+	for (auto mesh_mats : meshes_mat)
 	{
-		if (materials.find(mesh_mat) == materials.end())
+		for (auto mesh_mat : mesh_mats)
 		{
-			std::cout << "[Error]Material <" << mesh_mat << "> not found!" << std::endl;
-			error = true;
+			if (materials.find(mesh_mat) == materials.end())
+			{
+				std::cout << "[Error]Material <" << mesh_mat << "> not found!" << std::endl;
+				error = true;
+			}
 		}
 	}
 
@@ -279,7 +377,13 @@ bool scene_parser::load_scene(int index)
 	//Mesh
 	for (auto i = 0; i < meshes_path.size(); i++)
 	{
-		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], meshes_rotate[i], copy_material(materials[meshes_mat[i]]));
+		std::vector<material*> mesh_mats;
+		for (auto mesh_mat : meshes_mat[i])
+		{
+			mesh_mats.push_back(copy_material(materials[mesh_mat]));
+		}
+
+		error = !m_triangle_mesh.load_obj(meshes_path[i], meshes_position[i], meshes_scale[i], meshes_rotate[i], mesh_mats);
 
 		if (error)
 		{
@@ -311,9 +415,17 @@ void scene_parser::unload_scene()
 	{
 		m_is_loaded = false;
 		SAFE_DELETE_ARRAY(m_spheres);
+		m_spheres = nullptr;
 		m_cube_map_loader.unload_data();
 		m_triangle_mesh.unload_obj();
 		m_sphere_num = 0;
+		for (auto j = 0; j < textures_num; j++)
+		{
+			SAFE_DELETE(m_mesh_textures[j].pixels);
+		}
+		SAFE_DELETE_ARRAY(m_mesh_textures);
+		m_mesh_textures = nullptr;
+		textures_num = 0;
 	}
 }
 
@@ -338,6 +450,24 @@ bool scene_parser::create_scene_data_device()
 		TIME_COUNT_CALL_START();
 		CUDA_CALL(cudaMallocManaged((void**)&m_spheres_device, m_sphere_num * sizeof(sphere)));
 		CUDA_CALL(cudaMemcpy(m_spheres_device, m_spheres, m_sphere_num * sizeof(sphere), cudaMemcpyDefault));
+		TIME_COUNT_CALL_END(time);
+		printf("[Info]Completed, time consuming: %.4f ms\n", time);
+	}
+
+	if (textures_num > 0)
+	{
+		printf("[Info]Copy texture data to gpu...\n");
+		TIME_COUNT_CALL_START();
+
+		CUDA_CALL(cudaMallocManaged((void**)&m_mesh_textures_device, textures_num * sizeof(texture_wrapper)));
+		for (auto i = 0; i < textures_num; i++)
+		{
+			m_mesh_textures_device[i].width = m_mesh_textures[i].width;
+			m_mesh_textures_device[i].height = m_mesh_textures[i].height;
+			CUDA_CALL(cudaMalloc((void**)&m_mesh_textures_device[i].pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar)));
+			CUDA_CALL(cudaMemcpy(m_mesh_textures_device[i].pixels, m_mesh_textures[i].pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
+		}
+
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 	}
@@ -393,6 +523,11 @@ sphere* scene_parser::get_sphere_device_ptr()
 	return m_spheres_device;
 }
 
+texture_wrapper * scene_parser::get_mesh_texture_device_ptr()
+{
+	return m_mesh_textures_device;
+}
+
 int scene_parser::get_mesh_num() const
 {
 	return m_triangle_mesh.get_mesh_num();
@@ -423,7 +558,7 @@ float3 scene_parser::get_mesh_position(int index) const
 	return m_triangle_mesh.get_position(index);
 }
 
-material scene_parser::get_mesh_material(int index) const
+std::vector<material> scene_parser::get_mesh_material(int index) const
 {
 	return m_triangle_mesh.get_material(index);
 }
@@ -443,6 +578,11 @@ float3 scene_parser::get_mesh_rotate_applied(int index) const
 	return m_triangle_mesh.get_rotate_applied(index);
 }
 
+int scene_parser::get_mesh_shape_num(int index) const
+{
+	return m_triangle_mesh.get_shape_num(index);
+}
+
 sphere scene_parser::get_sphere(int index) const
 {
 	return m_spheres_device[index];
@@ -453,9 +593,9 @@ void scene_parser::set_sphere_device(int index, const sphere& sphere)
 	m_spheres_device[index] = sphere;
 }
 
-void scene_parser::set_mesh_material_device(int index, const material& material)
+void scene_parser::set_mesh_material_device(int index, std::vector<material>& mats)
 {
-	m_triangle_mesh.set_material_device(index, material);
+	m_triangle_mesh.set_material_device(index, mats);
 }
 
 void scene_parser::set_mesh_transform_device(
@@ -536,4 +676,12 @@ bool scene_parser::parse_bool(const std::string& text)
 	{
 		return false;
 	}
+}
+
+int scene_parser::parse_int(const std::string& text)
+{
+	std::istringstream stream(text);
+	int value;
+	stream >> value;
+	return value;
 }

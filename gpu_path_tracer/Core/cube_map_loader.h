@@ -12,6 +12,7 @@
 #include "Core\cube_map.h"
 #include "lib\lodepng\lodepng.h"
 #include "Others\utilities.hpp"
+#include "Others\image_loader.h"
 
 class cube_map_loader
 {
@@ -28,7 +29,7 @@ private:
 	cube_map* m_cube_map_device = nullptr;
 	
 	bool m_is_loaded = false;
-	int m_width, m_height;
+	uint m_width, m_height;
 
 public:
 	bool load_data(
@@ -45,15 +46,6 @@ public:
 
 	bool create_cube_device_data();
 	void release_cube_device_data();
-
-private:
-	bool decode_bmp(
-		const std::vector<uchar>& bmp,	//in
-		std::vector<uchar>& image,		//out
-		int& width,						//out
-		int& height						//out
-	);
-
 };
 
 #endif // !__CUBE_MAP_LOADER__

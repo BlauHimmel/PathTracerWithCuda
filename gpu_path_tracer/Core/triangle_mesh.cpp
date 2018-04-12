@@ -1,13 +1,15 @@
 #include "Core\triangle_mesh.h"
 
-bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat)
+bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, std::vector<material*>& mat)
 {
-	if (mat == nullptr)
+	int mat_num = static_cast<int>(mat.size());
+	if (mat_num == 0)
 	{
 		return false;
 	}
 
 	std::string mesh_name = filename.substr(filename.find_last_of('\\') + 1);
+	std::string path_base = filename.substr(0, filename.find_last_of('\\') + 1);
 
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -18,7 +20,7 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 
 	std::cout << "[Info]Loading file " << mesh_name << "...." << std::endl;
 
-	bool is_success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, filename.c_str());
+	bool is_success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, filename.c_str(), path_base.c_str());
 
 	if (!error.empty())
 	{
@@ -31,6 +33,19 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 		return false;
 	}
 
+	if (attrib.texcoords.empty())
+	{
+		std::cout << "[Warn]Mesh does not have texcoords!" << std::endl;
+	}
+
+	if (attrib.normals.empty())
+	{
+		std::cout << "[Error]Mesh does not have normal!" << std::endl;
+		return false;
+	}
+
+	std::vector<int> shape_triangle_nums;
+
 	for (auto i = 0; i < shapes.size(); i++)
 	{
 		for (auto num : shapes[i].mesh.num_face_vertices)
@@ -42,10 +57,13 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 			}
 		}
 
+		int shape_triangle_num = 0;
+		
 		for (auto f = 0; f < shapes[i].mesh.num_face_vertices.size(); f++)
 		{
 			float3 vertex[3];
 			float3 normal[3];
+			float2 uv[3];
 			tinyobj::index_t index[3];
 
 			index[0] = shapes[i].mesh.indices[f * 3];
@@ -88,6 +106,31 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 				attrib.normals[index[2].normal_index * 3 + 2]
 			);
 
+			if (!attrib.texcoords.empty())
+			{
+				uv[0] = make_float2(
+					attrib.texcoords[index[0].texcoord_index * 2],
+					attrib.texcoords[index[0].texcoord_index * 2 + 1]
+				);
+
+				uv[1] = make_float2(
+					attrib.texcoords[index[1].texcoord_index * 2],
+					attrib.texcoords[index[1].texcoord_index * 2 + 1]
+				);
+
+				uv[2] = make_float2(
+					attrib.texcoords[index[2].texcoord_index * 2],
+					attrib.texcoords[index[2].texcoord_index * 2 + 1]
+				);
+			}
+			else
+			{
+				uv[0] = make_float2(0.0f, 0.0f);
+				uv[1] = make_float2(0.0f, 0.0f);
+				uv[2] = make_float2(0.0f, 0.0f);
+				mat[i < mat_num ? i : mat_num - 1]->diffuse_texture_id = -1;
+			}
+
 			glm::vec4 vertex0_vec4 = glm::vec4(vertex[0].x, vertex[0].y, vertex[0].z, 1.0f);
 			glm::vec4 vertex1_vec4 = glm::vec4(vertex[1].x, vertex[1].y, vertex[1].z, 1.0f);
 			glm::vec4 vertex2_vec4 = glm::vec4(vertex[2].x, vertex[2].y, vertex[2].z, 1.0f);
@@ -124,12 +167,16 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 			triangle.normal0 = normal[0];
 			triangle.normal1 = normal[1];
 			triangle.normal2 = normal[2];
-			triangle.mat = mat;
-
+			triangle.uv0 = uv[0];
+			triangle.uv1 = uv[1];
+			triangle.uv2 = uv[2];
+			triangle.mat = mat[i < mat_num ? i : mat_num - 1];
 			m_triangles.push_back(triangle);
-
-			triangle_num++;
+			shape_triangle_num++;
 		}
+
+		shape_triangle_nums.push_back(shape_triangle_num);
+		triangle_num += shape_triangle_num;
 	}
 
 	m_is_loaded = true;
@@ -137,6 +184,7 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 
 	int vertices_num = static_cast<int>(attrib.vertices.size() / 3);
 
+	m_mesh_shape_triangle_num.push_back(shape_triangle_nums);
 	m_mesh_triangles_num.push_back(triangle_num);
 	m_mesh_vertices_num.push_back(vertices_num);
 	m_mesh_position.push_back(position);
@@ -150,7 +198,8 @@ bool triangle_mesh::load_obj(const std::string& filename, const float3& position
 
 	m_mesh_initial_transform.push_back(glm::inverse(transform_mat));
 	m_mesh_current_transform.push_back(transform_mat);
-	m_mesh_material.push_back(mat);
+	m_mesh_material.insert(m_mesh_material.end(), mat.begin(), mat.end());
+	m_mesh_material_num.push_back(mat_num);
 	m_mesh_name.push_back(mesh_name);
 
 	std::cout << "[Info]Load file " << mesh_name << " succeeded. vertices : " << vertices_num << std::endl;
@@ -189,12 +238,28 @@ void triangle_mesh::unload_obj()
 	m_mesh_material.clear();
 	m_mesh_material.shrink_to_fit();
 
+	m_mesh_material_num.clear();
+	m_mesh_material_num.shrink_to_fit();
 	m_is_loaded = false;
 }
 
-void triangle_mesh::set_material_device(int index, const material& mat)
+void triangle_mesh::set_material_device(int index, std::vector<material>& mats)
 {
-	m_mat_device[index] = mat;
+	if (mats.size() != m_mesh_material_num[index])
+	{
+		return;
+	}
+	
+	int start_index = 0;
+	for (auto i = 0; i < index; i++)
+	{
+		start_index += m_mesh_material_num[i];
+	}
+
+	for (auto i = 0; i < m_mesh_material_num[index]; i++)
+	{
+		m_mat_device[start_index + i] = mats[i];
+	}
 }
 
 void triangle_mesh::set_transform_device(
@@ -223,7 +288,7 @@ void triangle_mesh::set_transform_device(
 		float3 vertex0 = m_triangles[i + triangle_start_index].vertex0;
 		float3 vertex1 = m_triangles[i + triangle_start_index].vertex1;
 		float3 vertex2 = m_triangles[i + triangle_start_index].vertex2;
-
+		
 		float3 normal0 = m_triangles[i + triangle_start_index].normal0;
 		float3 normal1 = m_triangles[i + triangle_start_index].normal1;
 		float3 normal2 = m_triangles[i + triangle_start_index].normal2;
@@ -384,9 +449,19 @@ float3 triangle_mesh::get_rotate_applied(int index) const
 	return m_mesh_rotate_applied[index];
 }
 
-material triangle_mesh::get_material(int index) const
+std::vector<material> triangle_mesh::get_material(int index) const
 {
-	return m_mat_device[index];
+	int start_index = 0;
+	for (auto i = 0; i < index; i++)
+	{
+		start_index += m_mesh_material_num[i];
+	}
+	std::vector<material> mats;
+	for (auto i = 0; i < m_mesh_material_num[index]; i++)
+	{
+		mats.push_back(m_mat_device[start_index + i]);
+	}
+	return mats;
 }
 
 int triangle_mesh::get_triangle_num(int index) const
@@ -397,6 +472,11 @@ int triangle_mesh::get_triangle_num(int index) const
 int triangle_mesh::get_vertex_num(int index) const
 {
 	return m_mesh_vertices_num[index];
+}
+
+int triangle_mesh::get_shape_num(int index) const
+{
+	return static_cast<int>(m_mesh_shape_triangle_num[index].size());
 }
 
 triangle* triangle_mesh::get_triangles_device() const
@@ -429,7 +509,7 @@ bool triangle_mesh::create_bvh_device_data()
 
 		double time;
 		bvh_node* root;
-		printf("[Info]Constructing bvh for mesh %s on cpu...\n", m_mesh_name[index].c_str());
+		printf("[Info]Constructing bvh for mesh %s...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
 		root = BVH_BUILD_METHOD build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 		TIME_COUNT_CALL_END(time);
@@ -475,7 +555,7 @@ bool triangle_mesh::create_mesh_device_data()
 	double time;
 	TIME_COUNT_CALL_START();
 
-	std::vector<material> materials(m_triangles.size());
+	std::vector<material> materials(m_mesh_material.size());
 	for (auto i = 0; i < m_mesh_material.size(); i++)
 	{
 		materials[i] = *(m_mesh_material[i]);
@@ -495,9 +575,33 @@ bool triangle_mesh::create_mesh_device_data()
 			triangle_start_index += m_mesh_triangles_num[i];
 		}
 
+		int material_start_index = 0;
+		for (auto i = 0; i < index; i++)
+		{
+			material_start_index += m_mesh_material_num[i];
+		}
+
 		for (auto i = 0; i < m_mesh_triangles_num[index]; i++)
 		{
-			m_mesh_device[i + triangle_start_index].mat = m_mat_device + index;
+			int material_index = 0;
+			int triangle_num = 0;
+
+			for (auto j = 0; j < m_mesh_shape_triangle_num[index].size(); j++)
+			{
+				triangle_num += m_mesh_shape_triangle_num[index][j];
+
+				if (i >= triangle_num)
+				{
+					material_index++;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			material_index = material_index < m_mesh_material_num[index] ? material_index : m_mesh_material_num[index] - 1;
+			m_mesh_device[i + triangle_start_index].mat = m_mat_device + material_start_index + material_index;
 
 			float3 vertex0 = m_triangles[i + triangle_start_index].vertex0;
 			float3 vertex1 = m_triangles[i + triangle_start_index].vertex1;

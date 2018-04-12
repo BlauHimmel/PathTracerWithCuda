@@ -77,8 +77,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir);C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,7 +87,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir);C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
     <ExecutablePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
@@ -118,7 +118,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32s.lib;cublas.lib;cublas_device.lib;cuda.lib;cudadevrt.lib;cudart.lib;cudart_static.lib;cufft.lib;cufftw.lib;curand.lib;cusolver.lib;cusparse.lib;nppc.lib;nppial.lib;nppicc.lib;nppicom.lib;nppidei.lib;nppif.lib;nppig.lib;nppim.lib;nppist.lib;nppisu.lib;nppitc.lib;npps.lib;nvblas.lib;nvcuvid.lib;nvgraph.lib;nvml.lib;nvrtc.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;opengl32.lib;glfw3dll.lib;glew32s.lib;cublas.lib;cublas_device.lib;cuda.lib;cudadevrt.lib;cudart.lib;cudart_static.lib;cufft.lib;cufftw.lib;curand.lib;cusolver.lib;cusparse.lib;nppc.lib;nppial.lib;nppicc.lib;nppicom.lib;nppidei.lib;nppif.lib;nppig.lib;nppim.lib;nppist.lib;nppisu.lib;nppitc.lib;npps.lib;nvblas.lib;nvcuvid.lib;nvgraph.lib;nvml.lib;nvrtc.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
       <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
@@ -161,7 +161,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glew32s.lib;cublas.lib;cublas_device.lib;cuda.lib;cudadevrt.lib;cudart.lib;cudart_static.lib;cufft.lib;cufftw.lib;curand.lib;cusolver.lib;cusparse.lib;nppc.lib;nppial.lib;nppicc.lib;nppicom.lib;nppidei.lib;nppif.lib;nppig.lib;nppim.lib;nppist.lib;nppisu.lib;nppitc.lib;npps.lib;nvblas.lib;nvcuvid.lib;nvgraph.lib;nvml.lib;nvrtc.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;opengl32.lib;glfw3dll.lib;glew32s.lib;cublas.lib;cublas_device.lib;cuda.lib;cudadevrt.lib;cudart.lib;cudart_static.lib;cufft.lib;cufftw.lib;curand.lib;cusolver.lib;cusparse.lib;nppc.lib;nppial.lib;nppicc.lib;nppicom.lib;nppidei.lib;nppif.lib;nppig.lib;nppim.lib;nppist.lib;nppisu.lib;nppitc.lib;npps.lib;nvblas.lib;nvcuvid.lib;nvgraph.lib;nvml.lib;nvrtc.lib;OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
       <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
@@ -189,6 +189,7 @@
     <ClCompile Include="lib\lodepng\lodepng.cpp" />
     <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc" />
     <ClCompile Include="Main\window.cpp" />
+    <ClCompile Include="Others\image_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bvh\bounding_box.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Core\ray.h" />
     <ClInclude Include="Core\scene_parser.h" />
     <ClInclude Include="Core\sphere.h" />
+    <ClInclude Include="Core\texture.h" />
     <ClInclude Include="Core\triangle.h" />
     <ClInclude Include="Core\triangle_mesh.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h" />
     <ClInclude Include="Math\basic_math.hpp" />
     <ClInclude Include="Math\cuda_math.hpp" />
+    <ClInclude Include="Others\image_loader.h" />
     <ClInclude Include="Others\utilities.hpp" />
   </ItemGroup>
   <ItemGroup>

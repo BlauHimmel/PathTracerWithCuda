@@ -10,10 +10,12 @@
 #include "Core\triangle_mesh.h"
 #include "Core\cube_map_loader.h"
 #include "Core\material.h"
+#include "Others\image_loader.h"
 #include "Bvh\bvh.h"
 
 #include <exception>
 #include <fstream>
+#include <sstream>
 #include <Windows.h>
 #include <io.h>
 #include <glm\glm.hpp>
@@ -34,6 +36,8 @@
 #define TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH "Path"
 #define TOKEN_BACKGROUND_CUBE_MAP_NAME "Name"
 
+#define TOKEN_TEXTURE "Texture"
+
 #define TOKEN_MATERIAL "Material"
 #define TOKEN_MATERIAL_NAME "Name"
 #define TOKEN_MATERIAL_DIFFUSE "Diffuse"
@@ -45,6 +49,7 @@
 #define TOKEN_MATERIAL_EXTINCTION_COEF "ExtinctionCoef"
 #define TOKEN_MATERIAL_ABSORPTION_COEF "AbsorptionCoef"
 #define TOKEN_MATERIAL_REDUCED_SCATTERING_COEF "ReducedScatteringCoef"
+#define TOKEN_MATERIAL_DIFFUSE_TEXTURE_ID "DiffuseTextureId"
 
 /*
 {
@@ -53,6 +58,9 @@
 		"Name" : "XXXX",
 		"Path" : "XXXX\\YYYY\\"
 	},
+
+	-- optional --
+	"Texture" : ["Filename1", "Filename2", ....],
 
 	-- built-in material --
 	-- titanium, chromium, iron, nickel, platinum, copper, palladium, zinc, gold, aluminum, silver --
@@ -72,7 +80,8 @@
 			"RefractionIndex" : "0.0",					-- any value >= 0.0 --
 			"ExtinctionCoef" : "0.0",					-- any value >= 0.0 --
 			"AbsorptionCoef" : "0.0 0.0 0.0",			-- each component >= 0.0 --
-			"ReducedScatteringCoef" : "0.0 0.0 0.0"		-- each component >= 0.0 --
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",	-- each component >= 0.0 --
+			"DiffuseTextureId" : "0"					-- 0, 1, ....., sizeof(Texture) - 1
 		},
 		...
 	],
@@ -92,7 +101,7 @@
 	"Mesh" :
 	[
 		{
-			"Material" : "XXXX",							-- name of material(user declared or built-in material)
+			"Material" : ["XXXX", "XXXX", ...],			-- name of material(user declared or built-in material)
 			"Path" : "XXXX\\YYYY",
 			"Position" : "0.0 0.0 0.0",
 			"Scale" : "1.0 1.0 1.0",
@@ -113,6 +122,10 @@ private:
 	cube_map_loader m_cube_map_loader;
 
 	triangle_mesh m_triangle_mesh;
+
+	texture_wrapper* m_mesh_textures = nullptr;
+	int textures_num = 0;
+	texture_wrapper* m_mesh_textures_device = nullptr;
 
 	sphere* m_spheres = nullptr;
 	int m_sphere_num = 0;
@@ -135,6 +148,7 @@ public:
 	triangle* get_triangles_device_ptr();
 	bvh_node_device** get_bvh_node_device_ptr();
 	sphere* get_sphere_device_ptr();
+	texture_wrapper* get_mesh_texture_device_ptr();
 
 	int get_mesh_num() const;
 	int get_triangles_num() const;
@@ -142,14 +156,15 @@ public:
 	int get_mesh_vertices_num(int index) const;
 	int get_sphere_num() const;
 	float3 get_mesh_position(int index) const;
-	material get_mesh_material(int index) const;
+	std::vector<material> get_mesh_material(int index) const;
 	float3 get_mesh_scale(int index) const;
 	float3 get_mesh_rotate(int index) const;
 	float3 get_mesh_rotate_applied(int index) const;
+	int get_mesh_shape_num(int index) const;
 	sphere get_sphere(int index) const;
 
 	void set_sphere_device(int index, const sphere& sphere);
-	void set_mesh_material_device(int index, const material& material);
+	void set_mesh_material_device(int index, std::vector<material>& mats);
 	void set_mesh_transform_device(
 		int index,
 		const float3& position,
@@ -165,6 +180,7 @@ private:
 	float3 parse_float3(const std::string& text);
 	float parse_float(const std::string& text);
 	bool parse_bool(const std::string& text);
+	int parse_int(const std::string& text);
 };
 
 #endif // !__SCENE_PARSER__

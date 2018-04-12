@@ -863,7 +863,7 @@ namespace bvh_morton_code_cuda
 
 		std::vector<int>* leaf_nodes_triangle_indices = new std::vector<int>[leaf_node_num];
 
-		CUDA_CALL(cudaMallocManaged((void**)&triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda)));
+ 		CUDA_CALL(cudaMallocManaged((void**)&triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda)));
 		CUDA_CALL(cudaMallocManaged((void**)&leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda)));
 		CUDA_CALL(cudaMallocManaged((void**)&internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda)));
 

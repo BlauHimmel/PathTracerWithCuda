@@ -12,6 +12,7 @@ material get_default_material()
 	mat.medium.extinction_coefficient = 0.0f;
 	mat.medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
 	mat.medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
+	mat.diffuse_texture_id = -1;
 	return mat;
 }
 
@@ -27,6 +28,7 @@ material* new_default_material()
 	mat->medium.extinction_coefficient = 0.0f;
 	mat->medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
 	mat->medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
+	mat->diffuse_texture_id = -1;
 	return mat;
 }
 
@@ -54,7 +56,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -74,7 +77,8 @@ namespace material_data
 						make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 					}
-				}
+				},
+				-1											//diffuse texture id
 			};
 		}
 	}
@@ -94,7 +98,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -113,7 +118,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -132,7 +138,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -151,7 +158,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -170,7 +178,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -189,7 +198,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -208,7 +218,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -227,7 +238,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -246,7 +258,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -265,7 +278,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -284,7 +298,8 @@ namespace material_data
 					make_float3(0.8f, 0.01f, 0.8f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -303,7 +318,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -322,7 +338,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -341,7 +358,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -360,7 +378,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -379,7 +398,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -398,7 +418,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -417,7 +438,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -436,7 +458,8 @@ namespace material_data
 					make_float3(0.6f, 0.6f, 0.6f),		//absorption coefficient
 					make_float3(8.0f, 8.0f, 8.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -455,7 +478,8 @@ namespace material_data
 					make_float3(0.9f, 0.3f, 0.02f),		//absorption coefficient
 					make_float3(2.0f, 2.0f, 2.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -474,7 +498,8 @@ namespace material_data
 					make_float3(0.02f, 5.1f, 5.7f),		//absorption coefficient
 					make_float3(9.0f, 9.0f, 9.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 
@@ -493,7 +518,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
-			}
+			},
+			-1											//diffuse texture id
 		};
 	}
 }

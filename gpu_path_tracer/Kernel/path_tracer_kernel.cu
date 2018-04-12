@@ -23,6 +23,7 @@
 #include "Core\cube_map.h"
 #include "Core\triangle_mesh.h"
 #include "Core\configuration.h"
+#include "Core\texture.h"
 #include "Bvh\bvh_node.h"
 
 enum class object_type
@@ -60,6 +61,7 @@ struct is_negative_predicate
 	material.specular_color = make_float3(0.0f, 0.0f, 0.0f);\
 	material.is_transparent = false;\
 	GET_DEFAULT_MEDIUM_DEVICE(material.medium);\
+	material.diffuse_texture_id = -1;\
 }\
 
 __host__ __device__ float3 point_on_ray(
@@ -483,6 +485,73 @@ __host__ __device__ fresnel get_fresnel_conductors(
 	return fresnel;
 }
 
+__host__ __device__ float3 sample_texture(
+	const float2& uv,				//in
+	const texture_wrapper& tex,		//in
+	configuration* config			//in
+)
+{
+	if (config->use_bilinear)
+	{
+		float x_image_real = uv.x * tex.width;
+		float y_image_real = (1.0f - uv.y) * tex.height;
+
+		int floor_x_image = (int)clamp(floorf(x_image_real), 0.0f, (float)(tex.width - 1));
+		int ceil_x_image = (int)clamp(ceilf(x_image_real), 0.0f, (float)(tex.width - 1));
+		int floor_y_image = (int)clamp(floorf(y_image_real), 0.0f, (float)(tex.height - 1));
+		int ceil_y_image = (int)clamp(ceilf(y_image_real), 0.0f, (float)(tex.height - 1));
+
+		//0:left bottm	1:right bottom	2:left top	3:right top
+		int x_images[4] = { floor_x_image, ceil_x_image, floor_x_image, ceil_x_image };
+		int y_images[4] = { floor_y_image, floor_y_image, ceil_y_image, ceil_y_image };
+
+		float left_right_t = x_image_real - floorf(x_image_real);
+		float bottom_top_t = y_image_real - floorf(y_image_real);
+
+		float3 sample_colors[4] = {
+			make_float3(
+				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 0] / 255.0f,
+				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 1] / 255.0f,
+				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 2] / 255.0f
+			),
+			make_float3(
+				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 0] / 255.0f,
+				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 1] / 255.0f,
+				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 2] / 255.0f
+			),
+			make_float3(
+				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 0] / 255.0f,
+				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 1] / 255.0f,
+				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 2] / 255.0f
+			),
+			make_float3(
+				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 0] / 255.0f,
+				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 1] / 255.0f,
+				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 2] / 255.0f
+			),
+		};
+
+		return lerp(
+			lerp(sample_colors[0], sample_colors[1], left_right_t),
+			lerp(sample_colors[2], sample_colors[3], left_right_t),
+			bottom_top_t
+		);
+	}
+	else
+	{
+		float u, v;
+		int index;
+		int x_image = (int)clamp((uv.x * tex.width), 0.0f, (float)(tex.width - 1));
+		int y_image = (int)clamp(((1.0f - uv.y) * tex.height), 0.0f, (float)(tex.height - 1));
+
+		return make_float3(
+			tex.pixels[(y_image * tex.width + x_image) * 4 + 0] / 255.0f,
+			tex.pixels[(y_image * tex.width + x_image) * 4 + 1] / 255.0f,
+			tex.pixels[(y_image * tex.width + x_image) * 4 + 2] / 255.0f
+		);
+	}
+}
+
 __host__ __device__ float3 get_background_color(
 	const float3& direction,		//in
 	cube_map* sky_cube_map,			//in
@@ -698,6 +767,7 @@ __global__ void trace_ray_kernel(
 	float3* not_absorbed_colors,			//in out
 	float3* accumulated_colors,				//in out
 	cube_map* sky_cube_map,					//in
+	texture_wrapper* mesh_textures,			//in
 	int seed,								//in
 	configuration* config					//in
 )
@@ -758,6 +828,7 @@ __global__ void trace_ray_kernel(
 	}
 
 	//absorption and scattering of medium
+	//TODO:WHEN USE MULTIPLE MATERIAL, HOW TO CHOOSE MEDIUM?
 	scattering current_scattering = scatterings[pixel_index];
 
 	if (current_scattering.reduced_scattering_coefficient.x > 0.0f ||
@@ -805,7 +876,16 @@ __global__ void trace_ray_kernel(
 		{
 			min_mat = *(triangles[min_triangle_index].mat);
 			triangle hit_triangle = triangles[min_triangle_index];
-			min_normal = hit_triangle.normal0 * (1.0f - min_t1 - min_t2) + hit_triangle.normal1 * min_t1 + hit_triangle.normal2 * min_t2;
+			min_normal = hit_triangle.normal0 * (1.0f - min_t1 - min_t2) +
+				hit_triangle.normal1 * min_t1 + 
+				hit_triangle.normal2 * min_t2;
+			if (min_mat.diffuse_texture_id != -1)
+			{
+				float2 uv = hit_triangle.uv0 * (1.0f - min_t1 - min_t2) +
+					hit_triangle.uv1 * min_t1 +
+					hit_triangle.uv2 * min_t2;
+				min_mat.diffuse_color = min_mat.diffuse_color * sample_texture(uv, mesh_textures[min_mat.diffuse_texture_id], config);
+			}
 		}
 
 		float3 in_direction = tracing_ray.direction;
@@ -978,6 +1058,7 @@ extern "C" void path_tracer_kernel(
 	ray* rays_device,						//in 
 	int* energy_exist_pixels_device,		//in 
 	scattering* scatterings_device,			//in 
+	texture_wrapper* mesh_textures_device,	//in
 	configuration* config_device			//in 
 )
 {
@@ -1037,6 +1118,7 @@ extern "C" void path_tracer_kernel(
 			not_absorbed_colors_device,
 			accumulated_colors_device,
 			sky_cube_map_device,
+			mesh_textures_device,
 			seed,
 			config_device
 			);

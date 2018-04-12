@@ -12,7 +12,9 @@
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
 #include "Core\triangle.h"
 #include "Core\material.h"
+#include "Core\texture.h"
 #include "Others\utilities.hpp"
+#include "Others\image_loader.h"
 #include "Math\cuda_math.hpp"
 #include "Bvh\bvh.h"
 
@@ -34,6 +36,8 @@ private:
 	std::vector<glm::mat4> m_mesh_current_transform;
 
 	std::vector<material*> m_mesh_material;
+	std::vector<int> m_mesh_material_num;
+	std::vector<std::vector<int>> m_mesh_shape_triangle_num;
 	std::vector<std::string> m_mesh_name;
 
 	int m_mesh_num = 0;
@@ -48,10 +52,10 @@ private:
 	bvh_node_device** m_mesh_bvh_transformed_device = nullptr;
 
 public:
-	bool load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, material* mat);
+	bool load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, std::vector<material*>& mat);
 	void unload_obj();
 
-	void set_material_device(int index, const material& mat);
+	void set_material_device(int index, std::vector<material>& mats);
 	void set_transform_device(
 		int index, 
 		const float3& position, 
@@ -67,9 +71,10 @@ public:
 	float3 get_scale(int index) const;
 	float3 get_rotate(int index) const;
 	float3 get_rotate_applied(int index) const;
-	material get_material(int index) const;
+	std::vector<material> get_material(int index) const;
 	int get_triangle_num(int index) const;
 	int get_vertex_num(int index) const;
+	int get_shape_num(int index) const;
 	triangle* get_triangles_device() const;
 	bvh_node_device** get_bvh_node_device() const;
 

@@ -10,6 +10,7 @@
 #include "Core\cube_map.h"
 #include "Core\triangle.h"
 #include "Core\configuration.h"
+#include "Core\texture.h"
 #include "Bvh\bvh_node.h"
 
 extern "C" void path_tracer_kernel(
@@ -29,6 +30,7 @@ extern "C" void path_tracer_kernel(
 	ray* rays_device,						//in 
 	int* energy_exist_pixels_device,		//in 
 	scattering* scatterings_device,			//in 
+	texture_wrapper* mesh_textures_device,	//in
 	configuration* config_device			//in 
 );
 

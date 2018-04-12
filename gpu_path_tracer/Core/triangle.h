@@ -4,6 +4,7 @@
 #define __TRIANGLE__
 
 #include <cuda_runtime.h>
+#include "Math\cuda_math.hpp"
 #include "Core\material.h"
 
 struct triangle
@@ -15,6 +16,10 @@ struct triangle
 	float3 normal0;
 	float3 normal1;
 	float3 normal2;
+
+	float2 uv0;
+	float2 uv1;
+	float2 uv2;
 
 	material* mat;
 };
