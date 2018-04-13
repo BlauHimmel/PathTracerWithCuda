@@ -18,7 +18,7 @@
 			"ExtinctionCoef" : "0.0",
 			"AbsorptionCoef" : "20.0 3.0 13.0",
 			"ReducedScatteringCoef" : "100.0 100.0 100.0"
-		},
+		}
 	],
 
 	"Mesh" :

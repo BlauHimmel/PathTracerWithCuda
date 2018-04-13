@@ -90,9 +90,6 @@
     <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Bvh\bounding_box.cpp">
-      <Filter>Source\Bvh</Filter>
-    </ClCompile>
     <ClCompile Include="Bvh\bvh.cpp">
       <Filter>Source\Bvh</Filter>
     </ClCompile>

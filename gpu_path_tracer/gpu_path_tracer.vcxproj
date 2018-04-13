@@ -172,7 +172,6 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bvh\bounding_box.cpp" />
     <ClCompile Include="Bvh\bvh.cpp" />
     <ClCompile Include="Core\camera.cpp" />
     <ClCompile Include="Core\config_parser.cpp" />

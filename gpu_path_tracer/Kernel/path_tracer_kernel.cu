@@ -72,107 +72,6 @@ __host__ __device__ float3 point_on_ray(
 	return ray.origin + ray.direction * t;
 }
 
-__host__ __device__  bool intersect_sphere(
-	const sphere& sphere,	//in	
-	const ray& ray,			//in
-	float3& hit_point,		//out
-	float3& hit_normal,		//out
-	float& hit_t			//out
-)
-{
-	float3 op = sphere.center - ray.origin;
-	float b = dot(op, ray.direction);
-	float delta = b * b - dot(op, op) + sphere.radius * sphere.radius;
-
-	if (delta < 0)
-	{
-		return false;
-	}
-	
-	float delta_root = sqrt(delta);
-	float t1 = b - delta_root;
-	float t2 = b + delta_root;
-
-	if (t1 < 0 && t2 < 0)
-	{
-		return false;
-	}
-
-	if (t1 > 0 && t2 > 0)
-	{
-		hit_t = min(t1, t2);
-	}
-	else
-	{
-		hit_t = max(t1, t2);
-	}
-
-	hit_point = ray.origin + ray.direction * hit_t;
-	hit_normal = normalize(hit_point - sphere.center);
-	return true;
-}
-
-__host__ __device__ bool intersect_triangle(
-	const triangle& triangle,		//in
-	const ray& ray,					//in
-	float& hit_t,					//out	
-	float& hit_t1,					//out
-	float& hit_t2					//out
-)
-{
-	float3 edge1 = triangle.vertex1 - triangle.vertex0;
-	float3 edge2 = triangle.vertex2 - triangle.vertex0;
-
-	float3 p_vec = cross(ray.direction, edge2);
-	float det = dot(edge1, p_vec);
-
-	if (det == 0.0f)
-	{
-		return false;
-	}
-
-	float inverse_det = 1.0f / det;
-	float3 t_vec = ray.origin - triangle.vertex0;
-	float3 q_vec = cross(t_vec, edge1);
-
-	float t1 = dot(t_vec, p_vec) * inverse_det;
-	float t2 = dot(ray.direction, q_vec) * inverse_det;
-	float t= dot(edge2, q_vec) * inverse_det;
-
-	if (t1 >= 0.0f && t2 >= 0.0f && t1 + t2 <= 1.0f)
-	{
-		hit_t = t;
-		hit_t1 = t1;
-		hit_t2 = t2;
-		return true;
-	}
-
-	return false;
-}
-
-__host__ __device__ bool intersect_bounding_box(
-	const bounding_box& box,		//in
-	const ray& ray					//in
-)
-{
-	float3 inverse_direction = 1.0f / ray.direction;
-
-	float t_x1 = (box.left_bottom.x - ray.origin.x) * inverse_direction.x;
-	float t_x2 = (box.right_top.x - ray.origin.x) * inverse_direction.x;
-
-	float t_y1 = (box.left_bottom.y - ray.origin.y) * inverse_direction.y;
-	float t_y2 = (box.right_top.y - ray.origin.y) * inverse_direction.y;
-
-	float t_z1 = (box.left_bottom.z - ray.origin.z) * inverse_direction.z;
-	float t_z2 = (box.right_top.z - ray.origin.z) * inverse_direction.z;
-
-	float t_min = fmaxf(fmaxf(fminf(t_x1, t_x2), fminf(t_y1, t_y2)), fminf(t_z1, t_z2));
-	float t_max = fminf(fminf(fmaxf(t_x1, t_x2), fmaxf(t_y1, t_y2)), fmaxf(t_z1, t_z2));
-
-	bool is_hit = t_max >= t_min;
-	return is_hit;
-}
-
 __host__ __device__ bool intersect_triangle_mesh_bvh(
 	triangle* triangles,			//in	
 	bvh_node_device** bvh_nodes,	//in
@@ -205,7 +104,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 		bvh_node_device current_node = bvh_node[traversal_position];
 
 		//if hit the box them check if it is leaf node, otherwise check stop traversing on this branch
-		if (intersect_bounding_box(current_node.box, ray))
+		if (current_node.box.intersect_bounding_box(ray))
 		{
 			if (current_node.is_leaf)
 			{
@@ -215,7 +114,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 					int triangle_index = current_node.triangle_indices[i];
 					if (triangle_index != -1)
 					{
-						if (intersect_triangle(triangles[triangle_index], ray, current_t, current_t1, current_t2) && current_t > 0.0f && current_t < min_t)
+						if (triangles[triangle_index].intersect(ray, current_t, current_t1, current_t2) && current_t > 0.0f && current_t < min_t)
 						{
 							min_t = current_t;
 							min_t1 = current_t1;
@@ -539,8 +438,6 @@ __host__ __device__ float3 sample_texture(
 	}
 	else
 	{
-		float u, v;
-		int index;
 		int x_image = (int)clamp((uv.x * tex.width), 0.0f, (float)(tex.width - 1));
 		int y_image = (int)clamp(((1.0f - uv.y) * tex.height), 0.0f, (float)(tex.height - 1));
 
@@ -804,7 +701,7 @@ __global__ void trace_ray_kernel(
 
 	for (int i = 0; i < sphere_num; i++)
 	{
-		if (intersect_sphere(spheres[i], tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
+		if (spheres[i].intersect(tracing_ray, hit_point, hit_normal, hit_t) && hit_t < min_t && hit_t > 0.0f)
 		{
 			min_t = hit_t;
 			min_point = hit_point;

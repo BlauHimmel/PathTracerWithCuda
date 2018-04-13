@@ -14,27 +14,27 @@ using uint = unsigned int;
 // host implementations of CUDA functions
 ////////////////////////////////////////////////////////////////////////////////
 
-inline float fminf(float a, float b)
+inline __host__ __device__ float fminf(float a, float b)
 {
 	return a < b ? a : b;
 }
 
-inline float fmaxf(float a, float b)
+inline __host__ __device__ float fmaxf(float a, float b)
 {
 	return a > b ? a : b;
 }
 
-inline int max(int a, int b)
+inline __host__ __device__ int max(int a, int b)
 {
 	return a > b ? a : b;
 }
 
-inline int min(int a, int b)
+inline __host__ __device__ int min(int a, int b)
 {
 	return a < b ? a : b;
 }
 
-inline float rsqrtf(float x)
+inline __host__ __device__ float rsqrtf(float x)
 {
 	return 1.0f / sqrtf(x);
 }

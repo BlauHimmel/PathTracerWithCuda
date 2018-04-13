@@ -118,52 +118,6 @@ __device__ uint clz(uint value)
 	return (uint)(clz_table[value >> n]) - n;
 }
 
-__host__ __device__ void get_bounding_box(
-	bounding_box& box,			//in out
-	const float3& vertex0,		//in
-	const float3& vertex1,		//in
-	const float3& vertex2		//in
-)
-{
-	box.left_bottom = make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z));
-	box.right_top = make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z));
-	box.centroid = 0.5f * (box.right_top + box.left_bottom);
-}
-
-__host__ __device__ void get_bounding_box(
-	bounding_box& box,					//in out
-	const float3& other_left_bottom,	//in
-	const float3& other_right_top		//in
-)
-{
-	box.left_bottom = other_left_bottom;
-	box.right_top = other_right_top;
-	box.centroid = 0.5f * (box.right_top + box.left_bottom);
-}
-
-__host__ __device__ void expand_to_fit_triangle(
-	bounding_box& box,			//in out
-	const float3& vertex0,		//in
-	const float3& vertex1,		//in
-	const float3& vertex2		//in
-)
-{
-	box.left_bottom = fminf(box.left_bottom, make_float3(min(vertex0.x, vertex1.x, vertex2.x), min(vertex0.y, vertex1.y, vertex2.y), min(vertex0.z, vertex1.z, vertex2.z)));
-	box.right_top = fmaxf(box.right_top, make_float3(max(vertex0.x, vertex1.x, vertex2.x), max(vertex0.y, vertex1.y, vertex2.y), max(vertex0.z, vertex1.z, vertex2.z)));
-	box.centroid = 0.5f * (box.right_top + box.left_bottom);
-}
-
-__host__ __device__ void expand_to_fit_box(
-	bounding_box& box,					//in out
-	const float3& other_left_bottom,	//in
-	const float3& other_right_top		//in
-)
-{
-	box.left_bottom = fminf(box.left_bottom, other_left_bottom);
-	box.right_top = fmaxf(box.right_top, other_right_top);
-	box.centroid = 0.5f * (box.right_top + box.left_bottom);
-}
-
 /*
 From the paper: Maximizing Parallelism in the Construction of BVHs, Octrees, and k-d Trees
 */
@@ -366,8 +320,7 @@ __global__ void __compute_triangle_bounding_box_kernel(
 	if (is_index_valid)
 	{
 		triangle_nodes_device[triangle_node_index].triangle_index = triangle_node_index + start_index;
-		get_bounding_box(
-			triangle_nodes_device[triangle_node_index].box,
+		triangle_nodes_device[triangle_node_index].box.get_bounding_box(
 			triangles_device[triangle_node_index].vertex0,
 			triangles_device[triangle_node_index].vertex1,
 			triangles_device[triangle_node_index].vertex2
