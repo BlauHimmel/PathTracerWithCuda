@@ -41,35 +41,54 @@ struct is_negative_predicate
 	}
 };
 
-//using a function instead of macro will cause a weird memory access violation bug, BOOOOOM!
-#define GET_DEFAULT_SCATERRING_DEVICE(air_scattering)\
-{\
-	air_scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;\
-	air_scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;\
-}\
+__host__ __device__ int hash(int a)
+{
+	a = (a + 0x7ed55d16) + (a << 12);
+	a = (a ^ 0xc761c23c) ^ (a >> 19);
+	a = (a + 0x165667b1) + (a << 5);
+	a = (a + 0xd3a2646c) ^ (a << 9);
+	a = (a + 0xfd7046c5) + (a << 3);
+	a = (a ^ 0xb55a4f09) ^ (a >> 16);
+	return a;
+}
 
-#define GET_DEFAULT_MEDIUM_DEVICE(air_medium)\
-{\
-	GET_DEFAULT_SCATERRING_DEVICE(air_medium.scattering);\
-	air_medium.refraction_index = AIR_REFRACTION_INDEX;\
-}\
-
-#define GET_DEFAULT_MATERIAL_DEVICE(material)\
-{\
-	material.diffuse_color = make_float3(0.0f, 0.0f, 0.0f);\
-	material.emission_color = make_float3(0.0f, 0.0f, 0.0f);\
-	material.specular_color = make_float3(0.0f, 0.0f, 0.0f);\
-	material.is_transparent = false;\
-	GET_DEFAULT_MEDIUM_DEVICE(material.medium);\
-	material.diffuse_texture_id = -1;\
-}\
-
-__host__ __device__ float3 point_on_ray(
-	const ray& ray,	//in
-	float t			//in
+__host__ __device__ float3 reflection(
+	const float3& normal,
+	const float3& in_direction
 )
 {
-	return ray.origin + ray.direction * t;
+	return in_direction - 2.0f * dot(normal, in_direction) * normal;
+}
+
+__host__ __device__ float3 refraction(
+	const float3& normal,
+	const float3& in_direction,
+	float in_refraction_index,
+	float out_refraction_index
+)
+{
+	//[ 灰r (N ﹞ I) 每 ﹟(1 每 灰r^2 (1 每(N ﹞ I)^2)) ] N 每 灰r I
+	//灰r = 灰i / 灰o
+	float3 i = in_direction * -1.0f;
+	float n_dot_i = dot(normal, i);
+
+	float refraction_ratio = in_refraction_index / out_refraction_index;
+	float a = refraction_ratio * n_dot_i;
+	float b = 1.0f - refraction_ratio * refraction_ratio * (1.0f - n_dot_i * n_dot_i);
+
+	if (b < 0.0f)
+	{
+		return make_float3(0.0f, 0.0f, 0.0f);
+	}
+
+	if (n_dot_i > 0)
+	{
+		return normal * (a - sqrt(b)) - refraction_ratio * i;
+	}
+	else
+	{
+		return normal * (a + sqrt(b)) - refraction_ratio * i;
+	}
 }
 
 __host__ __device__ bool intersect_triangle_mesh_bvh(
@@ -264,191 +283,6 @@ __host__ __device__ float compute_ggx_shadowing_masking(
 	}
 }
 
-__host__ __device__ int rand_hash(
-	int a			//in
-)
-{
-	a = (a + 0x7ed55d16) + (a << 12);
-	a = (a ^ 0xc761c23c) ^ (a >> 19);
-	a = (a + 0x165667b1) + (a << 5);
-	a = (a + 0xd3a2646c) ^ (a << 9);
-	a = (a + 0xfd7046c5) + (a << 3);
-	a = (a ^ 0xb55a4f09) ^ (a >> 16);
-	return a;
-}
-
-__host__ __device__ float3 get_reflection_direction(
-	const float3& normal,		//in
-	const float3& in_direction	//in
-)
-{
-	return in_direction - 2.0f * dot(normal, in_direction) * normal;
-}
-
-__host__ __device__ float3 get_refraction_direction(
-	const float3& normal,		//in
-	const float3& in_direction,	//in
-	float in_refraction_index,	//in
-	float out_refraction_index	//in
-)
-{
-	//[ 灰r (N ﹞ I) 每 ﹟(1 每 灰r^2 (1 每(N ﹞ I)^2)) ] N 每 灰r I
-	//灰r = 灰i / 灰o
-	float3 i = in_direction * -1.0f;
-	float n_dot_i = dot(normal, i);
-
-	float refraction_ratio = in_refraction_index / out_refraction_index;
-	float a = refraction_ratio * n_dot_i;
-	float b = 1.0f - refraction_ratio * refraction_ratio * (1.0f - n_dot_i * n_dot_i);
-
-	if (b < 0.0f)
-	{
-		return make_float3(0.0f, 0.0f, 0.0f);
-	}
-
-	if (n_dot_i > 0)
-	{
-		return normal * (a - sqrt(b)) - refraction_ratio * i;
-	}
-	else
-	{
-		return normal * (a + sqrt(b)) - refraction_ratio * i;
-	}
-}
-
-__host__ __device__ fresnel get_fresnel_dielectrics(
-	const float3& normal,					//in
-	const float3& in_direction,				//in
-	float in_refraction_index,				//in
-	float out_refraction_index,				//in
-	const float3& reflection_direction,		//in
-	const float3& refraction_direction		//in
-)
-{
-	//using real fresnel equation
-	fresnel fresnel;
-
-	float cos_theta_in = dot(normal, in_direction * -1.0f);
-	float cos_theta_out = dot(-1.0f * normal, refraction_direction);
-
-	//total internal reflection 
-	if (in_refraction_index > out_refraction_index && acosf(cos_theta_in) >= asinf(out_refraction_index / in_refraction_index))
-	{
-		fresnel.reflection_index = 1.0f;
-		fresnel.refractive_index = 0.0f;
-		return fresnel;
-	}
-
-	if (length(refraction_direction) <= 0.000005f || cos_theta_out < 0)
-	{
-		fresnel.reflection_index = 1.0f;
-		fresnel.refractive_index = 0.0f;
-		return fresnel;
-	}
-
-	float reflection_coef_s_polarized = pow((in_refraction_index * cos_theta_in - out_refraction_index * cos_theta_out) / (in_refraction_index * cos_theta_in + out_refraction_index * cos_theta_out), 2.0f);
-	float reflection_coef_p_polarized = pow((in_refraction_index * cos_theta_out - out_refraction_index * cos_theta_in) / (in_refraction_index * cos_theta_out + out_refraction_index * cos_theta_in), 2.0f);
-
-	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
-
-	fresnel.reflection_index = reflection_coef_unpolarized;
-	fresnel.refractive_index = 1.0f - fresnel.reflection_index;
-	return fresnel;
-}
-
-__host__ __device__ fresnel get_fresnel_conductors(
-	const float3& normal,					//in
-	const float3& in_direction,				//in
-	float refraction_index,					//in
-	float extinction_coefficient,			//in
-	const float3& reflection_direction		//in
-)
-{
-	//using real fresnel equation
-	fresnel fresnel;
-
-	float cos_theta_in = dot(normal, in_direction * -1.0f);
-	float refraction_index_square = refraction_index * refraction_index;
-	float extinction_coefficient_square = extinction_coefficient * extinction_coefficient;
-	float refraction_extinction_square_add = refraction_index_square + extinction_coefficient_square;
-	float cos_theta_in_square = cos_theta_in * cos_theta_in;
-	float two_refraction_cos_theta_in = 2 * refraction_index * cos_theta_in;
-
-	float reflection_coef_s_polarized = (refraction_extinction_square_add * cos_theta_in_square - two_refraction_cos_theta_in + 1.0f) / (refraction_extinction_square_add * cos_theta_in_square + two_refraction_cos_theta_in + 1.0f);
-	float reflection_coef_p_polarized = (refraction_extinction_square_add - two_refraction_cos_theta_in + cos_theta_in_square) / (refraction_extinction_square_add + two_refraction_cos_theta_in + cos_theta_in_square);
-
-	float reflection_coef_unpolarized = (reflection_coef_s_polarized + reflection_coef_p_polarized) / 2.0f;
-
-	fresnel.reflection_index = reflection_coef_unpolarized;
-	fresnel.refractive_index = 1.0f - fresnel.reflection_index;
-	return fresnel;
-}
-
-__host__ __device__ float3 sample_texture(
-	const float2& uv,				//in
-	const texture_wrapper& tex,		//in
-	configuration* config			//in
-)
-{
-	if (config->use_bilinear)
-	{
-		float x_image_real = uv.x * tex.width;
-		float y_image_real = (1.0f - uv.y) * tex.height;
-
-		int floor_x_image = (int)clamp(floorf(x_image_real), 0.0f, (float)(tex.width - 1));
-		int ceil_x_image = (int)clamp(ceilf(x_image_real), 0.0f, (float)(tex.width - 1));
-		int floor_y_image = (int)clamp(floorf(y_image_real), 0.0f, (float)(tex.height - 1));
-		int ceil_y_image = (int)clamp(ceilf(y_image_real), 0.0f, (float)(tex.height - 1));
-
-		//0:left bottm	1:right bottom	2:left top	3:right top
-		int x_images[4] = { floor_x_image, ceil_x_image, floor_x_image, ceil_x_image };
-		int y_images[4] = { floor_y_image, floor_y_image, ceil_y_image, ceil_y_image };
-
-		float left_right_t = x_image_real - floorf(x_image_real);
-		float bottom_top_t = y_image_real - floorf(y_image_real);
-
-		float3 sample_colors[4] = {
-			make_float3(
-				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 0] / 255.0f,
-				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 1] / 255.0f,
-				tex.pixels[(y_images[0] * tex.width + x_images[0]) * 4 + 2] / 255.0f
-			),
-			make_float3(
-				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 0] / 255.0f,
-				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 1] / 255.0f,
-				tex.pixels[(y_images[1] * tex.width + x_images[1]) * 4 + 2] / 255.0f
-			),
-			make_float3(
-				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 0] / 255.0f,
-				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 1] / 255.0f,
-				tex.pixels[(y_images[2] * tex.width + x_images[2]) * 4 + 2] / 255.0f
-			),
-			make_float3(
-				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 0] / 255.0f,
-				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 1] / 255.0f,
-				tex.pixels[(y_images[3] * tex.width + x_images[3]) * 4 + 2] / 255.0f
-			),
-		};
-
-		return lerp(
-			lerp(sample_colors[0], sample_colors[1], left_right_t),
-			lerp(sample_colors[2], sample_colors[3], left_right_t),
-			bottom_top_t
-		);
-	}
-	else
-	{
-		int x_image = (int)clamp((uv.x * tex.width), 0.0f, (float)(tex.width - 1));
-		int y_image = (int)clamp(((1.0f - uv.y) * tex.height), 0.0f, (float)(tex.height - 1));
-
-		return make_float3(
-			tex.pixels[(y_image * tex.width + x_image) * 4 + 0] / 255.0f,
-			tex.pixels[(y_image * tex.width + x_image) * 4 + 1] / 255.0f,
-			tex.pixels[(y_image * tex.width + x_image) * 4 + 2] / 255.0f
-		);
-	}
-}
-
 __host__ __device__ float3 get_background_color(
 	const float3& direction,		//in
 	cube_map* sky_cube_map,			//in
@@ -569,7 +403,7 @@ __global__ void init_data_kernel(
 		energy_exist_pixels[pixel_index] = pixel_index;
 		not_absorbed_colors[pixel_index] = make_float3(1.0f, 1.0f, 1.0f);
 		accumulated_colors[pixel_index] = make_float3(0.0f, 0.0f, 0.0f);
-		GET_DEFAULT_SCATERRING_DEVICE(scatterings[pixel_index]);
+		scatterings[pixel_index] = scattering::get_default_scattering();
 	}
 }
 
@@ -598,7 +432,7 @@ __global__ void generate_ray_kernel(
 		int image_y = (int)(pixel_index / resolution.x);
 		int image_x = pixel_index - (image_y * resolution.x);
 
-		thrust::default_random_engine random_engine(rand_hash(seed) * rand_hash(seed) * rand_hash(pixel_index));
+		thrust::default_random_engine random_engine(hash(seed) * hash(seed) * hash(pixel_index));
 		thrust::uniform_real_distribution<float> uniform_distribution(-0.5f, 0.5f);
 
 		//for anti-aliasing
@@ -683,7 +517,7 @@ __global__ void trace_ray_kernel(
 	int pixel_index = energy_exist_pixels[energy_exist_pixel_index];
 	ray tracing_ray = rays[pixel_index];
 
-	thrust::default_random_engine random_engine(rand_hash(seed) * rand_hash(pixel_index) * rand_hash(depth));
+	thrust::default_random_engine random_engine(hash(seed) * hash(pixel_index) * hash(depth));
 	thrust::uniform_real_distribution<float> uniform_distribution(0.0f, 1.0f);
 
 	float hit_t, hit_t1, hit_t2;
@@ -718,7 +552,7 @@ __global__ void trace_ray_kernel(
 			min_t = hit_t;
 			min_t1 = hit_t1;
 			min_t2 = hit_t2;
-			min_point = point_on_ray(tracing_ray, hit_t);
+			min_point = tracing_ray.point_on_ray(hit_t);
 			min_triangle_index = hit_triangle_index;
 			min_type = object_type::triangle;
 		}
@@ -741,7 +575,7 @@ __global__ void trace_ray_kernel(
 			float rand2 = uniform_distribution(random_engine);
 
 			ray next_ray;
-			next_ray.origin = point_on_ray(tracing_ray, scaterring_distance);
+			next_ray.origin = tracing_ray.point_on_ray(scaterring_distance);
 			next_ray.direction = sample_on_sphere(rand1, rand2);
 			rays[pixel_index] = next_ray;
 
@@ -781,14 +615,14 @@ __global__ void trace_ray_kernel(
 				float2 uv = hit_triangle.uv0 * (1.0f - min_t1 - min_t2) +
 					hit_triangle.uv1 * min_t1 +
 					hit_triangle.uv2 * min_t2;
-				min_mat.diffuse_color = min_mat.diffuse_color * sample_texture(uv, mesh_textures[min_mat.diffuse_texture_id], config);
+				min_mat.diffuse_color = min_mat.diffuse_color * mesh_textures[min_mat.diffuse_texture_id].sample_texture(uv, config->use_bilinear);
 			}
 		}
 
 		float3 in_direction = tracing_ray.direction;
 
 		medium in_medium;
-		GET_DEFAULT_MEDIUM_DEVICE(in_medium);
+		in_medium = medium::get_default_medium();
 		medium out_medium = min_mat.medium;
 
 		bool is_hit_on_back = dot(in_direction, min_normal) > 0;
@@ -805,18 +639,18 @@ __global__ void trace_ray_kernel(
 			}
 		}
 
-		float3 reflection_direction = get_reflection_direction(min_normal, in_direction);
-		float3 refraction_direction = get_refraction_direction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);
+		float3 reflection_direction = reflection(min_normal, in_direction);
+		float3 refraction_direction = refraction(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index);
 		float3 bias_vector = config->vector_bias_length * min_normal;
 
 		fresnel fresnel;
 		if (min_mat.medium.extinction_coefficient == 0 || min_mat.is_transparent)
 		{
-			fresnel = get_fresnel_dielectrics(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index, reflection_direction, refraction_direction);
+			fresnel = fresnel::get_fresnel_dielectrics(min_normal, in_direction, in_medium.refraction_index, out_medium.refraction_index, reflection_direction, refraction_direction);
 		}
 		else
 		{
-			fresnel = get_fresnel_conductors(min_normal, in_direction, out_medium.refraction_index, out_medium.extinction_coefficient, reflection_direction);
+			fresnel = fresnel::get_fresnel_conductors(min_normal, in_direction, out_medium.refraction_index, out_medium.extinction_coefficient, reflection_direction);
 		}
 		
 		float rand = uniform_distribution(random_engine);
@@ -833,7 +667,7 @@ __global__ void trace_ray_kernel(
 
 			ray next_ray;
 			next_ray.origin = min_point + bias_vector;
-			next_ray.direction = get_reflection_direction(micro_normal, in_direction);
+			next_ray.direction = reflection(micro_normal, in_direction);
 			rays[pixel_index] = next_ray;
 
 			not_absorbed_colors[pixel_index] *= (min_mat.specular_color * self_shadowing);

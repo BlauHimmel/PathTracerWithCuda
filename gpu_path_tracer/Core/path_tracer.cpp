@@ -264,7 +264,7 @@ void path_tracer::render_ui()
 
 						if (is_this_material_modified)
 						{
-							material new_mat = get_default_material();
+							material new_mat = material::get_default_material();
 
 							new_mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
 							new_mat.specular_color = make_float3(specular[0], specular[1], specular[2]);

@@ -18,7 +18,7 @@ struct bvh_node_morton_node_predicate
 	}
 };
 
-__host__ __device__ uint expand_bits(
+__device__ uint expand_bits(
 	uint value			//in
 )
 {
@@ -33,7 +33,7 @@ __host__ __device__ uint expand_bits(
 Calculates a 30-bit Morton code for the given 3D point located within the unit cube [0,1].
 From from http://devblogs.nvidia.com/parallelforall/thinking-parallel-part-iii-tree-construction-gpu/
 */
-__host__ __device__ uint morton_code(
+__device__ uint morton_code(
 	const float3& point		//in
 )
 {
