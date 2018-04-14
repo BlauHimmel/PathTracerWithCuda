@@ -82,6 +82,11 @@ void path_tracer::clear()
 
 void path_tracer::render_ui()
 {
+	if (!m_is_initiated)
+	{
+		return;
+	}
+
 	char buffer[2048];
 
 	bool is_sphere_modified = false;
@@ -283,6 +288,7 @@ void path_tracer::render_ui()
 							}
 							new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
 							new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
+							new_mat.diffuse_texture_id = mats[j].diffuse_texture_id;
 
 							mats[j] = new_mat;
 						}
@@ -336,7 +342,7 @@ void path_tracer::render_ui()
 	}
 }
 
-void path_tracer::init_scene_device_data(int index)
+bool path_tracer::init_scene_device_data(int index)
 {
 	double time;
 	printf("[Info]Load scene data...\n");
@@ -345,19 +351,19 @@ void path_tracer::init_scene_device_data(int index)
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Load scene failed!" << std::endl;
-		return;
+		return false;
 	}
 	if (!m_scene.create_scene_data_device())
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Copy scene data on GPU failed!" << std::endl;
 		m_scene.release_scene_data_device();
-		return;
+		return false;
 	}
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Load scene completed, total time consuming: %.4f ms\n", time);
 	m_is_initiated = true;
-	return;
+	return true;
 }
 
 void path_tracer::release_scene_device_data()

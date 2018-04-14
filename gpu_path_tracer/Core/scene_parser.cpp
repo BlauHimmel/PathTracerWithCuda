@@ -371,6 +371,12 @@ bool scene_parser::load_scene(int index)
 	if (error)
 	{
 		m_cube_map_loader.unload_data();
+		for (auto j = 0; j < textures_num; j++)
+		{
+			SAFE_DELETE(m_mesh_textures[j].pixels);
+		}
+		SAFE_DELETE_ARRAY(m_mesh_textures);
+		m_mesh_textures = nullptr;
 		return false;
 	}
 
@@ -389,6 +395,12 @@ bool scene_parser::load_scene(int index)
 		{
 			m_cube_map_loader.unload_data();
 			m_triangle_mesh.unload_obj();
+			for (auto j = 0; j < textures_num; j++)
+			{
+				SAFE_DELETE(m_mesh_textures[j].pixels);
+			}
+			SAFE_DELETE_ARRAY(m_mesh_textures);
+			m_mesh_textures = nullptr;
 			return false;
 		}
 	}

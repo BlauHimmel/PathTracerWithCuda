@@ -16,8 +16,8 @@ struct texture_wrapper
 	{
 		if (use_bilinear)
 		{
-			float x_image_real = uv.x * width;
-			float y_image_real = (1.0f - uv.y) * height;
+			float x_image_real = uv.x * (float)(width - 1);
+			float y_image_real = (1.0f - uv.y) * (float)(height - 1);
 
 			int floor_x_image = (int)clamp(floorf(x_image_real), 0.0f, (float)(width - 1));
 			int ceil_x_image = (int)clamp(ceilf(x_image_real), 0.0f, (float)(width - 1));
@@ -62,8 +62,8 @@ struct texture_wrapper
 		}
 		else
 		{
-			int x_image = (int)clamp((uv.x * width), 0.0f, (float)(width - 1));
-			int y_image = (int)clamp(((1.0f - uv.y) * height), 0.0f, (float)(height - 1));
+			int x_image = (int)clamp((uv.x * (float)(width - 1)), 0.0f, (float)(width - 1));
+			int y_image = (int)clamp(((1.0f - uv.y) * (float)(height - 1)), 0.0f, (float)(height - 1));
 
 			return make_float3(
 				pixels[(y_image * width + x_image) * 4 + 0] / 255.0f,

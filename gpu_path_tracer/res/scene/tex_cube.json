@@ -1,0 +1,37 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Texture" : ["res\\texture\\tex_cube\\uv.png"],
+
+	"Material" :
+	[
+		{
+			"Name" : "tex_cube_mat",
+			"Diffuse" : "1.0 1.0 1.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "0"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["tex_cube_mat"],
+			"Path" : "res\\obj\\tex_cube.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "1.0 1.0 1.0",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}

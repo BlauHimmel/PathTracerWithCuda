@@ -56,7 +56,7 @@ public:
 
 	void render_ui();
 
-	void init_scene_device_data(int index);
+	bool init_scene_device_data(int index);
 	void release_scene_device_data();
 };
 
