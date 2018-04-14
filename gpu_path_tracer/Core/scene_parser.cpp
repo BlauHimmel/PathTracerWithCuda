@@ -332,7 +332,7 @@ bool scene_parser::load_scene(int index)
 			m_mesh_textures[i].height = height;
 			m_mesh_textures[i].pixels = new uchar[width * height * 4];
 			memcpy(m_mesh_textures[i].pixels, buffer.data(), width * height * 4 * sizeof(uchar));
-			std::cout << "[Info]Load texture " << texture_pathes[i] << "completed." << std::endl;
+			std::cout << "[Info]Load texture " << texture_pathes[i] << " completed." << std::endl;
 		}
 		else
 		{
