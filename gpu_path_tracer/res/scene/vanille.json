@@ -1,0 +1,108 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Texture" :
+	[
+		"res\\texture\\vanille\\c005_16.tga",
+		"res\\texture\\vanille\\c005_09.tga",
+		"res\\texture\\vanille\\c005_05.tga",
+		"res\\texture\\vanille\\c005_03.tga",
+		"res\\texture\\vanille\\c005_10.tga"
+	],
+
+	"Material" :
+	[
+		{
+			"Name" : "Material__6",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "0"
+		},
+
+		{
+			"Name" : "Material__4",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "1"
+		},
+
+		{
+			"Name" : "Material__3",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "2"
+		},
+
+		{
+			"Name" : "Material__2",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "3"
+		},
+
+		{
+			"Name" : "Material__5",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "4"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "30.0 100 30.0",
+			"Scale" : "30.0 0.05 30.0",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Material" : ["Material__6", "Material__4", "Material__4", "Material__3", "Material__2", "Material__3", "Material__3", "Material__3", "Material__3", "Material__6", "Material__4", "Material__5", "Material__2", "Material__4", "Material__2"],
+			"Path" : "res\\obj\\vanille.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "0.3 0.3 0.3",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}

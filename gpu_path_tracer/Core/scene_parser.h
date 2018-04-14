@@ -124,7 +124,7 @@ private:
 	triangle_mesh m_triangle_mesh;
 
 	texture_wrapper* m_mesh_textures = nullptr;
-	int textures_num = 0;
+	int m_textures_num = 0;
 	texture_wrapper* m_mesh_textures_device = nullptr;
 
 	sphere* m_spheres = nullptr;

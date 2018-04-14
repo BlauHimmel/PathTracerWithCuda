@@ -237,7 +237,8 @@ void triangle_mesh::unload_obj()
 	}
 	m_mesh_material.clear();
 	m_mesh_material.shrink_to_fit();
-
+	m_mesh_shape_triangle_num.clear();
+	m_mesh_shape_triangle_num.shrink_to_fit();
 	m_mesh_material_num.clear();
 	m_mesh_material_num.shrink_to_fit();
 	m_is_loaded = false;

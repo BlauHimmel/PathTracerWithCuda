@@ -321,16 +321,18 @@ bool scene_parser::load_scene(int index)
 	uint width, height;
 	std::vector<uchar> buffer;
 	m_mesh_textures = new texture_wrapper[texture_pathes.size()];
-	textures_num = static_cast<int>(texture_pathes.size());
+	m_textures_num = static_cast<int>(texture_pathes.size());
 	memset(m_mesh_textures, 0, texture_pathes.size() * sizeof(texture_wrapper));
 	for (auto i = 0; i < texture_pathes.size(); i++)
 	{
+		std::cout << "[Info]Load texture " << texture_pathes[i] << "..." << std::endl;
 		if (image_loader::load_image(texture_pathes[i], width, height, buffer))
 		{
 			m_mesh_textures[i].width = width;
 			m_mesh_textures[i].height = height;
 			m_mesh_textures[i].pixels = new uchar[width * height * 4];
 			memcpy(m_mesh_textures[i].pixels, buffer.data(), width * height * 4 * sizeof(uchar));
+			std::cout << "[Info]Load texture " << texture_pathes[i] << "completed." << std::endl;
 		}
 		else
 		{
@@ -371,7 +373,7 @@ bool scene_parser::load_scene(int index)
 	if (error)
 	{
 		m_cube_map_loader.unload_data();
-		for (auto j = 0; j < textures_num; j++)
+		for (auto j = 0; j < m_textures_num; j++)
 		{
 			SAFE_DELETE(m_mesh_textures[j].pixels);
 		}
@@ -395,7 +397,7 @@ bool scene_parser::load_scene(int index)
 		{
 			m_cube_map_loader.unload_data();
 			m_triangle_mesh.unload_obj();
-			for (auto j = 0; j < textures_num; j++)
+			for (auto j = 0; j < m_textures_num; j++)
 			{
 				SAFE_DELETE(m_mesh_textures[j].pixels);
 			}
@@ -431,13 +433,13 @@ void scene_parser::unload_scene()
 		m_cube_map_loader.unload_data();
 		m_triangle_mesh.unload_obj();
 		m_sphere_num = 0;
-		for (auto j = 0; j < textures_num; j++)
+		for (auto j = 0; j < m_textures_num; j++)
 		{
 			SAFE_DELETE(m_mesh_textures[j].pixels);
 		}
 		SAFE_DELETE_ARRAY(m_mesh_textures);
 		m_mesh_textures = nullptr;
-		textures_num = 0;
+		m_textures_num = 0;
 	}
 }
 
@@ -466,13 +468,13 @@ bool scene_parser::create_scene_data_device()
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 	}
 
-	if (textures_num > 0)
+	if (m_textures_num > 0)
 	{
 		printf("[Info]Copy texture data to gpu...\n");
 		TIME_COUNT_CALL_START();
 
-		CUDA_CALL(cudaMallocManaged((void**)&m_mesh_textures_device, textures_num * sizeof(texture_wrapper)));
-		for (auto i = 0; i < textures_num; i++)
+		CUDA_CALL(cudaMallocManaged((void**)&m_mesh_textures_device, m_textures_num * sizeof(texture_wrapper)));
+		for (auto i = 0; i < m_textures_num; i++)
 		{
 			m_mesh_textures_device[i].width = m_mesh_textures[i].width;
 			m_mesh_textures_device[i].height = m_mesh_textures[i].height;
@@ -513,6 +515,18 @@ void scene_parser::release_scene_data_device()
 		CUDA_CALL(cudaFree(m_spheres_device));
 		m_spheres_device = nullptr;
 	}
+	if (m_mesh_textures_device != nullptr)
+	{
+		for (auto i = 0; i < m_textures_num; i++)
+		{
+			if (m_mesh_textures_device[i].pixels != nullptr)
+			{
+				CUDA_CALL(cudaFree(m_mesh_textures_device[i].pixels));
+			}
+		}
+		CUDA_CALL(cudaFree(m_mesh_textures_device));
+		m_mesh_textures_device = nullptr;
+	}
 }
 
 cube_map* scene_parser::get_cube_map_device_ptr()
@@ -535,7 +549,7 @@ sphere* scene_parser::get_sphere_device_ptr()
 	return m_spheres_device;
 }
 
-texture_wrapper * scene_parser::get_mesh_texture_device_ptr()
+texture_wrapper* scene_parser::get_mesh_texture_device_ptr()
 {
 	return m_mesh_textures_device;
 }
