@@ -63,6 +63,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1CDB9921505041129B81E45F5778ECE6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1E3A2AFA774E441B8CAB13F12F29E1A1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -667,6 +673,26 @@
             "TargetName" = "8:vanille_nude.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CDB9921505041129B81E45F5778ECE6"
+            {
+            "SourcePath" = "8:..\\DLL\\FreeImage.dll"
+            "TargetName" = "8:FreeImage.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_13553983B1034CF2B24B971F21981836"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
