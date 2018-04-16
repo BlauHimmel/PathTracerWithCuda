@@ -646,9 +646,9 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 		{
 			float inverse_gamma = 0.45454545f;
 			color corrected_pixel;
-			corrected_pixel.x = std::expf(inverse_gamma * std::logf(pixel.x));
-			corrected_pixel.y = std::expf(inverse_gamma * std::logf(pixel.y));
-			corrected_pixel.z = std::expf(inverse_gamma * std::logf(pixel.z));
+			corrected_pixel.x = __expf(inverse_gamma * __logf(pixel.x));
+			corrected_pixel.y = __expf(inverse_gamma * __logf(pixel.y));
+			corrected_pixel.z = __expf(inverse_gamma * __logf(pixel.z));
 
 			x = clamp(corrected_pixel.x * 255.0f, 0.0f, 255.0f);
 			y = clamp(corrected_pixel.y * 255.0f, 0.0f, 255.0f);
