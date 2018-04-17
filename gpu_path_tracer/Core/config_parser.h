@@ -24,6 +24,8 @@
 #define TOKEN_CONFIG_SKY_BOX_BILINEAR_SAMPLE "BilinearSample"
 #define TOKEN_CONFIG_SKY "Sky"
 #define TOKEN_CONFIG_GAMMA_CORRECTION "GammaCorrection"
+#define TOKEN_CONFIG_ANTI_ALIAS "AntiAlias"
+#define TOKEN_CONFIG_FOV "FOV"
 #define TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM "BvhLeafNodeTriangleNum"
 #define TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM "BvhBucketMaxDivideInternalNum"
 #define TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE "BvhBuildBlockSize"
@@ -43,6 +45,8 @@
 	"BilinearSample" : "true",
 	"Sky" : "false",
 	"GammaCorrection" : "true",
+	"AntiAlias" : "true",
+	"FOV" : "45",
 	"BvhLeafNodeTriangleNum" : "1",
 	"BvhBucketMaxDivideInternalNum" : "12",
 	"BvhBuildBlockSize" : "32
@@ -66,6 +70,8 @@ private:
 	bool m_use_bilinear = false;
 	bool m_use_sky = false;
 	bool m_gamma_correction = true;
+	bool m_use_anti_alias = true;
+	float m_fov = 45.0f;
 	int m_bvh_leaf_node_triangle_num = 1;
 	int m_bvh_bucket_max_divide_internal_num = 12;
 	int m_bvh_build_block_size = 32;

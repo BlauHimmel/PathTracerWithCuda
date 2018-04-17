@@ -58,8 +58,9 @@ public:
 	void get_render_camera(render_camera* render_cam) const;
 	float get_max_aperture_radius() const;
 	float get_max_focal_distance() const;
-	float get_aperture_radius();
-	float get_focal_distance();
+	float get_aperture_radius() const;
+	float get_focal_distance() const;
+	float get_radius() const;
 
 private:
 

@@ -336,8 +336,14 @@ __global__ void generate_ray_kernel(
 		thrust::uniform_real_distribution<float> uniform_distribution(-0.5f, 0.5f);
 
 		//for anti-aliasing
-		float jitter_x = uniform_distribution(random_engine);
-		float jitter_y = uniform_distribution(random_engine);
+		float jitter_x = 0.0f;
+		float jitter_y = 0.0f;
+
+		if (config->use_anti_alias)
+		{
+			jitter_x = uniform_distribution(random_engine);
+			jitter_y = uniform_distribution(random_engine);
+		}
 
 		float distance = length(view);
 
@@ -349,12 +355,12 @@ __global__ void generate_ray_kernel(
 		float3 x_axis = horizontal * (distance * tan(fov.x * 0.5f * (PI / 180.0f)));
 		float3 y_axis = vertical * (distance * tan(-fov.y * 0.5f * (PI / 180.0f)));
 		
-		float normalized_image_x = ((image_x + jitter_x) / (resolution.x - 1.0f)) * 2.0f - 1.0f;
-		float normalized_image_y = ((image_y + jitter_y) / (resolution.y - 1.0f)) * 2.0f - 1.0f;
+		float normalized_image_x = (((float)image_x + jitter_x) / (resolution.x - 1.0f)) * 2.0f - 1.0f;
+		float normalized_image_y = (((float)image_y + jitter_y) / (resolution.y - 1.0f)) * 2.0f - 1.0f;
 
 		//for all the ray (cast from one point) refracted by the convex will be cast on one point finally(focal point)
 		float3 point_on_canvas_plane = eye + view + normalized_image_x * x_axis + normalized_image_y * y_axis;
-		float3 point_on_image_plane = eye + (point_on_canvas_plane - eye) * focal_distance;
+		float3 point_on_image_plane = eye + normalize(point_on_canvas_plane - eye) * focal_distance;
 
 		float3 point_on_aperture;
 		if (aperture_radius > 0.00001f)

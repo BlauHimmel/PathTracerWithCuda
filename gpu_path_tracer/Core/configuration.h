@@ -18,6 +18,8 @@ struct configuration
 	bool use_sky;
 	bool use_bilinear;
 	bool gamma_correction;
+	bool use_anti_alias;
+	float fov;
 	int bvh_leaf_node_triangle_num;
 	int bvh_bucket_max_divide_internal_num;
 	int bvh_build_block_size;

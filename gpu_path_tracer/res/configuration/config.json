@@ -12,6 +12,8 @@
 	"BilinearSample" : "true",
 	"Sky" : "false",
 	"GammaCorrection" : "true",
+	"AntiAlias" : "true",
+	"FOV" : "45.0",
 	"BvhLeafNodeTriangleNum" : "1",
 	"BvhBucketMaxDivideInternalNum" : "12",
 	"BvhBuildBlockSize" : "32"
