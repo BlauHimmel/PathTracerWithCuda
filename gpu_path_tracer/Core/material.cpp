@@ -427,6 +427,66 @@ namespace material_data
 		};
 	}
 
+	material dielectric::wall_red()
+	{
+		return material{
+			make_float3(0.87f, 0.15f, 0.15f),			//diffuse
+			make_float3(0.0f, 0.0f, 0.0f),				//emission
+			make_float3(0.0f, 0.0f, 0.0f),				//specular
+			false,										//transparent
+			0.01f,										//roughness
+			{
+				1.491f,									//refraction index
+				0.0f,									//extinction coefficient
+				{
+					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+				}
+			},
+			-1											//diffuse texture id
+		};
+	}
+
+	material dielectric::wall_green()
+	{
+		return material{
+			make_float3(0.15f, 0.87f, 0.15f),			//diffuse
+			make_float3(0.0f, 0.0f, 0.0f),				//emission
+			make_float3(0.0f, 0.0f, 0.0f),				//specular
+			false,										//transparent
+			0.01f,										//roughness
+			{
+				1.491f,									//refraction index
+				0.0f,									//extinction coefficient
+				{
+					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+				}
+			},
+			-1											//diffuse texture id
+		};
+	}
+
+	material dielectric::wall_white()
+	{
+		return material{
+			make_float3(1.0f, 1.0f, 1.0f),				//diffuse
+			make_float3(0.0f, 0.0f, 0.0f),				//emission
+			make_float3(0.0f, 0.0f, 0.0f),				//specular
+			false,										//transparent
+			0.01f,										//roughness
+			{
+				1.491f,									//refraction index
+				0.0f,									//extinction coefficient
+				{
+					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient
+					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
+				}
+			},
+			-1											//diffuse texture id
+		};
+	}
+
 	material dielectric::marble()
 	{
 		return material{

@@ -4,8 +4,4 @@ A gpu accelerated path tracer based on CUDA.....
 
 ![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample29.png)
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample27.png)
-
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample24.png)
-
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample26.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample30.png)

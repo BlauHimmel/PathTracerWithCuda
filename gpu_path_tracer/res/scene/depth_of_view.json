@@ -1,0 +1,81 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Sphere" :
+	[
+		{
+			"Material" : "iron",
+			"Center" : "2.5 0.0 -10.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "iron",
+			"Center" : "3.0 0.0 -5.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "iron",
+			"Center" : "3.5 0.0 0.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "iron",
+			"Center" : "4.0 0.0 5.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "iron",
+			"Center" : "4.5 0.0 10.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "gold",
+			"Center" : "-2.5 0.0 -10.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "gold",
+			"Center" : "-3.0 0.0 -5.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "gold",
+			"Center" : "-3.5 0.0 0.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "gold",
+			"Center" : "-4.0 0.0 5.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "gold",
+			"Center" : "-4.5 0.0 10.0",
+			"Radius" : "0.8"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 10.0 0.0",
+			"Scale" : "1.5 0.01 1.5",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}

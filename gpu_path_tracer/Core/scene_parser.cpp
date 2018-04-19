@@ -668,6 +668,9 @@ void scene_parser::init_default_material(std::map<std::string, material>& materi
 	materials.insert(std::make_pair("orange", material_data::dielectric::orange()));
 	materials.insert(std::make_pair("purple", material_data::dielectric::purple()));
 	materials.insert(std::make_pair("wall_blue", material_data::dielectric::wall_blue()));
+	materials.insert(std::make_pair("wall_red", material_data::dielectric::wall_red()));
+	materials.insert(std::make_pair("wall_green", material_data::dielectric::wall_green()));
+	materials.insert(std::make_pair("wall_white", material_data::dielectric::wall_white()));
 	materials.insert(std::make_pair("blue", material_data::dielectric::blue()));
 	materials.insert(std::make_pair("marble", material_data::dielectric::marble()));
 	materials.insert(std::make_pair("something_blue", material_data::dielectric::something_blue()));

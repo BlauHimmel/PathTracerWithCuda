@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /gpu_path_tracer/imgui.ini
+/Result/CUDA Path Tracer(1440_900) - Yuming Zhou 2018_4_19 21_08_32.mp4

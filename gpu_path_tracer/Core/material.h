@@ -130,6 +130,12 @@ namespace material_data
 
 		static material wall_blue();
 
+		static material wall_red();
+
+		static material wall_green();
+
+		static material wall_white();
+
 		static material marble();
 
 		static material something_blue();
