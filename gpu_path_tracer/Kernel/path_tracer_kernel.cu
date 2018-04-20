@@ -269,7 +269,7 @@ __host__ __device__ float compute_ggx_shadowing_masking(
 	float roughness_square = roughness * roughness;
 	
 	float cos_v_square = v_dot_n * v_dot_n;
-	float tan_v_square = (1 - cos_v_square) / cos_v_square;
+	float tan_v_square = (1.0f - cos_v_square) / cos_v_square;
 	
 	float positive_value = (v_dot_m / v_dot_n) > 0.0f ? 1.0f : 0.0f;
 
