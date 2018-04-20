@@ -31,25 +31,26 @@
 #define TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE "BvhBuildBlockSize"
 
 /*
+Note: value check is imperfect. you'd better modify it using UI
 {
-	"Width" : "1024",
-	"Height" : "768",
-	"FullScreen" : "true",
-	"BlockSize" : "64",
-	"MaxBlockSize" : "1024",
-	"MaxDepth" : "20",
-	"BiasLength" : "0.0001",
-	"EnergyThreshold" : "0.000001",
-	"SSSThreshold" : "0.000001",
-	"Skybox" : "true",
-	"BilinearSample" : "true",
-	"Sky" : "false",
-	"GammaCorrection" : "true",
-	"AntiAlias" : "true",
-	"FOV" : "45",
-	"BvhLeafNodeTriangleNum" : "1",
-	"BvhBucketMaxDivideInternalNum" : "12",
-	"BvhBuildBlockSize" : "32
+	"Width" : "1024",							-- the height of the window(render image)
+	"Height" : "768",							-- the width of the window(render image)
+	"FullScreen" : "true",						-- weather run the program in fullscreen mode?
+	"BlockSize" : "64",							-- the number of thread in each block while rendering
+	"MaxBlockSize" : "1024",					-- the maximum BlockSize in the UI
+	"MaxDepth" : "20",							-- the maximum depth of tracing ray
+	"BiasLength" : "0.0001",					-- the length of bias vector
+	"EnergyThreshold" : "0.000001",				-- threshold value used to judge weather a ray is too weak
+	"SSSThreshold" : "0.000001",				-- threshold value used to judge weather a medium is able to absorp or scatter ray
+	"Skybox" : "true",							-- use cube map or not
+	"BilinearSample" : "true",					-- use linear sample method for cubemap and object's texture 
+	"Sky" : "false",							-- use blue sky as background or not
+	"GammaCorrection" : "true",					-- turn on/off gamma correction
+	"AntiAlias" : "true",						-- turn on/off anti aliasing
+	"FOV" : "45",								-- field of view of camera
+	"BvhLeafNodeTriangleNum" : "1",				-- the maximum number of triangle in the leaf node of bvh
+	"BvhBucketMaxDivideInternalNum" : "12",		-- how many bucket we split while using naive bvh construction algorithm
+	"BvhBuildBlockSize" : "32"					-- the number of thread in each block while constructing bvh
 }
 */
 

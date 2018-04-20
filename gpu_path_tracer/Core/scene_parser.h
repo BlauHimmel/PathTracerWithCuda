@@ -53,18 +53,19 @@
 
 /*
 {
+	Note: value check is imperfect, please check it when error occurred!
 	"Background" : 
 	{
-		"Name" : "XXXX",
-		"Path" : "XXXX\\YYYY\\"
+		"Name" : "XXXX",								-- name of cube map(in this folder, your image must be named as [xpos,xneg,ypos,yneg,zpos,zneg])
+		"Path" : "XXXX\\YYYY\\"							-- root folder of cubemap
 	},
 
 	-- optional --
-	"Texture" : ["Filename1", "Filename2", ....],
+	"Texture" : ["Filename1", "Filename2", ....],		-- the fullpath of your texture file
 
 	-- built-in material --
 	-- titanium, chromium, iron, nickel, platinum, copper, palladium, zinc, gold, aluminum, silver --
-	-- glass, green_glass, red, green, orange, purple, blue, wall_blue, marble, something_blue, something_red --
+	-- glass, green_glass, red, green, orange, purple, blue, wall_blue, wall_red, wall_green, wall_white, marble, something_blue, something_red --
 	-- light --
 
 	-- optional --
@@ -81,7 +82,7 @@
 			"ExtinctionCoef" : "0.0",					-- any value >= 0.0 --
 			"AbsorptionCoef" : "0.0 0.0 0.0",			-- each component >= 0.0 --
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",	-- each component >= 0.0 --
-			"DiffuseTextureId" : "0"					-- 0, 1, ....., sizeof(Texture) - 1
+			"DiffuseTextureId" : "0"					-- 0, 1, ....., sizeof(Texture) - 1 [optional]
 		},
 		...
 	],
@@ -101,10 +102,10 @@
 	"Mesh" :
 	[
 		{
-			"Material" : ["XXXX", "XXXX", ...],			-- name of material(user declared or built-in material)
-			"Path" : "XXXX\\YYYY",
+			"Material" : ["XXXX", "XXXX", ...],			-- The name of material for each group in obj file. when the material you specified is less than the number of group, the extra group will be set as the last material. on the contrary, the extra material will be neglected(user declared or built-in material)
+			"Path" : "XXXX\\YYYY",						-- fullpath of your obj file
 			"Position" : "0.0 0.0 0.0",
-			"Scale" : "1.0 1.0 1.0",
+			"Scale" : "1.0 1.0 1.0",					-- each component > 0.0 --
 			"Rotate" : "0.0 0.0 0.0"
 		},
 		...

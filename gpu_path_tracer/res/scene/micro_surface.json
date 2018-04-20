@@ -1,0 +1,138 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Material" :
+	[
+		{
+			"Name" : "Micro1",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Micro2",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "0.2",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Micro3",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "0.4",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Micro4",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "0.6",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Micro5",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "0.8",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Micro6",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "false",
+			"Roughness" : "1.0",
+			"RefractionIndex" : "0.04",
+			"ExtinctionCoef" : "2.6484",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		}
+	],
+
+	"Sphere" :
+	[
+		{
+			"Material" : "Micro1",
+			"Center" : "0.0 0.0 -4.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Micro2",
+			"Center" : "0.0 0.0 -2.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Micro3",
+			"Center" : "0.0 0.0 0.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Micro4",
+			"Center" : "0.0 0.0 2.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Micro5",
+			"Center" : "0.0 0.0 4.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Micro6",
+			"Center" : "0.0 0.0 6.0",
+			"Radius" : "0.8"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 10.0 0.0",
+			"Scale" : "1.5 0.01 1.5",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}
