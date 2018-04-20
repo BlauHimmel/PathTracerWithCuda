@@ -2,7 +2,9 @@
 
 A gpu accelerated path tracer based on CUDA
 
-The compute capability should be greater than 6.x(For unified memory has been widely use in my program)
+The compute capability of your GPU should be greater than 6.x(For unified memory has been widely use in my program)
+
+The GRAPHICS CARD'S DRIVER crashed occasionally. I am working on it. :( 
 
 * Interactive camera(Depth of field supported!)
 * Interactive UI supported for changing almost any stuff dynamic.
