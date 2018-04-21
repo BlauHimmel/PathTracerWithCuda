@@ -8,6 +8,7 @@ scene_parser::~scene_parser()
 
 std::vector<std::string> scene_parser::set_scene_file_directory(const std::string& scene_file_directory)
 {
+	//WINDOWS SUPPORTED ONLY NOW
 	m_scene_files.clear();
 
 	std::string suffix = "*.json";

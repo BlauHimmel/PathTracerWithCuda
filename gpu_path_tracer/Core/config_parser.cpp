@@ -134,7 +134,7 @@ configuration* config_parser::get_config_device_ptr()
 void config_parser::create_config_device_data()
 {
 	CUDA_CALL(cudaMallocManaged((void**)&m_config_device, sizeof(configuration)));
-
+	printf("MIGHT BE CRASH HERE...");
 	m_config_device->width = m_width;
 	m_config_device->height = m_height;
 	m_config_device->use_fullscreen = m_use_fullscreen;
@@ -153,6 +153,7 @@ void config_parser::create_config_device_data()
 	m_config_device->bvh_leaf_node_triangle_num = m_bvh_leaf_node_triangle_num;
 	m_config_device->bvh_bucket_max_divide_internal_num = m_bvh_bucket_max_divide_internal_num;
 	m_config_device->bvh_build_block_size = m_bvh_build_block_size;
+	printf("IT'S OK THIS TIME.\n");
 }
 
 void config_parser::release_config_device_data()
