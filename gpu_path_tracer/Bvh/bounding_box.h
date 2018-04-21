@@ -96,7 +96,7 @@ struct bounding_box
 		float t_max = fmaxf(fmaxf(fminf(t_x1, t_x2), fminf(t_y1, t_y2)), fminf(t_z1, t_z2));
 		float t_min = fminf(fminf(fmaxf(t_x1, t_x2), fmaxf(t_y1, t_y2)), fmaxf(t_z1, t_z2));
 
-		bool is_hit = t_max < t_min;
+		bool is_hit = t_max <= t_min;
 		return is_hit && t_min > 0.0f;
 	}
 };
