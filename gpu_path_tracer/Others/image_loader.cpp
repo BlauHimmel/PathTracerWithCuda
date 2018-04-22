@@ -75,10 +75,10 @@ bool image_loader::load_image(const std::string& filename, uint& width, uint& he
 	uint bits_per_pixel = FreeImage_GetBPP(bitmap);
 
 	uint index = 0;
-	for (auto y = 0; y < height; y++)
+	for (uint y = 0; y < height; y++)
 	{
 		BYTE* line_pixels = pixels_buffer;
-		for (auto x = 0; x < width; x++)
+		for (uint x = 0; x < width; x++)
 		{
 			pixels[index] = line_pixels[FI_RGBA_RED];	index++;
 			pixels[index] = line_pixels[FI_RGBA_GREEN];	index++;
@@ -145,9 +145,9 @@ bool image_loader::decode_bmp(const std::vector<uchar>& bmp, std::vector<uchar>&
 	-each scanline has padding bytes to make it a multiple of 4 if needed
 	The 2D for loop below does all these 3 conversions at once.
 	*/
-	for (auto y = 0; y < height; y++)
+	for (uint y = 0; y < height; y++)
 	{
-		for (auto x = 0; x < width; x++)
+		for (uint x = 0; x < width; x++)
 		{
 			//pixel start byte position in the BMP
 			auto bmp_pos = pixel_offset + (height - y - 1) * scanline_bytes + num_channels * x;

@@ -266,21 +266,18 @@ __device__ float compute_ggx_shadowing_masking(
 	float3 v = -1.0f * ray_direction;
 	float v_dot_n = dot(v, macro_normal);
 	float v_dot_m = dot(v, micro_normal);
-	float roughness_square = roughness * roughness;
-	
-	float cos_v_square = v_dot_n * v_dot_n;
-	float tan_v_square = (1.0f - cos_v_square) / cos_v_square;
-	
-	float positive_value = (v_dot_m / v_dot_n) > 0.0f ? 1.0f : 0.0f;
 
+	float positive_value = (v_dot_m / v_dot_n) > 0.0f ? 1.0f : 0.0f;
 	if (positive_value == 0.0f)
 	{
 		return 0.0f;
 	}
-	else
-	{
-		return 2.0f / (1.0f + sqrtf(1.0f + roughness_square * tan_v_square));
-	}
+
+	float roughness_square = roughness * roughness;
+
+	float cos_v_square = v_dot_n * v_dot_n;
+	float tan_v_square = (1.0f - cos_v_square) / cos_v_square;
+	return 2.0f / (1.0f + sqrtf(1.0f + roughness_square * tan_v_square));
 }
 
 __global__ void init_data_kernel(
@@ -568,7 +565,7 @@ __global__ void trace_ray_kernel(
 		}
 		else
 		{
-			fresnel = fresnel::get_fresnel_conductors(min_normal, in_direction, out_medium.refraction_index, out_medium.extinction_coefficient, reflection_direction);
+			fresnel = fresnel::get_fresnel_conductors(min_normal, in_direction, out_medium.refraction_index, out_medium.extinction_coefficient);
 		}
 		
 		float rand = uniform_distribution(random_engine);
@@ -603,6 +600,7 @@ __global__ void trace_ray_kernel(
 
 			//transmitted into a new medium
 			scatterings[pixel_index] = out_medium.scattering;
+			not_absorbed_colors[pixel_index] *= __powf((out_medium.refraction_index / in_medium.refraction_index), 2.0f);
 		}
 		else
 		{

@@ -52,8 +52,7 @@ struct fresnel
 		const float3& normal,					
 		const float3& in_direction,				
 		float refraction_index,					
-		float extinction_coefficient,			
-		const float3& reflection_direction		
+		float extinction_coefficient		
 	)
 	{
 		//using real fresnel equation
