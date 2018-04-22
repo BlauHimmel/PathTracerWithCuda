@@ -134,10 +134,10 @@ configuration* config_parser::get_config_device_ptr()
 void config_parser::create_config_device_data()
 {
 	CUDA_CALL(cudaMallocManaged((void**)&m_config_device, sizeof(configuration)));
-	printf("MIGHT BE CRASH HERE...");
+	printf("DRIVER MIGHT BE CRASHED HERE [%s, %d]...", __FILE__, __LINE__);
 	m_config_device->width = m_width;
-	m_config_device->height = m_height;
 	m_config_device->use_fullscreen = m_use_fullscreen;
+	m_config_device->height = m_height;
 	m_config_device->block_size = m_block_size;
 	m_config_device->max_block_size = m_max_block_size;
 	m_config_device->max_tracer_depth = m_max_tracer_depth;

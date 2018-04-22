@@ -13,6 +13,7 @@ material* new_default_material()
 	mat->medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
 	mat->medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
 	mat->diffuse_texture_id = -1;
+	mat->specular_texture_id = -1;
 	return mat;
 }
 
@@ -41,7 +42,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -62,7 +64,8 @@ namespace material_data
 						make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 					}
 				},
-				-1											//diffuse texture id
+				-1,											//diffuse texture id
+				-1											//specular texture id
 			};
 		}
 	}
@@ -83,7 +86,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -103,7 +107,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -123,7 +128,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -143,7 +149,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -163,7 +170,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -183,7 +191,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -203,7 +212,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -223,7 +233,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -243,7 +254,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -263,7 +275,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -283,7 +296,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -303,7 +317,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -323,7 +338,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -343,7 +359,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -363,7 +380,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -383,7 +401,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -403,7 +422,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -423,7 +443,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -443,7 +464,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -463,7 +485,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -483,7 +506,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -503,7 +527,8 @@ namespace material_data
 					make_float3(8.0f, 8.0f, 8.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -523,7 +548,8 @@ namespace material_data
 					make_float3(2.0f, 2.0f, 2.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -543,7 +569,8 @@ namespace material_data
 					make_float3(9.0f, 9.0f, 9.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 
@@ -563,7 +590,8 @@ namespace material_data
 					make_float3(0.0f, 0.0f, 0.0f)		//reduced scattering coefficient
 				}
 			},
-			-1											//diffuse texture id
+			-1,											//diffuse texture id
+			-1											//specular texture id
 		};
 	}
 }

@@ -50,6 +50,7 @@
 #define TOKEN_MATERIAL_ABSORPTION_COEF "AbsorptionCoef"
 #define TOKEN_MATERIAL_REDUCED_SCATTERING_COEF "ReducedScatteringCoef"
 #define TOKEN_MATERIAL_DIFFUSE_TEXTURE_ID "DiffuseTextureId"
+#define TOKEN_MATERIAL_SPECULAR_TEXTURE_ID "SpecularTextureId"
 
 /*
 {
@@ -83,6 +84,7 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",			-- each component >= 0.0 --
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",	-- each component >= 0.0 --
 			"DiffuseTextureId" : "0"					-- 0, 1, ....., sizeof(Texture) - 1 [optional]
+			"SpecularTextureId" : "0"					-- 0, 1, ....., sizeof(Texture) - 1 [optional]
 		},
 		...
 	],

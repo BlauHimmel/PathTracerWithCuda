@@ -59,6 +59,7 @@ struct material
 	medium medium;
 
 	int diffuse_texture_id;
+	int specular_texture_id;
 
 	__device__ __host__ static material get_default_material()
 	{
@@ -73,6 +74,7 @@ struct material
 		mat.medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
 		mat.medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
 		mat.diffuse_texture_id = -1;
+		mat.specular_texture_id = -1;
 		return mat;
 	}
 };

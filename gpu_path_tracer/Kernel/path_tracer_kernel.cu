@@ -35,13 +35,13 @@ enum class object_type
 
 struct is_negative_predicate
 {
-	__host__ __device__ bool operator()(int value)
+	__device__ bool operator()(int value)
 	{
 		return value < 0;
 	}
 };
 
-__host__ __device__ int hash(int a)
+__device__ int hash(int a)
 {
 	a = (a + 0x7ed55d16) + (a << 12);
 	a = (a ^ 0xc761c23c) ^ (a >> 19);
@@ -52,7 +52,7 @@ __host__ __device__ int hash(int a)
 	return a;
 }
 
-__host__ __device__ float3 reflection(
+__device__ float3 reflection(
 	const float3& normal,
 	const float3& in_direction
 )
@@ -60,7 +60,7 @@ __host__ __device__ float3 reflection(
 	return in_direction - 2.0f * dot(normal, in_direction) * normal;
 }
 
-__host__ __device__ float3 refraction(
+__device__ float3 refraction(
 	const float3& normal,
 	const float3& in_direction,
 	float in_refraction_index,
@@ -91,7 +91,7 @@ __host__ __device__ float3 refraction(
 	}
 }
 
-__host__ __device__ bool intersect_triangle_mesh_bvh(
+__device__ bool intersect_triangle_mesh_bvh(
 	triangle* triangles,			//in	
 	bvh_node_device** bvh_nodes,	//in
 	int mesh_index,					//in
@@ -168,7 +168,7 @@ __host__ __device__ bool intersect_triangle_mesh_bvh(
 	return is_hit;
 }
 
-__host__ __device__ float3 sample_on_hemisphere_cosine_weight(
+__device__ float3 sample_on_hemisphere_cosine_weight(
 	const float3& normal,	//in
 	float rand1,			//in
 	float rand2				//in
@@ -196,10 +196,10 @@ __host__ __device__ float3 sample_on_hemisphere_cosine_weight(
 	float3 vec_i = normalize(cross(normal, any_direction));
 	float3 vec_j = cross(normal, vec_i);
 
-	return cos_theta * normal + cos(phi) * sin_theta * vec_i + sin(phi) * sin_theta * vec_j;
+	return cos_theta * normal + __cosf(phi) * sin_theta * vec_i + __sinf(phi) * sin_theta * vec_j;
 }
 
-__host__ __device__ float3 sample_on_hemisphere_ggx_weight(
+__device__ float3 sample_on_hemisphere_ggx_weight(
 	const float3& normal,	//in
 	float roughness,		//in
 	float rand1,			//in
@@ -208,8 +208,8 @@ __host__ __device__ float3 sample_on_hemisphere_ggx_weight(
 {
 	float theta = atanf(roughness * sqrtf(rand1) / sqrtf(1.0f - rand1));
 	float phi = rand2 * TWO_PI;
-	float cos_theta = cosf(theta);
-	float sin_theta = sinf(theta);
+	float cos_theta = __cosf(theta);
+	float sin_theta = __sinf(theta);
 
 	float3 any_direction;
 	if (abs(normal.x) < SQRT_ONE_THIRD)
@@ -227,10 +227,10 @@ __host__ __device__ float3 sample_on_hemisphere_ggx_weight(
 	float3 vec_i = normalize(cross(normal, any_direction));
 	float3 vec_j = cross(normal, vec_i);
 
-	return cos_theta * normal + cos(phi) * sin_theta * vec_i + sin(phi) * sin_theta * vec_j;
+	return cos_theta * normal + __cosf(phi) * sin_theta * vec_i + __sinf(phi) * sin_theta * vec_j;
 }
 
-__host__ __device__ float3 sample_on_sphere(
+__device__ float3 sample_on_sphere(
 	float rand1,			//in
 	float rand2				//in
 )
@@ -240,23 +240,23 @@ __host__ __device__ float3 sample_on_sphere(
 	float sin_theta = sqrt(1.0f - cos_theta * cos_theta);
 	float phi = rand2 * TWO_PI;
 
-	return make_float3(cos_theta, cos(phi) * sin_theta, sin(phi) * sin_theta);
+	return make_float3(cos_theta, __cosf(phi) * sin_theta, __sinf(phi) * sin_theta);
 }
 
-__host__ __device__ color compute_absorption_through_medium(
+__device__ color compute_absorption_through_medium(
 	const color& absorption_coefficient,	//in 
 	float scaterring_distance				//in
 )
 {
 	//E = E_0 * e^(-¦Áx)
 	return make_float3(
-		pow(E, -1.0f * absorption_coefficient.x * scaterring_distance),
-		pow(E, -1.0f * absorption_coefficient.y * scaterring_distance),
-		pow(E, -1.0f * absorption_coefficient.z * scaterring_distance)
+		__powf(E, -1.0f * absorption_coefficient.x * scaterring_distance),
+		__powf(E, -1.0f * absorption_coefficient.y * scaterring_distance),
+		__powf(E, -1.0f * absorption_coefficient.z * scaterring_distance)
 	);
 }
 
-__host__ __device__ float compute_ggx_shadowing_masking(
+__device__ float compute_ggx_shadowing_masking(
 	float roughness,				//in
 	const float3& macro_normal,		//in
 	const float3& micro_normal,		//in
@@ -352,8 +352,8 @@ __global__ void generate_ray_kernel(
 		float3 vertical = normalize(cross(horizontal, view));
 
 		//edge of canvas
-		float3 x_axis = horizontal * (distance * tan(fov.x * 0.5f * (PI / 180.0f)));
-		float3 y_axis = vertical * (distance * tan(-fov.y * 0.5f * (PI / 180.0f)));
+		float3 x_axis = horizontal * (distance * __tanf(fov.x * 0.5f * (PI / 180.0f)));
+		float3 y_axis = vertical * (distance * __tanf(-fov.y * 0.5f * (PI / 180.0f)));
 		
 		float normalized_image_x = (((float)image_x + jitter_x) / (resolution.x - 1.0f)) * 2.0f - 1.0f;
 		float normalized_image_y = (((float)image_y + jitter_y) / (resolution.y - 1.0f)) * 2.0f - 1.0f;
@@ -372,8 +372,8 @@ __global__ void generate_ray_kernel(
 			float angle = rand1 * TWO_PI;
 			float distance = aperture_radius * sqrt(rand2);
 
-			float aperture_x = cos(angle) * distance;
-			float aperture_y = sin(angle) * distance;
+			float aperture_x = __cosf(angle) * distance;
+			float aperture_y = __sinf(angle) * distance;
 
 			point_on_aperture = eye + aperture_x * horizontal + aperture_y * vertical;
 		}
@@ -472,7 +472,7 @@ __global__ void trace_ray_kernel(
 		length(current_scattering.absorption_coefficient) > config->sss_threshold)
 	{
 		float rand = uniform_distribution(random_engine);
-		float scaterring_distance = -log(rand) / current_scattering.reduced_scattering_coefficient.x;
+		float scaterring_distance = -__logf(rand) / current_scattering.reduced_scattering_coefficient.x;
 		//TODO:ANISOTROPIC SCATTERING
 		if (scaterring_distance < min_t)
 		{
@@ -516,12 +516,24 @@ __global__ void trace_ray_kernel(
 			min_normal = hit_triangle.normal0 * (1.0f - min_t1 - min_t2) +
 				hit_triangle.normal1 * min_t1 + 
 				hit_triangle.normal2 * min_t2;
-			if (min_mat.diffuse_texture_id != -1)
+
+			float2 uv = make_float2(0.0f, 0.0f);
+
+			if (min_mat.diffuse_texture_id != -1 || min_mat.specular_texture_id != -1)
 			{
-				float2 uv = hit_triangle.uv0 * (1.0f - min_t1 - min_t2) +
+				uv = hit_triangle.uv0 * (1.0f - min_t1 - min_t2) +
 					hit_triangle.uv1 * min_t1 +
 					hit_triangle.uv2 * min_t2;
+			}
+
+			if (min_mat.diffuse_texture_id != -1)
+			{
 				min_mat.diffuse_color = min_mat.diffuse_color * mesh_textures[min_mat.diffuse_texture_id].sample_texture(uv, config->use_bilinear);
+			}
+
+			if (min_mat.specular_texture_id != -1)
+			{
+				min_mat.specular_color = min_mat.specular_color * mesh_textures[min_mat.specular_texture_id].sample_texture(uv, config->use_bilinear);
 			}
 		}
 
@@ -567,13 +579,16 @@ __global__ void trace_ray_kernel(
 			float rand1 = uniform_distribution(random_engine);
 			float rand2 = uniform_distribution(random_engine);
 
-			float remap_roughness = powf(min_mat.roughness, 2.0f) * 0.3f;
+			float remap_roughness = __powf(min_mat.roughness, 1.85f) * 0.238f;
 			float3 micro_normal = sample_on_hemisphere_ggx_weight(min_normal, remap_roughness, rand1, rand2);
-			float self_shadowing = compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, tracing_ray.direction);
+			
+			float3 micro_reflection_direction = reflection(micro_normal, in_direction);
+			float self_shadowing = compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, tracing_ray.direction) * 
+				compute_ggx_shadowing_masking(remap_roughness, min_normal, micro_normal, micro_reflection_direction);
 
 			ray next_ray;
 			next_ray.origin = min_point + bias_vector;
-			next_ray.direction = reflection(micro_normal, in_direction);
+			next_ray.direction = micro_reflection_direction;
 			rays[pixel_index] = next_ray;
 
 			not_absorbed_colors[pixel_index] *= (min_mat.specular_color * self_shadowing);

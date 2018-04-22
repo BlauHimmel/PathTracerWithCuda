@@ -145,6 +145,7 @@ bool scene_parser::load_scene(int index)
 			auto absorption_coef = material_element[TOKEN_MATERIAL_ABSORPTION_COEF];
 			auto reduced_scattering_coef = material_element[TOKEN_MATERIAL_REDUCED_SCATTERING_COEF];
 			auto diffuse_texture_id = material_element[TOKEN_MATERIAL_DIFFUSE_TEXTURE_ID];
+			auto specular_texture_id = material_element[TOKEN_MATERIAL_SPECULAR_TEXTURE_ID];
 
 			CHECK_PROPERTY(Material, name, TOKEN_MATERIAL_NAME);
 			CHECK_PROPERTY(Material, diffuse, TOKEN_MATERIAL_DIFFUSE);
@@ -187,6 +188,7 @@ bool scene_parser::load_scene(int index)
 						parse_float3(reduced_scattering_coef_str)
 					}
 				},
+				-1,
 				-1
 			};
 
@@ -202,6 +204,20 @@ bool scene_parser::load_scene(int index)
 				}
 
 				mat.diffuse_texture_id = diffuse_texture_id;
+			}
+
+			if (!specular_texture_id.is_null())
+			{
+				std::string specular_texture_id_str = specular_texture_id;
+				int specular_texture_id = parse_int(specular_texture_id_str);
+
+				if (specular_texture_id != -1 && (specular_texture_id >= texture_pathes.size() || specular_texture_id < 0))
+				{
+					std::cout << "[Error]Materail <" << name_str << ">: Texture index out of range!" << std::endl;
+					return false;
+				}
+
+				mat.specular_texture_id = specular_texture_id;
 			}
 
 			if (mat.is_transparent && mat.medium.extinction_coefficient > 0.0f)

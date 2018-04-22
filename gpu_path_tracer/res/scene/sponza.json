@@ -1,0 +1,432 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Texture" :
+	[
+		"res\\texture\\sponza\\sponza_thorn_diff.tga",
+		"res\\texture\\sponza\\vase_round.tga",
+		"res\\texture\\sponza\\vase_plant.tga",
+		"res\\texture\\sponza\\background.tga",
+		"res\\texture\\sponza\\spnza_bricks_a_diff.tga",
+		"res\\texture\\sponza\\sponza_arch_diff.tga",
+		"res\\texture\\sponza\\sponza_ceiling_a_diff.tga",
+		"res\\texture\\sponza\\sponza_column_a_diff.tga",
+		"res\\texture\\sponza\\sponza_floor_a_diff.tga",
+		"res\\texture\\sponza\\sponza_column_c_diff.tga",
+		"res\\texture\\sponza\\sponza_details_diff.tga",
+		"res\\texture\\sponza\\sponza_column_b_diff.tga",
+		"res\\texture\\sponza\\sponza_flagpole_diff.tga",
+		"res\\texture\\sponza\\sponza_fabric_green_diff.tga",
+		"res\\texture\\sponza\\sponza_fabric_blue_diff.tga",
+		"res\\texture\\sponza\\sponza_fabric_diff.tga",
+		"res\\texture\\sponza\\sponza_curtain_blue_diff.tga",
+		"res\\texture\\sponza\\sponza_curtain_diff.tga",
+		"res\\texture\\sponza\\sponza_curtain_green_diff.tga",
+		"res\\texture\\sponza\\chain_texture.tga",
+		"res\\texture\\sponza\\vase_hanging.tga",
+		"res\\texture\\sponza\\vase_dif.tga",
+		"res\\texture\\sponza\\lion.tga",
+		"res\\texture\\sponza\\sponza_roof_diff.tga"
+	],
+
+	"Material" :
+	[
+		{
+			"Name" : "leaf",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "0",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "vase_round",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "1",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "Material__57",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "2",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "Material__298",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "3",
+			"SpecularTextureId" : "-1"
+		},
+		
+		{
+			"Name" : "bricks",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "4",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "arch",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "5",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "ceiling",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "6",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "column_a",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "7",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "floor",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "8",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "column_c",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "9",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "details",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "10",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "column_b",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "11",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "Material__47",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "-1",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "flagpole",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "12",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_e",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "13",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_d",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "14",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_a",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "15",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_g",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "16",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_c",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "17",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "fabric_f",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "18",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "chain",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "19",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "vase_hanging",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "20",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "vase",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "21",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "Material__25",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "22",
+			"SpecularTextureId" : "-1"
+		},
+
+		{
+			"Name" : "roof",
+			"Diffuse" : "0.5880 0.5880 0.5880",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.0 0.0 0.0",
+			"Transparent" : "false",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.416",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0",
+			"DiffuseTextureId" : "23",
+			"SpecularTextureId" : "-1"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 200.18 0.0",
+			"Scale" : "150.5 0.01 150.5",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Material" : ["leaf", "vase_hanging", "column_b", "column_b", "chain", "column_b", "column_b", "column_a", "vase_hanging", "column_c", "chain", "flagpole", "vase_hanging", "vase_round", "fabric_e", "column_c", "column_c", "vase", "column_b", "bricks", "flagpole", "column_b", "column_b", "column_c", "column_b", "column_b", "column_c", "flagpole", "column_b", "fabric_g", "column_b", "bricks", "column_a", "column_c", "vase", "flagpole", "vase_hanging", "arch", "vase_hanging", "column_b", "details", "column_b", "arch", "column_b", "column_b", "chain", "chain", "column_b", "column_b", "leaf", "column_c", "column_b", "arch", "Material__57", "column_b", "column_c", "column_b", "Material__57", "column_c", "arch", "column_b", "column_c", "column_b", "Material__298", "arch", "details", "vase_hanging", "column_c", "column_c", "flagpole", "flagpole", "column_b", "column_a", "details", "arch", "fabric_e", "column_b", "fabric_a", "column_b", "column_b", "column_b", "column_b", "column_c", "column_b", "column_b", "column_c", "column_b", "arch", "column_b", "column_b", "column_c", "ceiling", "column_b", "fabric_d", "vase_hanging", "column_b", "column_a", "fabric_e", "column_c", "column_c", "column_b", "column_b", "column_b", "column_c", "column_c", "roof", "column_b", "bricks", "column_b", "vase_round", "column_b", "vase_hanging", "ceiling", "Material__57", "leaf", "bricks", "column_b", "column_b", "column_a", "flagpole", "bricks", "column_c", "column_a", "fabric_g", "column_b", "column_b", "arch", "column_b", "column_b", "Material__57", "chain", "column_b", "column_b", "vase_round", "Material__25", "column_a", "vase_round", "flagpole", "arch", "column_b", "column_b", "column_c", "column_b", "arch", "column_b", "column_c", "vase_hanging", "column_b", "flagpole", "column_b", "column_b", "arch", "column_b", "column_b", "column_b", "column_c", "Material__25", "flagpole", "flagpole", "column_c", "arch", "chain", "Material__298", "arch", "column_a", "bricks", "vase_hanging", "flagpole", "arch", "arch", "column_c", "column_c", "fabric_d", "column_b", "bricks", "bricks", "ceiling", "column_b", "column_b", "vase_round", "chain", "chain", "column_b", "column_b", "column_b", "column_c", "column_c", "fabric_c", "fabric_f", "bricks", "vase_hanging", "column_c", "column_b", "column_c", "column_c", "arch", "column_b", "column_c", "fabric_c", "column_c", "column_b", "ceiling", "column_b", "flagpole", "fabric_f", "column_c", "column_b", "column_c", "arch", "column_b", "flagpole", "column_b", "column_b", "column_b", "flagpole", "arch", "flagpole", "ceiling", "flagpole", "column_b", "column_b", "flagpole", "column_b", "column_c", "bricks", "bricks", "column_b", "fabric_c", "column_b", "ceiling", "column_b", "column_b", "vase", "Material__57", "column_c", "arch", "flagpole", "bricks", "details", "column_b", "fabric_d", "leaf", "column_a", "vase_round", "flagpole", "column_b", "column_c", "column_b", "flagpole", "bricks", "column_b", "flagpole", "flagpole", "column_b", "column_b", "flagpole", "ceiling", "flagpole", "bricks", "column_b", "Material__57", "column_b", "column_b", "vase_hanging", "column_b", "Material__47", "vase_hanging", "column_b", "flagpole", "column_c", "column_b", "column_c", "column_c", "flagpole", "column_b", "chain", "flagpole", "arch", "flagpole", "column_b", "flagpole", "flagpole", "column_b", "flagpole", "column_c", "flagpole", "flagpole", "column_c", "column_b", "fabric_g", "column_b", "column_c", "column_b", "column_b", "flagpole", "ceiling", "flagpole", "Material__57", "column_b", "vase_hanging", "column_b", "chain", "column_a", "column_b", "Material__298", "vase_round", "column_b", "flagpole", "column_b", "arch", "column_b", "flagpole", "vase_hanging", "column_b", "column_b", "fabric_a", "floor", "arch", "arch", "leaf", "column_b", "column_b", "column_c", "leaf", "details", "arch", "chain", "column_b", "ceiling", "column_b", "fabric_c", "vase_hanging", "flagpole", "column_b", "vase_hanging", "chain", "column_b", "flagpole", "column_b", "ceiling", "column_c", "floor", "Material__57", "flagpole", "vase_hanging", "fabric_f", "column_b", "ceiling", "column_c", "column_b", "chain", "arch", "column_b", "column_b", "column_c", "column_a", "column_c", "column_c", "column_b", "chain", "flagpole", "vase_hanging", "arch", "column_a", "flagpole", "column_c", "chain", "arch", "column_b", "column_b", "column_c", "leaf", "column_b", "flagpole", "vase_hanging", "column_b", "vase_round", "flagpole", "chain", "column_b", "column_b", "arch", "column_b", "column_b", "column_b", "roof", "column_b", "ceiling", "vase", "flagpole", "column_b", "leaf", "column_b"],
+			"Path" : "res\\obj\\sponza.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "0.05 0.05 0.05",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}
