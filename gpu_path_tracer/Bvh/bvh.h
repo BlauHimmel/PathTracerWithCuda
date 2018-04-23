@@ -9,9 +9,9 @@
 #include <vector>
 #include <stack>
 #include <algorithm>
-#include <glm\glm.hpp>
 #include <omp.h>
 
+#include "lib\glm\glm.hpp"
 #include "Core\triangle.h"
 #include "Others\utilities.hpp"
 #include "Math\cuda_math.hpp"

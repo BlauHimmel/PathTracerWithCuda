@@ -1,0 +1,134 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Material" :
+	[
+		{
+			"Name" : "Absorp1",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "5.0 5.0 5.0"
+		},
+
+		{
+			"Name" : "Absorp2",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "5.0 5.0 5.0",
+			"ReducedScatteringCoef" : "5.0 5.0 5.0"
+		},
+
+		{
+			"Name" : "Absorp3",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "5.0 5.0 0.0",
+			"ReducedScatteringCoef" : "5.0 5.0 5.0"
+		},
+
+		{
+			"Name" : "Absorp4",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "5.0 0.0 0.0",
+			"ReducedScatteringCoef" : "5.0 5.0 5.0"
+		},
+
+		{
+			"Name" : "Absorp5",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "10.0 0.0 0.0",
+			"ReducedScatteringCoef" : "5.0 5.0 5.0"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 3.1 0.0",
+			"Scale" : "0.85 0.05 0.85",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Material" : ["wall_white", "wall_green", "wall_red", "wall_white", "wall_white"],
+			"Path" : "res\\obj\\cornell.obj",
+			"Position" : "0.0 -0.8 1.0",
+			"Scale" : "0.2 0.1 0.3",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+		
+		{
+			"Material" : ["Absorp1"],
+			"Path" : "res\\obj\\cup.obj",
+			"Position" : "-3.0 -0.3 0.0",
+			"Scale" : "0.5 0.5 0.5",
+			"Rotate" : "0.0 90.0 0.0"
+		},
+
+		{
+			"Material" : ["Absorp2"],
+			"Path" : "res\\obj\\cup.obj",
+			"Position" : "-1.5 -0.3 0.0",
+			"Scale" : "0.5 0.5 0.5",
+			"Rotate" : "0.0 90.0 0.0"
+		},
+
+		{
+			"Material" : ["Absorp3"],
+			"Path" : "res\\obj\\cup.obj",
+			"Position" : "-0.0 -0.3 0.0",
+			"Scale" : "0.5 0.5 0.5",
+			"Rotate" : "0.0 90.0 0.0"
+		},
+
+		{
+			"Material" : ["Absorp4"],
+			"Path" : "res\\obj\\cup.obj",
+			"Position" : "1.5 -0.3 0.0",
+			"Scale" : "0.5 0.5 0.5",
+			"Rotate" : "0.0 90.0 0.0"
+		},
+
+		{
+			"Material" : ["Absorp5"],
+			"Path" : "res\\obj\\cup.obj",
+			"Position" : "3.0 -0.3 0.0",
+			"Scale" : "0.5 0.5 0.5",
+			"Rotate" : "0.0 90.0 0.0"
+		}
+	]
+}

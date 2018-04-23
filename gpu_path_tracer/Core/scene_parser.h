@@ -4,6 +4,7 @@
 #define __SCENE_PARSER__
 
 #include "lib\json\json.hpp"
+#include "lib\glm\glm.hpp"
 
 #include "Core\sphere.h"
 #include "Core\triangle.h"
@@ -18,7 +19,6 @@
 #include <sstream>
 #include <Windows.h>
 #include <io.h>
-#include <glm\glm.hpp>
 
 #define TOKEN_OBJECT_SPHERE "Sphere"
 #define TOKEN_OBJECT_SPHERE_CENTER "Center"

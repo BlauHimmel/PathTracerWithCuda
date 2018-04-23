@@ -4,8 +4,8 @@
 #define __CAMERA__
 
 #include <cuda_runtime.h>
-#include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
+#include "lib\glm\glm.hpp"
+#include "lib\glm\gtc\matrix_transform.hpp"
 #include "Math\basic_math.hpp"
 
 #define MAX_APERTURE_RADIUS 1.0f

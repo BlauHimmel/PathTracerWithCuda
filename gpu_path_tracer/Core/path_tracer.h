@@ -8,7 +8,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-#include <glm\glm.hpp>
 
 #include "Core\sphere.h"
 #include "Core\image.h"
@@ -26,6 +25,7 @@
 #include "Core\scene_parser.h"
 #include "Core\config_parser.h"
 
+#include "lib\glm\glm.hpp"
 #include "lib\imgui\imgui.h"
 #include "lib\imgui\imgui_impl_glfw_gl3.h"
 

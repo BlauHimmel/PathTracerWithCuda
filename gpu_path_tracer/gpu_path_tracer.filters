@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Library">
+      <UniqueIdentifier>{6f4176c0-1b40-4968-8b87-d8d2ee5ccbce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel">
+      <UniqueIdentifier>{26db24cf-0234-4986-b389-ca54bd608aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Library\tiny_obj_loader">
+      <UniqueIdentifier>{b085ba88-b53e-4825-90ae-02e8f3e3ee02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\lodepng">
+      <UniqueIdentifier>{86897923-294e-402b-a1e7-dfccb9555cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\imgui">
+      <UniqueIdentifier>{00216340-cfa8-4b4f-bf8d-905daaa6c3a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json">
+      <UniqueIdentifier>{88a4d66c-241d-46f4-9292-a8cf8631e5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail">
+      <UniqueIdentifier>{8e946c1e-91be-4e05-95da-39e6ada487d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\conversions">
+      <UniqueIdentifier>{406004a9-5991-444a-9d19-dc8a6f0784d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\iterators">
+      <UniqueIdentifier>{9919cb94-8400-4d8b-ac74-250c7a1c2012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\json\detail\parsing">
+      <UniqueIdentifier>{39be4316-9586-4011-92a8-93728c0d9b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header\Bvh">
+      <UniqueIdentifier>{ae5cc3da-144b-464b-bfdc-270ae9c46368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Math">
+      <UniqueIdentifier>{c9cc1d9f-ae16-4612-9d04-6708f9b922b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Core">
+      <UniqueIdentifier>{fc3b2dbf-9571-4c93-9c31-42f7ff13ef13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Others">
+      <UniqueIdentifier>{49430132-ba35-47af-99d0-c323fe84f63e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Bvh">
+      <UniqueIdentifier>{eee87a57-2b7c-42f3-aa6a-34431da11e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Main">
+      <UniqueIdentifier>{2e44beb1-baf2-4075-ab08-048707afc2b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{dfdb1ed5-587b-4e5e-a0bf-0dd72a5fae8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\free_image">
+      <UniqueIdentifier>{dbb712c8-7294-4fc3-b772-73c50e6b307e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Others">
+      <UniqueIdentifier>{061e654d-dc9a-4c37-99b2-ded2b68b2de9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lib\lodepng\lodepng.cpp">
+      <Filter>Library\lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\tiny_obj_loader\tiny_obj_loader.cc">
+      <Filter>Library\tiny_obj_loader</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_demo.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_draw.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\imgui_impl_glfw_gl3.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Bvh\bvh.cpp">
+      <Filter>Source\Bvh</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\triangle_mesh.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\scene_parser.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\path_tracer.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\material.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\image.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\cube_map_loader.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\config_parser.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\camera.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\window.cpp">
+      <Filter>Source\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Others\image_loader.cpp">
+      <Filter>Source\Others</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\lodepng\lodepng.h">
+      <Filter>Library\lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\tiny_obj_loader\tiny_obj_loader.h">
+      <Filter>Library\tiny_obj_loader</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imconfig.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui_internal.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_rect_pack.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_textedit.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\stb_truetype.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\imgui_impl_glfw_gl3.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\adl_serializer.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\json.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\json_fwd.hpp">
+      <Filter>Library\json</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\exceptions.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\json_ref.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_scope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\macro_unscope.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\meta.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\serializer.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\value_t.hpp">
+      <Filter>Library\json\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\from_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\conversions\to_json.hpp">
+      <Filter>Library\json\detail\conversions</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\internal_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iter_impl.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\iteration_proxy.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\json_reverse_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\iterators\primitive_iterator.hpp">
+      <Filter>Library\json\detail\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_reader.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\binary_writer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\input_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\lexer.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\output_adapters.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\json\detail\parsing\parser.hpp">
+      <Filter>Library\json\detail\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\camera.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\config_parser.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\configuration.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\cube_map.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\cube_map_loader.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\fresnel.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\image.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\material.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\path_tracer.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\path_tracer_kernel.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ray.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\scene_parser.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\sphere.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\triangle.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\triangle_mesh.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\utilities.hpp">
+      <Filter>Header\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\basic_math.hpp">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\cuda_math.hpp">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh\bvh.h">
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh\bvh_morton_code_kernel.h">
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh\bvh_node.h">
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh\bounding_box.h">
+      <Filter>Header\Bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\texture.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Others\image_loader.h">
+      <Filter>Header\Others</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Kernel\bvh_morton_code_kernel.cu">
+      <Filter>Kernel</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Kernel\path_tracer_kernel.cu">
+      <Filter>Kernel</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>

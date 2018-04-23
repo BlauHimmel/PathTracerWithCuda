@@ -8,11 +8,13 @@
 #include <iostream>
 #include <vector>
 #include <time.h>
+
 #include "Math\basic_math.hpp"
 #include "Core\cube_map.h"
-#include "lib\lodepng\lodepng.h"
 #include "Others\utilities.hpp"
 #include "Others\image_loader.h"
+
+#include "lib\lodepng\lodepng.h"
 
 class cube_map_loader
 {

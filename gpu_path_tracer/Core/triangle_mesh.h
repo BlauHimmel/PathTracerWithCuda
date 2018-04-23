@@ -7,8 +7,8 @@
 #include <iostream>
 #include <functional>
 #include <time.h>
-#include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
+#include "lib\glm\glm.hpp"
+#include "lib\glm\gtc\matrix_transform.hpp"
 #include "lib\tiny_obj_loader\tiny_obj_loader.h"
 #include "Core\triangle.h"
 #include "Core\material.h"

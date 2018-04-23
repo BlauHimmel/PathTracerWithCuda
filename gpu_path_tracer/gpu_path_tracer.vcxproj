@@ -78,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir);C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)lib\glfw;$(ProjectDir)lib\glew;$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,7 +87,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)lib\glfw;$(ProjectDir)lib\glew;$(ProjectDir)lib\free_image;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\lib\x64;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir);C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\include;$(IncludePath)</IncludePath>
     <ExecutablePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.1\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
