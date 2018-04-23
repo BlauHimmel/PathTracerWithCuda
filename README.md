@@ -19,6 +19,8 @@ The GRAPHICS CARD'S DRIVER crashed occasionally. I am working on it. :(
 
 ![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample13.png)
 
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample14.png)
+
 ![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample11.png)
 
 ![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample12.png)

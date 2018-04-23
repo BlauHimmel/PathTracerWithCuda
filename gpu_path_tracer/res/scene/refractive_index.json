@@ -1,0 +1,138 @@
+{
+	"Background" :
+	{
+		"Name" : "yokohama",
+		"Path" : "res\\texture\\"
+	},
+
+	"Material" :
+	[
+		{
+			"Name" : "Refract1",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.01",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Refract2",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.2",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Refract3",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.4",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Refract4",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.6",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Refract5",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.8",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Name" : "Refract6",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "0.972 0.960 0.915",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "2.0",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "0.0 0.0 0.0",
+			"ReducedScatteringCoef" : "0.0 0.0 0.0"
+		}
+	],
+
+	"Sphere" :
+	[
+		{
+			"Material" : "Refract1",
+			"Center" : "0.0 0.0 -4.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Refract2",
+			"Center" : "0.0 0.0 -2.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Refract3",
+			"Center" : "0.0 0.0 0.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Refract4",
+			"Center" : "0.0 0.0 2.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Refract5",
+			"Center" : "0.0 0.0 4.0",
+			"Radius" : "0.8"
+		},
+
+		{
+			"Material" : "Refract6",
+			"Center" : "0.0 0.0 6.0",
+			"Radius" : "0.8"
+		}
+	],
+
+	"Mesh" :
+	[
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 10.0 0.0",
+			"Scale" : "1.5 0.01 1.5",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}
