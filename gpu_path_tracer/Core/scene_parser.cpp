@@ -256,7 +256,6 @@ bool scene_parser::load_scene(int index)
 			sphere sphere;
 			sphere.center = parse_float3(center_str);
 			sphere.radius = clamp(parse_float(radius_str), 0.0f, INFINITY);
-			sphere.mat = material::get_default_material();
 
 			spheres.push_back(sphere);
 			spheres_mat.push_back(material_str);

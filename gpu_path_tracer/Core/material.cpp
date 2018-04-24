@@ -1,22 +1,5 @@
 #include "Core\material.h"
 
-material* new_default_material()
-{
-	material* mat = new material();
-	mat->diffuse_color = make_float3(0.0f, 0.0f, 0.0f);
-	mat->emission_color = make_float3(0.0f, 0.0f, 0.0f);
-	mat->specular_color = make_float3(0.0f, 0.0f, 0.0f);
-	mat->is_transparent = false;
-	mat->roughness = 0.0f;
-	mat->medium.refraction_index = AIR_REFRACTION_INDEX;
-	mat->medium.extinction_coefficient = 0.0f;
-	mat->medium.scattering.absorption_coefficient = AIR_ABSORPTION_COEFFICIENT;
-	mat->medium.scattering.reduced_scattering_coefficient = AIR_REDUCED_SCATTERING_COEFFICIENT;
-	mat->diffuse_texture_id = -1;
-	mat->specular_texture_id = -1;
-	return mat;
-}
-
 material* copy_material(const material& mat)
 {
 	material* dst = new material();
@@ -583,7 +566,7 @@ namespace material_data
 			false,										//transparent
 			0.01f,										//roughness
 			{
-				AIR_REFRACTION_INDEX,					//refraction index
+				1.000293f,								//refraction index
 				0.0f,									//extinction coefficient
 				{
 					make_float3(0.0f, 0.0f, 0.0f),		//absorption coefficient

@@ -300,7 +300,7 @@ __global__ void init_data_kernel(
 		energy_exist_pixels[pixel_index] = pixel_index;
 		not_absorbed_colors[pixel_index] = make_float3(1.0f, 1.0f, 1.0f);
 		accumulated_colors[pixel_index] = make_float3(0.0f, 0.0f, 0.0f);
-		scatterings[pixel_index] = scattering::get_default_scattering();
+		scatterings[pixel_index] = scattering::get_default_scattering(config);
 	}
 }
 
@@ -537,7 +537,7 @@ __global__ void trace_ray_kernel(
 		float3 in_direction = tracing_ray.direction;
 
 		medium in_medium;
-		in_medium = medium::get_default_medium();
+		in_medium = medium::get_default_medium(config);
 		medium out_medium = min_mat.medium;
 
 		bool is_hit_on_back = dot(in_direction, min_normal) > 0;

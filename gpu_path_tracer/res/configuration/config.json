@@ -16,5 +16,8 @@
 	"FOV" : "45.0",
 	"BvhLeafNodeTriangleNum" : "1",
 	"BvhBucketMaxDivideInternalNum" : "12",
-	"BvhBuildBlockSize" : "32"
+	"BvhBuildBlockSize" : "32",
+	"AirRefractionIndex" : "1.000293",
+	"AirAbsorptionCoef" : "0.0 0.0 0.0",
+	"AirReducedScatteringCoef" : "0.0 0.0 0.0"
 }

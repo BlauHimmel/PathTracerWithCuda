@@ -269,14 +269,13 @@ void path_tracer::render_ui()
 
 						if (is_this_material_modified)
 						{
-							material new_mat = material::get_default_material();
+							material new_mat;
 
 							new_mat.diffuse_color = make_float3(diffuse[0], diffuse[1], diffuse[2]);
 							new_mat.specular_color = make_float3(specular[0], specular[1], specular[2]);
 							new_mat.emission_color = make_float3(emission[0], emission[1], emission[2]);
 							new_mat.is_transparent = is_transparent;
 							new_mat.roughness = roughness;
-
 							new_mat.medium.refraction_index = refraction_index;
 							if (!is_transparent)
 							{
@@ -289,6 +288,7 @@ void path_tracer::render_ui()
 							new_mat.medium.scattering.absorption_coefficient = make_float3(absorption_coefficient[0], absorption_coefficient[1], absorption_coefficient[2]);
 							new_mat.medium.scattering.reduced_scattering_coefficient = make_float3(reduced_scattering_coefficient, reduced_scattering_coefficient, reduced_scattering_coefficient);
 							new_mat.diffuse_texture_id = mats[j].diffuse_texture_id;
+							new_mat.specular_texture_id = mats[j].specular_texture_id;
 
 							mats[j] = new_mat;
 						}

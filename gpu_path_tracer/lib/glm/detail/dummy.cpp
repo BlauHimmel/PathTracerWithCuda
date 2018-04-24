@@ -164,10 +164,10 @@ glm::vec3 lighting
 	return Color;
 }
 */
-
+/*
 int main()
 {
-/*
+
 	glm::vec1 o(1);
 	glm::vec2 a(1);
 	glm::vec3 b(1);
@@ -181,6 +181,7 @@ int main()
 	float a0 = normalizeDotA(a, a);
 	float b0 = normalizeDotB(b, b);
 	float c0 = normalizeDotC(c, c);
-*/
+
 	return 0;
 }
+*/

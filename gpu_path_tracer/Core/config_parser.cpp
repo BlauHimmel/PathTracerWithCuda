@@ -40,6 +40,9 @@ bool config_parser::load_config(const std::string& filename)
 	auto bvh_leaf_node_triangle_num = m_json_parser[TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM];
 	auto bvh_bucket_max_divide_internal_num = m_json_parser[TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM];
 	auto bvh_build_block_size = m_json_parser[TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE];
+	auto air_refraction_index = m_json_parser[TOKEN_CONFIG_AIR_REFRACTION_INDEX];
+	auto air_absorption_coef = m_json_parser[TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT];
+	auto air_reduced_scattering_coef = m_json_parser[TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT];
 
 	CHECK_PROPERTY(Config, height, TOKEN_CONFIG_HEIGHT);
 	CHECK_PROPERTY(Config, width, TOKEN_CONFIG_WIDTH);
@@ -59,6 +62,9 @@ bool config_parser::load_config(const std::string& filename)
 	CHECK_PROPERTY(Config, bvh_leaf_node_triangle_num, TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM);
 	CHECK_PROPERTY(Config, bvh_bucket_max_divide_internal_num, TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM);
 	CHECK_PROPERTY(Config, bvh_build_block_size, TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE);
+	CHECK_PROPERTY(Config, air_refraction_index, TOKEN_CONFIG_AIR_REFRACTION_INDEX);
+	CHECK_PROPERTY(Config, air_absorption_coef, TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT);
+	CHECK_PROPERTY(Config, air_reduced_scattering_coef, TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT);
 
 	std::string height_str = height;
 	std::string width_str = width;
@@ -78,6 +84,9 @@ bool config_parser::load_config(const std::string& filename)
 	std::string bvh_leaf_node_triangle_num_str = bvh_leaf_node_triangle_num;
 	std::string bvh_bucket_max_divide_internal_num_str = bvh_bucket_max_divide_internal_num;
 	std::string bvh_build_block_size_str = bvh_build_block_size;
+	std::string air_refraction_index_str = air_refraction_index;
+	std::string air_absorption_coef_str = air_absorption_coef;
+	std::string air_reduced_scattering_coef_str = air_reduced_scattering_coef;
 
 	m_height = parse_int(height_str);
 	m_width = parse_int(width_str);
@@ -97,6 +106,9 @@ bool config_parser::load_config(const std::string& filename)
 	m_bvh_leaf_node_triangle_num = parse_int(bvh_leaf_node_triangle_num_str);
 	m_bvh_bucket_max_divide_internal_num = parse_int(bvh_bucket_max_divide_internal_num_str);
 	m_bvh_build_block_size = parse_int(bvh_build_block_size_str);
+	m_air_refraction_index = parse_float(air_refraction_index_str);
+	m_air_absorption_coef = parse_float3(air_absorption_coef_str);
+	m_air_reduced_scattering_coef = parse_float3(air_reduced_scattering_coef_str);
 
 	m_is_loaded = true;
 
@@ -124,6 +136,9 @@ void config_parser::unload_config()
 	m_bvh_leaf_node_triangle_num = 1;
 	m_bvh_bucket_max_divide_internal_num = 12;
 	m_bvh_build_block_size = 32;
+	m_air_refraction_index = 1.000293f;
+	m_air_absorption_coef = make_float3(0.0f, 0.0f, 0.0f);
+	m_air_reduced_scattering_coef = make_float3(0.0f, 0.0f, 0.0f);
 }
 
 configuration* config_parser::get_config_device_ptr()
@@ -153,6 +168,9 @@ void config_parser::create_config_device_data()
 	m_config_device->bvh_leaf_node_triangle_num = m_bvh_leaf_node_triangle_num;
 	m_config_device->bvh_bucket_max_divide_internal_num = m_bvh_bucket_max_divide_internal_num;
 	m_config_device->bvh_build_block_size = m_bvh_build_block_size;
+	m_config_device->air_refraction_index = m_air_refraction_index;
+	m_config_device->air_absorption_coef = m_air_absorption_coef;
+	m_config_device->air_reduced_scattering_coef = m_air_reduced_scattering_coef;
 	printf("IT'S OK THIS TIME.\n");
 }
 
@@ -191,4 +209,12 @@ bool config_parser::parse_bool(const std::string& text)
 	{
 		return false;
 	}
+}
+
+float3 config_parser::parse_float3(const std::string& text)
+{
+	std::istringstream stream(text);
+	float x, y, z;
+	stream >> x >> y >> z;
+	return make_float3(x, y, z);
 }

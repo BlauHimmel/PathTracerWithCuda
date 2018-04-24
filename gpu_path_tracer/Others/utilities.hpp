@@ -17,6 +17,22 @@
 	}\
 }\
 
+#define NVML_CALL(Statement)\
+{\
+	nvmlReturn_t error = Statement;\
+	if (error != NVML_SUCCESS)\
+	{\
+		fprintf(stderr, "[Nvml]Error in file '%s' in line %i : %s.\n",\
+			__FILE__, __LINE__, nvmlErrorString(error));\
+		return false;\
+	}\
+}\
+
+#define NVML_SUPPORTED(Feature)\
+{\
+	if (error != NVML_SUCCESS){ Feature##_supported = false; } else { Feature##_supported = true; }\
+}\
+
 #define SAFE_DELETE(Ptr)\
 {\
 	if (Ptr != nullptr)\
