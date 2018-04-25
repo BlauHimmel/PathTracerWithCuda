@@ -651,11 +651,11 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 	{
 		if (pass_counter != 1)
 		{
-			image_pixels[pixel_index] += accumulated_colors[pixel_index];
+			image_pixels[pixel_index] += clamp(accumulated_colors[pixel_index], 0.0f, static_cast<float>(config->max_tracer_depth) * 2.0f);
 		}
 		else
 		{
-			image_pixels[pixel_index] = accumulated_colors[pixel_index];
+			image_pixels[pixel_index] = clamp(accumulated_colors[pixel_index], 0.0f, static_cast<float>(config->max_tracer_depth) * 2.0f);
 		}
 
 		color pixel = image_pixels[pixel_index] / (float)pass_counter;

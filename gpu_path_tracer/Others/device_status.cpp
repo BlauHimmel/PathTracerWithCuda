@@ -39,19 +39,19 @@ void device_status::tick()
 	error = nvmlDeviceGetFanSpeed(device, &device_fan_speed);
 	NVML_SUPPORTED(device_fan_speed);
 
-	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_GRAPHICS, &device_graphics_clock);
+	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_GRAPHICS, &device_graphics_clock);
 	NVML_SUPPORTED(device_graphics_clock);
-	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_GRAPHICS, &device_graphics_max_clock);
+	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_GRAPHICS, &device_graphics_max_clock);
 	NVML_SUPPORTED(device_graphics_max_clock);
 
-	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_SM, &device_sm_clock);
+	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_SM, &device_sm_clock);
 	NVML_SUPPORTED(device_sm_clock);
-	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_SM, &device_sm_max_clock);
+	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_SM, &device_sm_max_clock);
 	NVML_SUPPORTED(device_sm_max_clock);
 
-	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_MEM, &device_memory_clock);
+	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_MEM, &device_memory_clock);
 	NVML_SUPPORTED(device_memory_clock);
-	error = nvmlDeviceGetClockInfo(device, NVML_CLOCK_MEM, &device_memory_max_clock);
+	error = nvmlDeviceGetMaxClockInfo(device, NVML_CLOCK_MEM, &device_memory_max_clock);
 	NVML_SUPPORTED(device_memory_max_clock);
 }
 
@@ -82,12 +82,14 @@ void device_status::render_ui(double tick_interval)
 		{
 			sprintf(buffer, "Compute Mode: %s", compute_mode_convert_to_string(device_compute_mode));
 			ImGui::Text(buffer);
+			ImGui::NewLine();
 		}
 
 		if (device_fan_speed_supported)
 		{
 			sprintf(buffer, "Fan Speed: %d Percent", device_fan_speed);
 			ImGui::Text(buffer);
+			ImGui::NewLine();
 		}
 
 		if (device_utilization_supported)
@@ -107,13 +109,13 @@ void device_status::render_ui(double tick_interval)
 		{
 			ImGui::Text("Memory");
 
-			sprintf(buffer, "Total Memory: %.2f MB", static_cast<float>(device_memory.total) / 1024.0f / 1024.0f);
+			sprintf(buffer, "Total: %.2f MB", static_cast<float>(device_memory.total) / 1024.0f / 1024.0f);
 			ImGui::Text(buffer);
 
-			sprintf(buffer, "Used Memory: %.2f MB", static_cast<float>(device_memory.used) / 1024.0f / 1024.0f);
+			sprintf(buffer, "Used: %.2f MB", static_cast<float>(device_memory.used) / 1024.0f / 1024.0f);
 			ImGui::Text(buffer);
 
-			sprintf(buffer, "Free Memory: %.2f MB", static_cast<float>(device_memory.free) / 1024.0f / 1024.0f);
+			sprintf(buffer, "Free: %.2f MB", static_cast<float>(device_memory.free) / 1024.0f / 1024.0f);
 			ImGui::Text(buffer);
 
 			ImGui::NewLine();
@@ -208,7 +210,6 @@ void device_status::render_ui(double tick_interval)
 		ImGui::TreePop();
 	}
 }
-
 
 std::string device_status::device_name = "Null";
 
