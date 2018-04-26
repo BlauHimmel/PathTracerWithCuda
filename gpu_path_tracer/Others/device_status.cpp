@@ -73,7 +73,7 @@ void device_status::render_ui(double tick_interval)
 		last_tick_time = clock();
 	}
 
-	if (ImGui::TreeNode("Device"))
+	if (ImGui::CollapsingHeader("Device"))
 	{
 		sprintf(buffer, "Name: %s", device_name.c_str());
 		ImGui::Text(buffer);
@@ -207,7 +207,6 @@ void device_status::render_ui(double tick_interval)
 
 			ImGui::NewLine();
 		}
-		ImGui::TreePop();
 	}
 }
 

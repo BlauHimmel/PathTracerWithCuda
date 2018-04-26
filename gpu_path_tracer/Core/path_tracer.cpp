@@ -91,7 +91,7 @@ void path_tracer::render_ui()
 
 	bool is_sphere_modified = false;
 
-	if (m_scene.get_sphere_num() > 0 && ImGui::TreeNode("Sphere"))
+	if (m_scene.get_sphere_num() > 0 && ImGui::CollapsingHeader("Sphere"))
 	{
 		for (auto i = 0; i < m_scene.get_sphere_num(); i++)
 		{
@@ -178,13 +178,11 @@ void path_tracer::render_ui()
 				ImGui::TreePop();
 			}
 		}
-
-		ImGui::TreePop();
 	}
 
 	bool is_triangle_mesh_modified = false;
 
-	if (m_scene.get_mesh_num() > 0 && ImGui::TreeNode("Mesh"))
+	if (m_scene.get_mesh_num() > 0 && ImGui::CollapsingHeader("Mesh"))
 	{
 		for (auto i = 0; i < m_scene.get_mesh_num(); i++)
 		{
@@ -332,8 +330,6 @@ void path_tracer::render_ui()
 				ImGui::TreePop();
 			}
 		}
-
-		ImGui::TreePop();
 	}
 
 	if (is_sphere_modified || is_triangle_mesh_modified)
