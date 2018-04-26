@@ -17,12 +17,12 @@ The GRAPHICS CARD'S DRIVER crashed occasionally. I am working on it. :(
 * Skybox.
 * Microsurface model for reflection.
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample13.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample13.png)
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample14.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample14.png)
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample11.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample11.png)
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample9.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample9.png)
 
-![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh-cpu/Result/sample12.png)
+![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample12.png)
