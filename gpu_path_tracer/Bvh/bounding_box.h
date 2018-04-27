@@ -80,7 +80,7 @@ struct bounding_box
 			right_top.z == left_bottom.z;
 	}
 
-	__host__ __device__ bool intersect_bounding_box(const ray& ray)
+	__host__ __device__ bool intersect_bounding_box(const ray& ray, float& hit_t)
 	{
 		float3 inverse_direction = 1.0f / ray.direction;
 
@@ -97,6 +97,7 @@ struct bounding_box
 		float t_min = fminf(fminf(fmaxf(t_x1, t_x2), fmaxf(t_y1, t_y2)), fmaxf(t_z1, t_z2));
 
 		bool is_hit = t_max <= t_min;
+		hit_t = is_hit ? t_max : hit_t;
 		return is_hit && t_min > 0.0f;
 	}
 };

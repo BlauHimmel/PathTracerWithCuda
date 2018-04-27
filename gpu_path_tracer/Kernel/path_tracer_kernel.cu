@@ -113,6 +113,7 @@ __device__ bool intersect_triangle_mesh_bvh(
 	float current_t2 = INFINITY;
 
 	bool is_hit = false;
+	float bounding_box_hit_t = INFINITY;
 
 	bvh_node_device* bvh_node = bvh_nodes[mesh_index];
 
@@ -123,7 +124,7 @@ __device__ bool intersect_triangle_mesh_bvh(
 		bvh_node_device current_node = bvh_node[traversal_position];
 
 		//if hit the box them check if it is leaf node, otherwise check stop traversing on this branch
-		if (current_node.box.intersect_bounding_box(ray))
+		if (current_node.box.intersect_bounding_box(ray, bounding_box_hit_t) && bounding_box_hit_t <= min_t)
 		{
 			if (current_node.is_leaf)
 			{
