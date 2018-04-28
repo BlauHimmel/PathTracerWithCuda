@@ -8,6 +8,7 @@
 #include <thrust\device_vector.h>
 #include <vector>
 #include <stack>
+#include <string>
 #include <algorithm>
 #include <omp.h>
 
@@ -19,17 +20,30 @@
 #include "Bvh\bvh_morton_code_kernel.h"
 #include "Bvh\bounding_box.h"
 #include "Bvh\bvh_node.h"
+#include "Bvh\bvh_build_config.h"
 
-#undef BVH_MORTON_CODE_BUILD_OPENMP					//used by bvh_morton_code_cpu and bvh_morton_code_cuda			
-#define BVH_BUILD_METHOD bvh_morton_code_cuda::
+#define auto_build_bvh(build_method, triangles, triangle_num, start_index)\
+(build_method == bvh_build_method::NAIVE_CPU ? bvh_naive_cpu::build_bvh(triangles, triangle_num, start_index) :\
+(build_method == bvh_build_method::MORTON_CODE_CPU ? bvh_morton_code_cpu::build_bvh(triangles, triangle_num, start_index) :\
+(build_method == bvh_build_method::MORTON_CODE_CUDA ? bvh_morton_code_cuda::build_bvh(triangles, triangle_num, start_index) :\
+bvh_naive_cpu::build_bvh(triangles, triangle_num, start_index))))
 
-class bvh_build_config
-{
-public:
-	static int bvh_leaf_node_triangle_num;            
-	static int bvh_bucket_max_divide_internal_num;	  //used by bvh_naive_cpu
-	static int bvh_build_block_size;				  //used by bvh_morton_code_cuda
-};
+#define auto_build_bvh_device_data(build_method, root)\
+(build_method == bvh_build_method::NAIVE_CPU ? bvh_naive_cpu::build_bvh_device_data(root) : \
+(build_method == bvh_build_method::MORTON_CODE_CPU ? bvh_morton_code_cpu::build_bvh_device_data(root) : \
+(build_method == bvh_build_method::MORTON_CODE_CUDA ? bvh_morton_code_cuda::build_bvh_device_data(root) : \
+	bvh_naive_cpu::build_bvh_device_data(root))))
+
+#define auto_release_bvh(build_method, root_node)\
+(build_method == bvh_build_method::NAIVE_CPU ? bvh_naive_cpu::release_bvh(root_node) : \
+(build_method == bvh_build_method::MORTON_CODE_CPU ? bvh_morton_code_cpu::release_bvh(root_node) : \
+(build_method == bvh_build_method::MORTON_CODE_CUDA ? bvh_morton_code_cuda::release_bvh(root_node) : \
+	bvh_naive_cpu::release_bvh(root_node))))
+
+#define auto_bvh_update(bvh_method)\
+(build_method == bvh_build_method::NAIVE_CPU ? bvh_naive_cpu::update_bvh :\
+(build_method == bvh_build_method::MORTON_CODE_CPU ? bvh_morton_code_cpu::update_bvh :\
+(build_method == bvh_build_method::MORTON_CODE_CUDA ? bvh_morton_code_cuda::update_bvh : bvh_naive_cpu::update_bvh)))
 
 namespace bvh_naive_cpu
 {

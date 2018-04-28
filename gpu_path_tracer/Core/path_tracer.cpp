@@ -311,8 +311,10 @@ void path_tracer::render_ui()
 				if (is_bvh_update)
 				{
 					is_triangle_mesh_modified = true;
+					bvh_build_method build_method = m_config->get_config_device_ptr()->bvh_build;
+
 					std::function<void(const glm::mat4&, const glm::mat4&, bvh_node_device*, bvh_node_device*)> bvh_update_function =
-						BVH_BUILD_METHOD update_bvh;
+						auto_bvh_update(build_method);
 					m_scene.set_mesh_transform_device(
 						i,
 						position,
@@ -349,7 +351,9 @@ bool path_tracer::init_scene_device_data(int index)
 		std::cout << "[Error]Load scene failed!" << std::endl;
 		return false;
 	}
-	if (!m_scene.create_scene_data_device())
+
+	bvh_build_method build_method = m_config->get_config_device_ptr()->bvh_build;
+	if (!m_scene.create_scene_data_device(build_method))
 	{
 		m_is_initiated = false;
 		std::cout << "[Error]Copy scene data on GPU failed!" << std::endl;

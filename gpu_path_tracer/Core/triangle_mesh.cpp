@@ -1,5 +1,10 @@
 #include "Core\triangle_mesh.h"
 
+void triangle_mesh::set_bvh_build_method(bvh_build_method build_method)
+{
+	m_bvh_build_method = build_method;
+}
+
 bool triangle_mesh::load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, std::vector<material*>& mat)
 {
 	int mat_num = static_cast<int>(mat.size());
@@ -404,18 +409,21 @@ void triangle_mesh::apply_rotate(int index)
 	bvh_node* root;
 	printf("[Info]Apply rotate, reconstructing bvh for mesh %s...\n", m_mesh_name[index].c_str());
 	TIME_COUNT_CALL_START();
-	root = BVH_BUILD_METHOD build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+	root = auto_build_bvh(m_bvh_build_method, m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+	//root = bvh_morton_code_cuda::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 	printf("[Info]Apply rotate, copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 	TIME_COUNT_CALL_START();
-	m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root);
+	m_mesh_bvh_initial_device[index] = auto_build_bvh_device_data(m_bvh_build_method, root);
+	//m_mesh_bvh_initial_device[index] = bvh_morton_code_cuda::build_bvh_device_data(root);
 	m_mesh_bvh_transformed_device[index] = m_mesh_bvh_initial_device[index] + m_mesh_bvh_initial_device[index]->next_node_index;
 	TIME_COUNT_CALL_END(time);
 	printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-	BVH_BUILD_METHOD release_bvh(root);
+	auto_release_bvh(m_bvh_build_method, root);
+	//bvh_morton_code_cuda::release_bvh(root);
 
 	m_mesh_rotate_applied[index] = m_mesh_rotate[index];
 }
@@ -496,6 +504,8 @@ bool triangle_mesh::create_bvh_device_data()
 	{
 		return false;
 	}
+	
+	printf("[Info]Bvh build method: %s\n", to_string(m_bvh_build_method).c_str());
 
 	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_initial_device, m_mesh_num * sizeof(bvh_node_device*)));
 	CUDA_CALL(cudaMallocManaged((void**)&m_mesh_bvh_transformed_device, m_mesh_num * sizeof(bvh_node_device*)));
@@ -512,18 +522,21 @@ bool triangle_mesh::create_bvh_device_data()
 		bvh_node* root;
 		printf("[Info]Constructing bvh for mesh %s...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		root = BVH_BUILD_METHOD build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		root = auto_build_bvh(m_bvh_build_method, m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
+		//root = bvh_morton_code_cuda::build_bvh(m_mesh_device + triangle_start_index, m_mesh_triangles_num[index], triangle_start_index);
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
 		printf("[Info]Copy bvh data for mesh %s to GPU...\n", m_mesh_name[index].c_str());
 		TIME_COUNT_CALL_START();
-		m_mesh_bvh_initial_device[index] = BVH_BUILD_METHOD build_bvh_device_data(root);
+		m_mesh_bvh_initial_device[index] = auto_build_bvh_device_data(m_bvh_build_method, root);
+		//m_mesh_bvh_initial_device[index] = bvh_morton_code_cuda::build_bvh_device_data(root);
 		m_mesh_bvh_transformed_device[index] = m_mesh_bvh_initial_device[index] + m_mesh_bvh_initial_device[index]->next_node_index;
 		TIME_COUNT_CALL_END(time);
 		printf("[Info]Completed, time consuming: %.4f ms\n", time);
 
-		BVH_BUILD_METHOD release_bvh(root);
+		auto_release_bvh(m_bvh_build_method, root);
+		//bvh_morton_code_cuda::release_bvh(root);
 	}
 
 	return true;

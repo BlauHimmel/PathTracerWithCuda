@@ -1,9 +1,5 @@
 #include "Bvh\bvh.h"
 
-int bvh_build_config::bvh_leaf_node_triangle_num = 1;
-int bvh_build_config::bvh_bucket_max_divide_internal_num = 12;
-int bvh_build_config::bvh_build_block_size = 32;
-
 namespace bvh_naive_cpu
 {
 

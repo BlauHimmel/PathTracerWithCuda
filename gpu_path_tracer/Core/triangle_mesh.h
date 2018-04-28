@@ -41,6 +41,8 @@ private:
 	std::vector<std::string> m_mesh_name;
 
 	int m_mesh_num = 0;
+	bvh_build_method m_bvh_build_method = bvh_build_method::MORTON_CODE_CUDA;
+
 	//============================================
 
 	bool m_is_loaded = false;
@@ -52,6 +54,8 @@ private:
 	bvh_node_device** m_mesh_bvh_transformed_device = nullptr;
 
 public:
+	void set_bvh_build_method(bvh_build_method build_method);
+
 	bool load_obj(const std::string& filename, const float3& position, const float3& scale, const float3& rotate, std::vector<material*>& mat);
 	void unload_obj();
 

@@ -152,6 +152,9 @@
     <ClCompile Include="Others\device_status.cpp">
       <Filter>Source\Others</Filter>
     </ClCompile>
+    <ClCompile Include="Bvh\bvh_build_config.cpp">
+      <Filter>Source\Bvh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\lodepng\lodepng.h">
@@ -777,6 +780,9 @@
     </ClInclude>
     <ClInclude Include="Others\device_status.h">
       <Filter>Header\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Bvh\bvh_build_config.h">
+      <Filter>Header\Bvh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

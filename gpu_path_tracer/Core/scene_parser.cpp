@@ -459,7 +459,7 @@ void scene_parser::unload_scene()
 	}
 }
 
-bool scene_parser::create_scene_data_device()
+bool scene_parser::create_scene_data_device(bvh_build_method bvh_build_method)
 {
 	if (!m_is_loaded)
 	{
@@ -513,6 +513,7 @@ bool scene_parser::create_scene_data_device()
 
 		if (m_triangle_mesh.get_triangles_device() != nullptr && m_cube_map_loader.get_cube_map_device() != nullptr)
 		{
+			m_triangle_mesh.set_bvh_build_method(bvh_build_method);
 			return m_triangle_mesh.create_bvh_device_data();
 		}
 	}

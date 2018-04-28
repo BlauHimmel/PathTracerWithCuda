@@ -144,7 +144,7 @@ public:
 	bool load_scene(int index);
 	void unload_scene();
 
-	bool create_scene_data_device();
+	bool create_scene_data_device(bvh_build_method bvh_build_method);
 	void release_scene_data_device();
 
 	cube_map* get_cube_map_device_ptr();

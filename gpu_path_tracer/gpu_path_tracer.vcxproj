@@ -173,6 +173,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bvh\bvh.cpp" />
+    <ClCompile Include="Bvh\bvh_build_config.cpp" />
     <ClCompile Include="Core\camera.cpp" />
     <ClCompile Include="Core\config_parser.cpp" />
     <ClCompile Include="Core\cube_map_loader.cpp" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClInclude Include="Bvh\bounding_box.h" />
     <ClInclude Include="Bvh\bvh.h" />
+    <ClInclude Include="Bvh\bvh_build_config.h" />
     <ClInclude Include="Bvh\bvh_morton_code_kernel.h" />
     <ClInclude Include="Bvh\bvh_node.h" />
     <ClInclude Include="Core\camera.h" />

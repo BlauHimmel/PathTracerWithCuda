@@ -256,7 +256,7 @@ __device__ uint2 find_range(
 }
 
 __device__ void generate_internal_node(
-	bvh_node_morton_code_cuda* internal_nodes,			//in
+	bvh_node_morton_code_cuda* internal_nodes,			//in out
 	bvh_node_morton_code_cuda* leaf_nodes,				//in
 	uint leaf_node_num,									//in
 	uint index											//in
@@ -305,7 +305,7 @@ __device__ void generate_internal_node(
 __global__ void __compute_triangle_bounding_box_kernel(
 	triangle* triangles_device,							//in
 	int triangle_num,									//in
-	bvh_node_morton_code_cuda* triangle_nodes_device,	//in
+	bvh_node_morton_code_cuda* triangle_nodes_device,	//in out
 	bounding_box* mesh_box,								//in
 	int start_index,									//in
 	int block_size										//in
@@ -333,7 +333,7 @@ __global__ void __compute_triangle_bounding_box_kernel(
 }
 
 __global__ void __generate_internal_node_kernel(
-	bvh_node_morton_code_cuda* internal_nodes_device,	//in
+	bvh_node_morton_code_cuda* internal_nodes_device,	//in out
 	uint internal_node_num,								//in
 	bvh_node_morton_code_cuda* leaf_nodes_device,		//in
 	uint leaf_node_num,									//in
@@ -355,7 +355,7 @@ __global__ void __generate_internal_node_kernel(
 extern "C" void compute_triangle_bounding_box_kernel(
 	triangle* triangles_device,							//in
 	int triangle_num,									//in
-	bvh_node_morton_code_cuda* triangle_nodes_device,	//in
+	bvh_node_morton_code_cuda* triangle_nodes_device,	//in out
 	bounding_box* mesh_box,								//in
 	int start_index,									//in
 	int block_size										//in
@@ -377,7 +377,7 @@ extern "C" void compute_triangle_bounding_box_kernel(
 }
 
 extern "C" void generate_internal_node_kernel(
-	bvh_node_morton_code_cuda* internal_nodes_device,	//in
+	bvh_node_morton_code_cuda* internal_nodes_device,	//in out
 	uint internal_node_num,								//in
 	bvh_node_morton_code_cuda* leaf_nodes_device,		//in
 	uint leaf_node_num,									//in

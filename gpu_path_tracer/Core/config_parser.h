@@ -29,6 +29,7 @@
 #define TOKEN_CONFIG_BVH_LEAF_NODE_TRIANGLE_NUM "BvhLeafNodeTriangleNum"
 #define TOKEN_CONFIG_BVH_BUCKET_MAX_DIVIDE_INTERNAL_NUM "BvhBucketMaxDivideInternalNum"
 #define TOKEN_CONFIG_BVH_BUILD_BLOCK_SIZE "BvhBuildBlockSize"
+#define TOKEN_CONFIG_BVH_BUILD_METHOD "BvhBuildMethod"
 #define TOKEN_CONFIG_AIR_REFRACTION_INDEX "AirRefractionIndex"
 #define TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT "AirAbsorptionCoef"
 #define TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT "AirReducedScatteringCoef"
@@ -53,7 +54,8 @@ Note: value check is imperfect. you'd better modify it using UI
 	"FOV" : "45",								-- field of view of camera
 	"BvhLeafNodeTriangleNum" : "1",				-- the maximum number of triangle in the leaf node of bvh
 	"BvhBucketMaxDivideInternalNum" : "12",		-- how many bucket we split while using naive bvh construction algorithm
-	"BvhBuildBlockSize" : "32",					-- the number of thread in each block while constructing bvh
+	"BvhBuildBlockSize" : "32",					-- the number of thread in each block while constructing bvh using CUDA
+	"BvhBuildMethod" : "MortonCodeCUDA",		-- "NaiveCPU", "MortonCodeCPU" or "MortonCodeCUDA" 
 	"AirRefractionIndex" : "1.000293",			-- the refractive index of the air
 	"AirAbsorptionCoef" : "0.0 0.0 0.0",		-- the absorption coefficient of the air
 	"AirReducedScatteringCoef" : "0.0 0.0 0.0"	-- the reduced scattering coefficient of the air
@@ -82,6 +84,7 @@ private:
 	int m_bvh_leaf_node_triangle_num = 1;
 	int m_bvh_bucket_max_divide_internal_num = 12;
 	int m_bvh_build_block_size = 32;
+	bvh_build_method m_bvh_build = bvh_build_method::MORTON_CODE_CUDA;
 	float m_air_refraction_index = 1.000293f;
 	float3 m_air_absorption_coef = make_float3(0.0f, 0.0f, 0.0f);
 	float3 m_air_reduced_scattering_coef = make_float3(0.0f, 0.0f, 0.0f);
