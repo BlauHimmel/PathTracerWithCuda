@@ -11,6 +11,8 @@
 #include <string>
 #include <algorithm>
 #include <omp.h>
+#include <ctime>
+#include <bitset>  
 
 #include "lib\glm\glm.hpp"
 #include "Core\triangle.h"
@@ -118,6 +120,14 @@ namespace bvh_morton_code_cpu
 namespace bvh_morton_code_cuda
 {
 	bool bvh_node_morton_node_comparator(const bvh_node_morton_code_cuda& left, const bvh_node_morton_code_cuda& right);
+
+	struct bvh_node_morton_node_predicate
+	{
+		__device__ bool operator()(const bvh_node_morton_code_cuda& left, const bvh_node_morton_code_cuda& right)
+		{
+			return left.morton_code < right.morton_code;
+		}
+	};
 
 	INTERNAL_FUNC void generate_bounding_box_for_internal_node(
 		bvh_node_morton_code_cuda* node, 

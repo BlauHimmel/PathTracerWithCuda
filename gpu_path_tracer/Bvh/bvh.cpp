@@ -859,7 +859,7 @@ namespace bvh_morton_code_cuda
 
 		std::vector<int>* leaf_nodes_triangle_indices = new std::vector<int>[leaf_node_num];
 
- 		CUDA_CALL(cudaMallocManaged((void**)&triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda)));
+		CUDA_CALL(cudaMallocManaged((void**)&triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda)));
 		CUDA_CALL(cudaMallocManaged((void**)&leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda)));
 		CUDA_CALL(cudaMallocManaged((void**)&internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda)));
 
@@ -881,10 +881,9 @@ namespace bvh_morton_code_cuda
 			bvh_build_config::bvh_build_block_size
 		);
 
-		CUDA_CALL(cudaMemcpy(triangle_morton_code_nodes, triangle_morton_code_nodes_device, triangle_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+		bounding_box biggest_box = internal_morton_code_nodes_device[0].box;
 
-		//Sort the bvh_node according to the morton code of its centroid
-		std::sort(triangle_morton_code_nodes, triangle_morton_code_nodes + triangle_num, bvh_node_morton_node_comparator);
+		radix_sort(triangle_morton_code_nodes_device, triangle_morton_code_nodes, triangle_num);
 
 		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
@@ -919,13 +918,12 @@ namespace bvh_morton_code_cuda
 			}
 
 			leaf_morton_code_nodes[i].morton_code = bvh_morton_code_cpu::morton_code(
-				(leaf_morton_code_nodes[i].box.centroid - internal_morton_code_nodes_device[0].box.left_bottom) /
-				(internal_morton_code_nodes_device[0].box.right_top - internal_morton_code_nodes_device[0].box.left_bottom)
+				(leaf_morton_code_nodes[i].box.centroid - biggest_box.left_bottom) /
+				(biggest_box.right_top - biggest_box.left_bottom)
 			);
 		}
 		
-		std::sort(leaf_morton_code_nodes, leaf_morton_code_nodes + leaf_node_num, bvh_node_morton_node_comparator);
-		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes_device, leaf_morton_code_nodes, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+		radix_sort(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num);
 
 		//Generate the tree
 		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num, bvh_build_config::bvh_build_block_size);

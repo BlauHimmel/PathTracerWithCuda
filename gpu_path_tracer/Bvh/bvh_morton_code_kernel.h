@@ -24,4 +24,11 @@ extern "C" void generate_internal_node_kernel(
 	int block_size										//in
 );
 
+extern "C" void radix_sort(
+	bvh_node_morton_code_cuda* arrays,			//in
+	bvh_node_morton_code_cuda* sorted_arrays,	//out
+	int number									//in
+);
+
+
 #endif //!__BVH_MORTON_CODE_KERNEL__

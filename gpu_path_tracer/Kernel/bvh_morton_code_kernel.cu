@@ -397,3 +397,15 @@ extern "C" void generate_internal_node_kernel(
 
 	CUDA_CALL(cudaDeviceSynchronize());
 }
+
+extern "C" void radix_sort(
+	bvh_node_morton_code_cuda* arrays,			//in
+	bvh_node_morton_code_cuda* sorted_arrays,	//out
+	int number									//in
+)
+{
+	thrust::device_vector<bvh_node_morton_code_cuda> dev_arrays(arrays, arrays + number);
+	thrust::sort(dev_arrays.begin(), dev_arrays.end(), bvh_morton_code_cuda::bvh_node_morton_node_predicate());
+	CUDA_CALL(cudaMemcpy(sorted_arrays, thrust::raw_pointer_cast(dev_arrays.data()), number * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
+	CUDA_CALL(cudaDeviceSynchronize());
+}
