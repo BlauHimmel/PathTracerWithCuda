@@ -4,18 +4,20 @@ A gpu accelerated path tracer based on CUDA
 
 The compute capability of your GPU should be greater than 6.x(For unified memory has been widely used in my program)
 
+A GREAT GPU IS ALWAYS BETTER FOR COMPLEX SCENES!
+
 The GRAPHICS CARD'S DRIVER crashed occasionally. I am working on it. :(
 
 * Interactive camera(Depth of field supported!)
-* Interactive UI for changing almost any stuff dynamically.
-* Scene and config define using json sytax. Easy to use.
-* Could change render scene dynamically.
-* Diffuse texture for any format.
-* Obj mesh supported(Material per group supported).
-* Naive subsurface scattering.
+* Interactive UI for modifying almost any stuff dynamically.
+* Scene and configuration are defined using json syntax. Easy to use.
+* Render scene could be modified dynamically.
+* Diffuse and specular texture for any format.
+* Obj mesh supported(You can define materials of each group).
+* Subsurface scattering.
 * Bvh accelerating structure.
 * Skybox.
-* Microsurface model for reflection.
+* Microfacet model for reflection.
 
 ![](https://github.com/BlauHimmel/PathTracerWithCuda/blob/bvh/Result/sample13.png)
 
