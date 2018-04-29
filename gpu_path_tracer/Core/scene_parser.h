@@ -35,6 +35,7 @@
 #define TOKEN_BACKGROUND "Background"
 #define TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH "Path"
 #define TOKEN_BACKGROUND_CUBE_MAP_NAME "Name"
+#define TOKEN_BACKGROUND_CUBE_MAP_FORMAT "Format"
 
 #define TOKEN_TEXTURE "Texture"
 
@@ -58,7 +59,8 @@
 	"Background" : 
 	{
 		"Name" : "XXXX",								-- name of cube map(in this folder, your image must be named as [xpos,xneg,ypos,yneg,zpos,zneg])
-		"Path" : "XXXX\\YYYY\\"							-- root folder of cubemap
+		"Path" : "XXXX\\YYYY\\",						-- root folder of cubemap
+		"Format" : "bmp"								-- format of image file
 	},
 
 	-- optional --

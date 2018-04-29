@@ -678,16 +678,22 @@ namespace bvh_morton_code_cpu
 		bvh_node* leaf_nodes = new bvh_node[leaf_node_num];
 		bvh_node* internal_nodes = new bvh_node[internal_node_num];
 
+		double time;
+
 		//Compute the total bounding box of the given mesh
+		TIME_COUNT_CALL_START();
 		internal_nodes[0].box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
 		for (int i = 1; i < triangle_num; i++)
 		{
 			internal_nodes[0].box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Compute bounding box of the mesh: %f ms\n", time);
 
 		//Compute the bounding box of each triangle on the given mesh
+		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < triangle_num; i++)
 		{
@@ -698,13 +704,19 @@ namespace bvh_morton_code_cpu
 				(internal_nodes[0].box.right_top - internal_nodes [0].box.left_bottom)
 			);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Compute bounding box of each triangle on device: %f ms\n", time);
 
 		//Sort the bvh_node according to the morton code of its centroid
+		TIME_COUNT_CALL_START();
 		std::sort(triangle_nodes, triangle_nodes + triangle_num, bvh_node_morton_node_comparator);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Sort leaf node before batch on device: %f ms\n", time);
 
 		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
+		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
@@ -733,12 +745,18 @@ namespace bvh_morton_code_cpu
 				(internal_nodes[0].box.right_top - internal_nodes[0].box.left_bottom)
 			);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Batch leaf node: %f ms\n", time);
 
+		TIME_COUNT_CALL_START();
 		std::sort(leaf_nodes, leaf_nodes + leaf_node_num, bvh_node_morton_node_comparator);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Sort leaf node after batch on device: %f ms\n", time);
 
 		//Generate the tree(Can be parallel)
+		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(internal_node_num); i++)
 		{
@@ -747,12 +765,14 @@ namespace bvh_morton_code_cpu
 
 		//Generate bounding box for the internal node of the tree
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
 			generate_bounding_box_for_internal_node(&leaf_nodes[i]);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Generate bounding box of internal node: %f ms\n", time);
 
 		SAFE_DELETE_ARRAY(triangle_nodes);
 
@@ -863,15 +883,21 @@ namespace bvh_morton_code_cuda
 		CUDA_CALL(cudaMallocManaged((void**)&leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda)));
 		CUDA_CALL(cudaMallocManaged((void**)&internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda)));
 
+		double time;
+
 		//Compute the total bounding box of the given mesh
+		TIME_COUNT_CALL_START();
 		internal_morton_code_nodes_device[0].box.get_bounding_box(triangles[0].vertex0, triangles[0].vertex1, triangles[0].vertex2);
 		internal_morton_code_nodes_device[0].parent_index = -1;
 		for (int i = 1; i < triangle_num; i++)
 		{
 			internal_morton_code_nodes_device[0].box.expand_to_fit_triangle(triangles[i].vertex0, triangles[i].vertex1, triangles[i].vertex2);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Compute bounding box of the mesh: %f ms\n", time);
 
 		//Compute the bounding box of each triangle on the given mesh
+		TIME_COUNT_CALL_START();
 		compute_triangle_bounding_box_kernel(
 			triangles,
 			triangle_num,
@@ -880,14 +906,20 @@ namespace bvh_morton_code_cuda
 			start_index,
 			bvh_build_config::bvh_build_block_size
 		);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Compute bounding box of each triangle on device: %f ms\n", time);
 
 		bounding_box biggest_box = internal_morton_code_nodes_device[0].box;
 
+		TIME_COUNT_CALL_START();
 		radix_sort(triangle_morton_code_nodes_device, triangle_morton_code_nodes, triangle_num);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Sort leaf node before batch on device: %f ms\n", time);
 
+		TIME_COUNT_CALL_START();
 		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
@@ -922,16 +954,25 @@ namespace bvh_morton_code_cuda
 				(biggest_box.right_top - biggest_box.left_bottom)
 			);
 		}
-		
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Batch leaf node: %f ms\n", time);
+
+		TIME_COUNT_CALL_START();
 		radix_sort(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Sort leaf node after batch on device: %f ms\n", time);
 
 		//Generate the tree
+		TIME_COUNT_CALL_START();
 		generate_internal_node_kernel(internal_morton_code_nodes_device, internal_node_num, leaf_morton_code_nodes_device, leaf_node_num, bvh_build_config::bvh_build_block_size);
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Generate internal node on device: %f ms\n", time);
 
 		CUDA_CALL(cudaMemcpy(leaf_morton_code_nodes, leaf_morton_code_nodes_device, leaf_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 		CUDA_CALL(cudaMemcpy(internal_morton_code_nodes, internal_morton_code_nodes_device, internal_node_num * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 
 		//Generate bounding box for the internal node of the tree
+		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
 		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
 #endif
@@ -939,25 +980,28 @@ namespace bvh_morton_code_cuda
 		{
 			generate_bounding_box_for_internal_node(&leaf_morton_code_nodes[i], leaf_morton_code_nodes, internal_morton_code_nodes);
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Generate bounding box of internal node: %f ms\n", time);
 
 		bvh_node* leaf_nodes = new bvh_node[leaf_node_num];
 		bvh_node* internal_nodes = new bvh_node[internal_node_num];
 
+		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{
 			leaf_nodes[i].box = leaf_morton_code_nodes[i].box;
 			leaf_nodes[i].is_leaf = true;
-			leaf_nodes[i].parent = &internal_nodes[leaf_morton_code_nodes[i].parent_index];
+			leaf_nodes[i].parent = internal_nodes + leaf_morton_code_nodes[i].parent_index;
 			//because the sequence of leaf_morton_code_nodes not match leaf_morton_code_nodes, so the index of leaf_nodes_triangle_indices
 			//should be redirect
-			leaf_nodes[i].triangle_indices = leaf_nodes_triangle_indices[leaf_morton_code_nodes[i].triangle_index];
+			leaf_nodes[i].triangle_indices = *(leaf_nodes_triangle_indices + leaf_morton_code_nodes[i].triangle_index);
 		}
 
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(internal_node_num); i++)
 		{
@@ -965,27 +1009,29 @@ namespace bvh_morton_code_cuda
 
 			if (internal_morton_code_nodes[i].parent_index != -1)
 			{
-				internal_nodes[i].parent = &internal_nodes[internal_morton_code_nodes[i].parent_index];
+				internal_nodes[i].parent = internal_nodes + internal_morton_code_nodes[i].parent_index;
 			}
 
 			if (internal_morton_code_nodes[i].is_left_leaf)
 			{
-				internal_nodes[i].left = &leaf_nodes[internal_morton_code_nodes[i].left_index];
+				internal_nodes[i].left = leaf_nodes + internal_morton_code_nodes[i].left_index;
 			}
 			else
 			{
-				internal_nodes[i].left = &internal_nodes[internal_morton_code_nodes[i].left_index];
+				internal_nodes[i].left = internal_nodes + internal_morton_code_nodes[i].left_index;
 			}
 
 			if (internal_morton_code_nodes[i].is_right_leaf)
 			{
-				internal_nodes[i].right = &leaf_nodes[internal_morton_code_nodes[i].right_index];
+				internal_nodes[i].right = leaf_nodes + internal_morton_code_nodes[i].right_index;
 			}
 			else
 			{
-				internal_nodes[i].right = &internal_nodes[internal_morton_code_nodes[i].right_index];
+				internal_nodes[i].right = internal_nodes + internal_morton_code_nodes[i].right_index;
 			}
 		}
+		TIME_COUNT_CALL_END(time);
+		printf("[BVH]Data structure transform: %f ms\n", time);
 
 		CUDA_CALL(cudaFree(triangle_morton_code_nodes_device));
 		CUDA_CALL(cudaFree(leaf_morton_code_nodes_device));

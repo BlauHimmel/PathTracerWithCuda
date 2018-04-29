@@ -91,20 +91,23 @@ bool scene_parser::load_scene(int index)
 	{
 		auto name = background_object[TOKEN_BACKGROUND_CUBE_MAP_NAME];
 		auto root_path = background_object[TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH];
+		auto format = background_object[TOKEN_BACKGROUND_CUBE_MAP_FORMAT];
 
 		CHECK_PROPERTY(Background, name, TOKEN_BACKGROUND_CUBE_MAP_NAME);
 		CHECK_PROPERTY(Background, root_path, TOKEN_BACKGROUND_CUBE_MAP_ROOT_PATH);
+		CHECK_PROPERTY(Background, format, TOKEN_BACKGROUND_CUBE_MAP_FORMAT);
 
 		std::string name_str = name;
 		std::string root_path_str = root_path;
 		std::string path = root_path_str + name_str;
+		std::string format_str = format;
 
-		cubemap_pathes[0] = path + "\\xpos.bmp";
-		cubemap_pathes[1] = path + "\\xneg.bmp";
-		cubemap_pathes[2] = path + "\\ypos.bmp";
-		cubemap_pathes[3] = path + "\\yneg.bmp";
-		cubemap_pathes[4] = path + "\\zpos.bmp";
-		cubemap_pathes[5] = path + "\\zneg.bmp";
+		cubemap_pathes[0] = path + "\\xpos." + format_str;
+		cubemap_pathes[1] = path + "\\xneg." + format_str;
+		cubemap_pathes[2] = path + "\\ypos." + format_str;
+		cubemap_pathes[3] = path + "\\yneg." + format_str;
+		cubemap_pathes[4] = path + "\\zpos." + format_str;
+		cubemap_pathes[5] = path + "\\zneg." + format_str;
 	}
 
 	//Texture

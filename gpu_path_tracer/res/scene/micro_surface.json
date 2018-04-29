@@ -1,8 +1,9 @@
 {
 	"Background" :
 	{
-		"Name" : "yokohama",
-		"Path" : "res\\texture\\"
+		"Name" : "maskonaive",
+		"Path" : "res\\texture\\",
+		"Format" : "jpg"
 	},
 
 	"Material" :

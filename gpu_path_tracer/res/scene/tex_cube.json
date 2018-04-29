@@ -2,7 +2,8 @@
 	"Background" :
 	{
 		"Name" : "yokohama",
-		"Path" : "res\\texture\\"
+		"Path" : "res\\texture\\",
+		"Format" : "bmp"
 	},
 
 	"Texture" : ["res\\texture\\tex_cube\\uv.png"],
