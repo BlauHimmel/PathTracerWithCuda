@@ -18,7 +18,7 @@
 			"RefractionIndex" : "1.33",
 			"ExtinctionCoef" : "0.0",
 			"AbsorptionCoef" : "40.0 3.0 14.0",
-			"ReducedScatteringCoef" : "400.0 100.0 100.0"
+			"ReducedScatteringCoef" : "400.0 400.0 400.0"
 		}
 	],
 
