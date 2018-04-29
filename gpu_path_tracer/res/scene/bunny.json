@@ -19,8 +19,8 @@
 		{
 			"Material" : ["silver"],
 			"Path" : "res\\obj\\bunny.fine.obj",
-			"Position" : "0.0 0.0 0.0",
-			"Scale" : "1.0 1.0 1.0",
+			"Position" : "0.0 -1.0 0.0",
+			"Scale" : "15.0 15.0 15.0",
 			"Rotate" : "0.0 -45.0 0.0"
 		}
 	]
