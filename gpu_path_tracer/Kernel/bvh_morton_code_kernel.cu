@@ -7,16 +7,9 @@
 #include "Math\basic_math.hpp"
 #include "Math\cuda_math.hpp"
 #include "Bvh\bvh.h"
+#include "Bvh\bvh_node.h"
 #include "Core\configuration.h"
 #include "Core\triangle.h"
-
-struct bvh_node_morton_node_predicate
-{
-	bool operator()(const bvh_node& left, const bvh_node& right)
-	{
-		return left.morton_code < right.morton_code;
-	}
-};
 
 __device__ uint expand_bits(
 	uint value			//in
@@ -395,17 +388,5 @@ extern "C" void generate_internal_node_kernel(
 		block_size
 		);
 
-	CUDA_CALL(cudaDeviceSynchronize());
-}
-
-extern "C" void radix_sort(
-	bvh_node_morton_code_cuda* arrays,			//in
-	bvh_node_morton_code_cuda* sorted_arrays,	//out
-	int number									//in
-)
-{
-	thrust::device_vector<bvh_node_morton_code_cuda> dev_arrays(arrays, arrays + number);
-	thrust::sort(dev_arrays.begin(), dev_arrays.end(), bvh_morton_code_cuda::bvh_node_morton_node_predicate());
-	CUDA_CALL(cudaMemcpy(sorted_arrays, thrust::raw_pointer_cast(dev_arrays.data()), number * sizeof(bvh_node_morton_code_cuda), cudaMemcpyDefault));
 	CUDA_CALL(cudaDeviceSynchronize());
 }

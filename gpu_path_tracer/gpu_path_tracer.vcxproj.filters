@@ -784,12 +784,18 @@
     <ClInclude Include="Bvh\bvh_build_config.h">
       <Filter>Header\Bvh</Filter>
     </ClInclude>
+    <ClInclude Include="Core\parallel_function.h">
+      <Filter>Header\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Kernel\bvh_morton_code_kernel.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
     <CudaCompile Include="Kernel\path_tracer_kernel.cu">
+      <Filter>Kernel</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Kernel\parallel_function.cu">
       <Filter>Kernel</Filter>
     </CudaCompile>
   </ItemGroup>

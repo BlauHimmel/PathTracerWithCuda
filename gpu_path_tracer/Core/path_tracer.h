@@ -4,7 +4,7 @@
 #define __PATH_TRACER__
 
 #include <cuda_runtime.h>
-
+#include <thrust\device_vector.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>

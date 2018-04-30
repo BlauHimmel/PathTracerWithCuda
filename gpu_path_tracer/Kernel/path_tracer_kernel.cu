@@ -2,10 +2,7 @@
 #include <device_launch_parameters.h>
 
 #include <thrust\random.h>
-#include <thrust\functional.h>
-#include <thrust\iterator\counting_iterator.h>
 #include <thrust\device_ptr.h>
-#include <thrust\remove.h>
 
 #include "curand.h"
 #include "curand_kernel.h"
@@ -13,6 +10,7 @@
 #include "Math\basic_math.hpp"
 #include "Math\cuda_math.hpp"
 
+#include "Core\path_tracer_kernel.h"
 #include "Core\sphere.h"
 #include "Core\triangle.h"
 #include "Core\image.h"
@@ -20,6 +18,7 @@
 #include "Core\camera.h"
 #include "Core\fresnel.h"
 #include "Core\material.h"
+#include "Core\parallel_function.h"
 #include "Core\cube_map.h"
 #include "Core\triangle_mesh.h"
 #include "Core\configuration.h"
@@ -31,14 +30,6 @@ enum class object_type
 	none,
 	sphere,
 	triangle
-};
-
-struct is_negative_predicate
-{
-	__device__ bool operator()(int value)
-	{
-		return value < 0;
-	}
 };
 
 __device__ int hash(int a)
@@ -282,12 +273,12 @@ __device__ float compute_ggx_shadowing_masking(
 }
 
 __global__ void init_data_kernel(
-	int pixel_count,						//in
-	int* energy_exist_pixels,				//in out
-	color* not_absorbed_colors,				//in out
-	color* accumulated_colors,				//in out
-	scattering* scatterings,				//in out
-	configuration* config					//in
+	int pixel_count,					//in
+	int* energy_exist_pixels,			//in out
+	color* not_absorbed_colors,			//in out
+	color* accumulated_colors,			//in out
+	scattering* scatterings,			//in out
+	configuration* config				//in
 )
 {
 	int block_x = blockIdx.x;
@@ -691,26 +682,25 @@ __global__ void pixel_256_transform_gamma_corrected_kernel(
 }
 
 //===============================================================================================================
-
 extern "C" void path_tracer_kernel(
-	int mesh_num,							//in
-	bvh_node_device** bvh_nodes_device,		//in
-	triangle* triangles_device,				//in
-	int sphere_num,							//in
-	sphere* spheres_device, 				//in
-	int pixel_count, 						//in
-	color* image_pixels,					//in out
-	color256* image_pixels_256,				//in out
-	int pass_counter, 						//in
-	render_camera* render_camera_device,	//in
-	cube_map* sky_cube_map_device,			//in
-	color* not_absorbed_colors_device,		//in 
-	color* accumulated_colors_device,		//in 
-	ray* rays_device,						//in 
-	int* energy_exist_pixels_device,		//in 
-	scattering* scatterings_device,			//in 
-	texture_wrapper* mesh_textures_device,	//in
-	configuration* config_device			//in 
+	int mesh_num,												//in
+	bvh_node_device** bvh_nodes_device,							//in
+	triangle* triangles_device,									//in
+	int sphere_num,												//in
+	sphere* spheres_device, 									//in
+	int pixel_count, 											//in
+	color* image_pixels,										//in out
+	color256* image_pixels_256,									//in out
+	int pass_counter, 											//in
+	render_camera* render_camera_device,						//in
+	cube_map* sky_cube_map_device,								//in
+	color* not_absorbed_colors_device,							//in 
+	color* accumulated_colors_device,							//in 
+	ray* rays_device,											//in 
+	int* energy_exist_pixels_device,							//in 
+	scattering* scatterings_device,								//in 
+	texture_wrapper* mesh_textures_device,						//in
+	configuration* config_device								//in 
 )
 {
 	configuration config = *config_device;
@@ -724,7 +714,7 @@ extern "C" void path_tracer_kernel(
 
 	init_data_kernel <<<total_blocks_num_per_gird, threads_num_per_block >>> (
 		pixel_count, 
-		energy_exist_pixels_device, 
+		energy_exist_pixels_device,
 		not_absorbed_colors_device,
 		accumulated_colors_device,
 		scatterings_device,
@@ -774,14 +764,7 @@ extern "C" void path_tracer_kernel(
 			config_device
 			);
 		
-		thrust::device_ptr<int> energy_exist_pixels_start_on_device = thrust::device_pointer_cast(energy_exist_pixels_device);
-		thrust::device_ptr<int> energy_exist_pixels_end_on_device = thrust::remove_if(
-			energy_exist_pixels_start_on_device,
-			energy_exist_pixels_start_on_device + energy_exist_pixels_count,
-			is_negative_predicate()
-		);
-		
-		energy_exist_pixels_count = (int)(thrust::raw_pointer_cast(energy_exist_pixels_end_on_device) - energy_exist_pixels_device);
+		energy_exist_pixels_count = thread_shrink(energy_exist_pixels_device, energy_exist_pixels_count);
 	}
 
 	pixel_256_transform_gamma_corrected_kernel <<<total_blocks_num_per_gird, threads_num_per_block>>> (
@@ -797,12 +780,12 @@ extern "C" void path_tracer_kernel(
 }
 
 extern "C" void path_tracer_kernel_memory_allocate(
-	color** not_absorbed_colors_device,		//in out
-	color** accumulated_colors_device,		//in out
-	ray** rays_device,						//in out
-	int** energy_exist_pixels_device,		//in out
-	scattering** scatterings_device,		//in out
-	int pixel_count							//in
+	color** not_absorbed_colors_device,							//in out
+	color** accumulated_colors_device,							//in out
+	ray** rays_device,											//in out
+	int** energy_exist_pixels_device,							//in 
+	scattering** scatterings_device,							//in out
+	int pixel_count												//in
 )
 {
 	CUDA_CALL(cudaMallocManaged((void**)not_absorbed_colors_device, pixel_count * sizeof(color)));
