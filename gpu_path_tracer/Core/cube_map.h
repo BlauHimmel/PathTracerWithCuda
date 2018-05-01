@@ -46,7 +46,7 @@ struct cube_map
 				float left_right_t = x_image_real - floorf(x_image_real);
 				float bottom_top_t = y_image_real - floorf(y_image_real);
 
-				uchar* pixels;
+				uchar* pixels = nullptr;
 				if (index == 0) pixels = m_x_positive_map;
 				else if (index == 1) pixels = m_x_negative_map;
 				else if (index == 2) pixels = m_y_positive_map;
@@ -91,7 +91,7 @@ struct cube_map
 				int x_image = (int)clamp((u * (float)(length - 1)), 0.0f, (float)(length - 1));
 				int y_image = (int)clamp(((1.0f - v) * (float)(length - 1)), 0.0f, (float)(length - 1));
 
-				uchar* pixels;
+				uchar* pixels = nullptr;
 				if (index == 0) pixels = m_x_positive_map;
 				else if (index == 1) pixels = m_x_negative_map;
 				else if (index == 2) pixels = m_y_positive_map;

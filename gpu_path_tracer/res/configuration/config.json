@@ -20,5 +20,6 @@
 	"BvhBuildMethod" : "MortonCodeCUDA",
 	"AirRefractionIndex" : "1.000293",
 	"AirAbsorptionCoef" : "0.0 0.0 0.0",
-	"AirReducedScatteringCoef" : "0.0 0.0 0.0"
+	"AirReducedScatteringCoef" : "0.0 0.0 0.0",
+	"CUDAAcceleration" : "true"
 }

@@ -12,7 +12,7 @@ struct texture_wrapper
 	int height;
 	uchar* pixels;
 
-	__device__ float3 sample_texture(const float2& uv,	bool use_bilinear)
+	__host__ __device__ float3 sample_texture(const float2& uv,	bool use_bilinear)
 	{
 
 		float2 actual_uv;

@@ -497,8 +497,11 @@ bool scene_parser::create_scene_data_device(bvh_build_method bvh_build_method)
 		{
 			m_mesh_textures_device[i].width = m_mesh_textures[i].width;
 			m_mesh_textures_device[i].height = m_mesh_textures[i].height;
-			CUDA_CALL(cudaMalloc((void**)&m_mesh_textures_device[i].pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar)));
-			CUDA_CALL(cudaMemcpy(m_mesh_textures_device[i].pixels, m_mesh_textures[i].pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar), cudaMemcpyHostToDevice));
+
+			uchar* pixels;
+			CUDA_CALL(cudaMallocManaged((void**)&pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar)));
+			CUDA_CALL(cudaMemcpy(pixels, m_mesh_textures[i].pixels, m_mesh_textures[i].width * m_mesh_textures[i].height * 4 * sizeof(uchar), cudaMemcpyDefault));
+			m_mesh_textures_device[i].pixels = pixels;
 		}
 
 		TIME_COUNT_CALL_END(time);

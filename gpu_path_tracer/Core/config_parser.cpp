@@ -44,6 +44,7 @@ bool config_parser::load_config(const std::string& filename)
 	auto air_refraction_index = m_json_parser[TOKEN_CONFIG_AIR_REFRACTION_INDEX];
 	auto air_absorption_coef = m_json_parser[TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT];
 	auto air_reduced_scattering_coef = m_json_parser[TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT];
+	auto cuda_acceleration = m_json_parser[TOKEN_CONFIG_CUDA_ACCELERATION];
 
 	CHECK_PROPERTY(Config, height, TOKEN_CONFIG_HEIGHT);
 	CHECK_PROPERTY(Config, width, TOKEN_CONFIG_WIDTH);
@@ -67,6 +68,7 @@ bool config_parser::load_config(const std::string& filename)
 	CHECK_PROPERTY(Config, air_refraction_index, TOKEN_CONFIG_AIR_REFRACTION_INDEX);
 	CHECK_PROPERTY(Config, air_absorption_coef, TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT);
 	CHECK_PROPERTY(Config, air_reduced_scattering_coef, TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT);
+	CHECK_PROPERTY(Config, cuda_acceleration, TOKEN_CONFIG_CUDA_ACCELERATION);
 
 	std::string height_str = height;
 	std::string width_str = width;
@@ -90,6 +92,7 @@ bool config_parser::load_config(const std::string& filename)
 	std::string air_refraction_index_str = air_refraction_index;
 	std::string air_absorption_coef_str = air_absorption_coef;
 	std::string air_reduced_scattering_coef_str = air_reduced_scattering_coef;
+	std::string cuda_acceleration_str = cuda_acceleration;
 
 	m_height = parse_int(height_str);
 	m_width = parse_int(width_str);
@@ -113,6 +116,7 @@ bool config_parser::load_config(const std::string& filename)
 	m_air_refraction_index = parse_float(air_refraction_index_str);
 	m_air_absorption_coef = parse_float3(air_absorption_coef_str);
 	m_air_reduced_scattering_coef = parse_float3(air_reduced_scattering_coef_str);
+	m_cuda_acceleration = parse_bool(cuda_acceleration_str);
 
 	m_is_loaded = true;
 
@@ -144,6 +148,7 @@ void config_parser::unload_config()
 	m_air_refraction_index = 1.000293f;
 	m_air_absorption_coef = make_float3(0.0f, 0.0f, 0.0f);
 	m_air_reduced_scattering_coef = make_float3(0.0f, 0.0f, 0.0f);
+	m_cuda_acceleration = true;
 }
 
 configuration* config_parser::get_config_device_ptr()
@@ -177,6 +182,7 @@ void config_parser::create_config_device_data()
 	m_config_device->air_refraction_index = m_air_refraction_index;
 	m_config_device->air_absorption_coef = m_air_absorption_coef;
 	m_config_device->air_reduced_scattering_coef = m_air_reduced_scattering_coef;
+	m_config_device->cuda_acceleration = m_cuda_acceleration;
 	printf("IT'S OK THIS TIME.\n");
 }
 

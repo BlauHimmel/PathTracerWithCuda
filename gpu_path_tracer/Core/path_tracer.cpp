@@ -43,26 +43,52 @@ image* path_tracer::render()
 	{
 		m_image->pass_counter++;
 
-		path_tracer_kernel(
-			m_scene.get_mesh_num(),
-			m_scene.get_bvh_node_device_ptr(),
-			m_scene.get_triangles_device_ptr(),
-			m_scene.get_sphere_num(),
-			m_scene.get_sphere_device_ptr(),
-			m_image->pixel_count,
-			m_image->pixels_device,
-			m_image->pixels_256_device,
-			m_image->pass_counter,
-			m_render_camera,
-			m_scene.get_cube_map_device_ptr(),
-			m_not_absorbed_colors_device,
-			m_accumulated_colors_device,
-			m_rays_device,
-			m_energy_exist_pixels_device,
-			m_scatterings_device,
-			m_scene.get_mesh_texture_device_ptr(),
-			m_config->get_config_device_ptr()
-		);
+		if (m_config->get_config_device_ptr()->cuda_acceleration)
+		{
+			path_tracer_kernel(
+				m_scene.get_mesh_num(),
+				m_scene.get_bvh_node_device_ptr(),
+				m_scene.get_triangles_device_ptr(),
+				m_scene.get_sphere_num(),
+				m_scene.get_sphere_device_ptr(),
+				m_image->pixel_count,
+				m_image->pixels_device,
+				m_image->pixels_256_device,
+				m_image->pass_counter,
+				m_render_camera,
+				m_scene.get_cube_map_device_ptr(),
+				m_not_absorbed_colors_device,
+				m_accumulated_colors_device,
+				m_rays_device,
+				m_energy_exist_pixels_device,
+				m_scatterings_device,
+				m_scene.get_mesh_texture_device_ptr(),
+				m_config->get_config_device_ptr()
+			);
+		}
+		else
+		{
+			path_tracer_cpu(
+				m_scene.get_mesh_num(),
+				m_scene.get_bvh_node_device_ptr(),
+				m_scene.get_triangles_device_ptr(),
+				m_scene.get_sphere_num(),
+				m_scene.get_sphere_device_ptr(),
+				m_image->pixel_count,
+				m_image->pixels_device,
+				m_image->pixels_256_device,
+				m_image->pass_counter,
+				m_render_camera,
+				m_scene.get_cube_map_device_ptr(),
+				m_not_absorbed_colors_device,
+				m_accumulated_colors_device,
+				m_rays_device,
+				m_energy_exist_pixels_device,
+				m_scatterings_device,
+				m_scene.get_mesh_texture_device_ptr(),
+				m_config->get_config_device_ptr()
+			);
+		}
 
 		return m_image;
 	}

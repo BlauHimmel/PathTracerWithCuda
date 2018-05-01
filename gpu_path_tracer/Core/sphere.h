@@ -15,7 +15,7 @@ struct sphere
 
 	material mat;
 
-	__device__  bool intersect(
+	__host__ __device__  bool intersect(
 		const ray& ray,			//in
 		float3& hit_point,		//out
 		float3& hit_normal,		//out

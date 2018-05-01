@@ -24,6 +24,7 @@
 #include "Bvh\bvh.h"
 #include "Core\scene_parser.h"
 #include "Core\config_parser.h"
+#include "Core\path_tracer_cpu.h"
 
 #include "lib\glm\glm.hpp"
 #include "lib\imgui\imgui.h"

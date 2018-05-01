@@ -24,7 +24,7 @@ struct triangle
 
 	material* mat;
 
-	__device__ bool intersect(
+	__host__ __device__ bool intersect(
 		const ray& ray,					
 		float& hit_t,					
 		float& hit_t1,					

@@ -33,6 +33,7 @@
 #define TOKEN_CONFIG_AIR_REFRACTION_INDEX "AirRefractionIndex"
 #define TOKEN_CONFIG_AIR_ABSORPTION_COEFFICIENT "AirAbsorptionCoef"
 #define TOKEN_CONFIG_AIR_REDUCED_SCATTERING_COEFFICIENT "AirReducedScatteringCoef"
+#define TOKEN_CONFIG_CUDA_ACCELERATION "CUDAAcceleration"
 
 /*
 Note: value check is imperfect. you'd better modify it using UI
@@ -58,7 +59,8 @@ Note: value check is imperfect. you'd better modify it using UI
 	"BvhBuildMethod" : "MortonCodeCUDA",		-- "NaiveCPU", "MortonCodeCPU" or "MortonCodeCUDA" 
 	"AirRefractionIndex" : "1.000293",			-- the refractive index of the air
 	"AirAbsorptionCoef" : "0.0 0.0 0.0",		-- the absorption coefficient of the air
-	"AirReducedScatteringCoef" : "0.0 0.0 0.0"	-- the reduced scattering coefficient of the air
+	"AirReducedScatteringCoef" : "0.0 0.0 0.0",	-- the reduced scattering coefficient of the air
+	"CUDAAcceleration" : "true"					-- turn on/off the cuda acceleration
 }
 */
 
@@ -88,6 +90,7 @@ private:
 	float m_air_refraction_index = 1.000293f;
 	float3 m_air_absorption_coef = make_float3(0.0f, 0.0f, 0.0f);
 	float3 m_air_reduced_scattering_coef = make_float3(0.0f, 0.0f, 0.0f);
+	bool m_cuda_acceleration = true;
 	//============================================
 
 	configuration* m_config_device = nullptr;

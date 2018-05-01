@@ -974,7 +974,7 @@ namespace bvh_morton_code_cuda
 		//Generate bounding box for the internal node of the tree
 		TIME_COUNT_CALL_START();
 #ifdef BVH_MORTON_CODE_BUILD_OPENMP
-		#pragma omp parallel for num_threads(threadnum) schedule(guided) 
+		#pragma omp parallel for num_threads(threadnum) schedule(dynamic) 
 #endif
 		for (int i = 0; i < static_cast<int>(leaf_node_num); i++)
 		{

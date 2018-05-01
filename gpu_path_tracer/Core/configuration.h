@@ -30,6 +30,7 @@ struct configuration
 	float air_refraction_index;
 	float3 air_absorption_coef;
 	float3 air_reduced_scattering_coef;
+	bool cuda_acceleration;
 };
 
 #endif // !__CONFIGURATION__

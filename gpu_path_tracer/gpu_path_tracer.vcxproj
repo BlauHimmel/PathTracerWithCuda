@@ -180,6 +180,7 @@
     <ClCompile Include="Core\image.cpp" />
     <ClCompile Include="Core\material.cpp" />
     <ClCompile Include="Core\path_tracer.cpp" />
+    <ClCompile Include="Core\path_tracer_cpu.cpp" />
     <ClCompile Include="Core\scene_parser.cpp" />
     <ClCompile Include="Core\triangle_mesh.cpp" />
     <ClCompile Include="lib\glm\detail\dummy.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Core\material.h" />
     <ClInclude Include="Core\parallel_function.h" />
     <ClInclude Include="Core\path_tracer.h" />
+    <ClInclude Include="Core\path_tracer_cpu.h" />
     <ClInclude Include="Core\path_tracer_kernel.h" />
     <ClInclude Include="Core\ray.h" />
     <ClInclude Include="Core\scene_parser.h" />
