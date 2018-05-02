@@ -87,7 +87,7 @@
 		{
 			"Material" : ["wall_white", "wall_green", "wall_red", "wall_white", "wall_white"],
 			"Path" : "res\\obj\\cornell.obj",
-			"Position" : "0.0 -0.8 1.0",
+			"Position" : "0.0 -0.805 1.0",
 			"Scale" : "0.2 0.1 0.3",
 			"Rotate" : "0.0 0.0 0.0"
 		},
