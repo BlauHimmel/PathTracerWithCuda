@@ -18,7 +18,7 @@
 
 		{
 			"Material" : ["silver"],
-			"Path" : "res\\obj\\buddha.obj",
+			"Path" : "res\\obj\\Buddha.obj",
 			"Position" : "0.0 0.0 0.0",
 			"Scale" : "1.0 1.0 1.0",
 			"Rotate" : "0.0 0.0 0.0"
