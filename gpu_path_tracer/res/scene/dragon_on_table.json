@@ -1,9 +1,9 @@
 {
 	"Background" :
 	{
-		"Name" : "yokohama",
+		"Name" : "lycksele",
 		"Path" : "res\\texture\\",
-		"Format" : "bmp"
+		"Format" : "jpg"
 	},
 
 	"Material" :

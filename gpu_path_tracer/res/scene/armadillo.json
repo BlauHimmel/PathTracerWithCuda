@@ -1,0 +1,27 @@
+{
+	"Background" :
+	{
+		"Name" : "lycksele",
+		"Path" : "res\\texture\\",
+		"Format" : "jpg"
+	},
+
+	"Mesh" :
+	[	
+		{
+			"Material" : ["light"],
+			"Path" : "res\\obj\\cube.obj",
+			"Position" : "0.0 10.0 0.0",
+			"Scale" : "2.0 0.05 2.0",
+			"Rotate" : "0.0 0.0 0.0"
+		},
+
+		{
+			"Material" : ["silver"],
+			"Path" : "res\\obj\\armadillo.obj",
+			"Position" : "0.0 0.0 0.0",
+			"Scale" : "0.025 0.025 0.025",
+			"Rotate" : "0.0 0.0 0.0"
+		}
+	]
+}

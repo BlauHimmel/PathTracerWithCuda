@@ -3241,17 +3241,6 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_76E04C4DB1244919A43A53B22BBCA141"
-                    {
-                    "Name" = "8:GPU Path Tracer"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_D3D170BC37824C128535E81F9F08F1E9"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_A3A2A53AC6B0474BB54D3B52708F18A9"
@@ -3601,23 +3590,9 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1BFCD104E75E484692FBAAFACFBB2A3C"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_712739137B3D4EF098E74762C21D984B"
             {
-            "Name" = "8:GPU Path Tracer.exe"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_B41DACAD916848F3BDFA0B79402ACA95"
-            "Folder" = "8:_76E04C4DB1244919A43A53B22BBCA141"
-            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_94AD35B5217A4F07A54199A0B8AA56CD"
-            {
-            "Name" = "8:UnInstall.exe"
+            "Name" = "8:Uninstall"
             "Arguments" = "8:/x {30817370-A4F1-41B1-B429-07657EF02B1D}"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -3625,34 +3600,6 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_D9AB782E78854F13836FB4254CF2F8FA"
             "Folder" = "8:_13553983B1034CF2B24B971F21981836"
-            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B3D1401B7C0C422182A1795418576C94"
-            {
-            "Name" = "8:UnInstall.exe"
-            "Arguments" = "8:/x {30817370-A4F1-41B1-B429-07657EF02B1D}"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_D9AB782E78854F13836FB4254CF2F8FA"
-            "Folder" = "8:_76E04C4DB1244919A43A53B22BBCA141"
-            "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D30B965098964AC79E1D98884FA0BFA9"
-            {
-            "Name" = "8:GPU Path Tracer.exe"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_B41DACAD916848F3BDFA0B79402ACA95"
-            "Folder" = "8:_570052C183D5419E93460CD99C4D6C16"
             "WorkingFolder" = "8:_13553983B1034CF2B24B971F21981836"
             "Icon" = "8:"
             "Feature" = "8:"

@@ -705,13 +705,13 @@ namespace bvh_morton_code_cpu
 			);
 		}
 		TIME_COUNT_CALL_END(time);
-		printf("[BVH]Compute bounding box of each triangle on device: %f ms\n", time);
+		printf("[BVH]Compute bounding box of each triangle: %f ms\n", time);
 
 		//Sort the bvh_node according to the morton code of its centroid
 		TIME_COUNT_CALL_START();
 		std::sort(triangle_nodes, triangle_nodes + triangle_num, bvh_node_morton_node_comparator);
 		TIME_COUNT_CALL_END(time);
-		printf("[BVH]Sort leaf node before batch on device: %f ms\n", time);
+		printf("[BVH]Sort leaf node before batch: %f ms\n", time);
 
 		//Batch the bvh_node(each batch contains BVH_LEAF_NODE_TRIANGLE_NUM original bvh_node)(Can be parallel)
 		TIME_COUNT_CALL_START();
@@ -751,7 +751,7 @@ namespace bvh_morton_code_cpu
 		TIME_COUNT_CALL_START();
 		std::sort(leaf_nodes, leaf_nodes + leaf_node_num, bvh_node_morton_node_comparator);
 		TIME_COUNT_CALL_END(time);
-		printf("[BVH]Sort leaf node after batch on device: %f ms\n", time);
+		printf("[BVH]Sort leaf node after batch: %f ms\n", time);
 
 		//Generate the tree(Can be parallel)
 		TIME_COUNT_CALL_START();

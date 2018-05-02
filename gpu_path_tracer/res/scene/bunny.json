@@ -6,22 +6,6 @@
 		"Format" : "jpg"
 	},
 
-	"Material" :
-	[
-		{
-			"Name" : "BunnyWhite",
-			"Diffuse" : "0.0 0.0 0.0",
-			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "1.0 1.0 1.0",
-			"Transparent" : "true",
-			"Roughness" : "0.01",
-			"RefractionIndex" : "1.33",
-			"ExtinctionCoef" : "0.0",
-			"AbsorptionCoef" : "1.0 1.0 1.0",
-			"ReducedScatteringCoef" : "10.0 10.0 10.0"
-		}
-	],
-
 	"Mesh" :
 	[	
 		{
@@ -33,7 +17,7 @@
 		},
 
 		{
-			"Material" : ["BunnyWhite"],
+			"Material" : ["silver"],
 			"Path" : "res\\obj\\bunny.fine.obj",
 			"Position" : "0.0 -1.0 0.0",
 			"Scale" : "15.0 15.0 15.0",
