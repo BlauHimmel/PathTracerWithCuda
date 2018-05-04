@@ -587,6 +587,11 @@ int scene_parser::get_triangles_num() const
 	return m_triangle_mesh.get_total_triangle_num();
 }
 
+int scene_parser::get_total_triangles_num() const
+{
+	return m_triangle_mesh.get_total_triangle_num();
+}
+
 int scene_parser::get_mesh_triangle_num(int index) const
 {
 	return m_triangle_mesh.get_triangle_num(index);

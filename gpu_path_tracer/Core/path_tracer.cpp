@@ -113,11 +113,12 @@ void path_tracer::render_ui()
 		return;
 	}
 
-	char buffer[2048];
-
 	bool is_sphere_modified = false;
 
-	if (m_scene.get_sphere_num() > 0 && ImGui::CollapsingHeader("Sphere"))
+	char buffer[2048];
+	sprintf(buffer, "Sphere[%d]", m_scene.get_sphere_num());
+
+	if (m_scene.get_sphere_num() > 0 && ImGui::CollapsingHeader(buffer))
 	{
 		for (auto i = 0; i < m_scene.get_sphere_num(); i++)
 		{
@@ -207,8 +208,9 @@ void path_tracer::render_ui()
 	}
 
 	bool is_triangle_mesh_modified = false;
+	sprintf(buffer, "Mesh[%d]", m_scene.get_total_triangles_num());
 
-	if (m_scene.get_mesh_num() > 0 && ImGui::CollapsingHeader("Mesh"))
+	if (m_scene.get_mesh_num() > 0 && ImGui::CollapsingHeader(buffer))
 	{
 		for (auto i = 0; i < m_scene.get_mesh_num(); i++)
 		{

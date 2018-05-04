@@ -157,6 +157,7 @@ public:
 
 	int get_mesh_num() const;
 	int get_triangles_num() const;
+	int get_total_triangles_num() const;
 	int get_mesh_triangle_num(int index) const;
 	int get_mesh_vertices_num(int index) const;
 	int get_sphere_num() const;

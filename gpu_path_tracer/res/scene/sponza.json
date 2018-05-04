@@ -31,7 +31,20 @@
 		"res\\texture\\sponza\\vase_hanging.tga",
 		"res\\texture\\sponza\\vase_dif.tga",
 		"res\\texture\\sponza\\lion.tga",
-		"res\\texture\\sponza\\sponza_roof_diff.tga"
+		"res\\texture\\sponza\\sponza_roof_diff.tga",
+		"res\\texture\\sponza\\spnza_bricks_a_spec.tga",		
+		"res\\texture\\sponza\\sponza_arch_spec.tga",		
+		"res\\texture\\sponza\\sponza_ceiling_a_spec.tga",		
+		"res\\texture\\sponza\\sponza_column_a_spec.tga",		
+		"res\\texture\\sponza\\sponza_column_b_spec.tga",		
+		"res\\texture\\sponza\\sponza_column_c_spec.tga",		
+		"res\\texture\\sponza\\sponza_details_spec.tga",		
+		"res\\texture\\sponza\\sponza_fabric_spec.tga",		
+		"res\\texture\\sponza\\sponza_flagpole_spec.tga",		
+		"res\\texture\\sponza\\sponza_floor_a_spec.tga",		
+		"res\\texture\\sponza\\sponza_thorn_spec.tga",		
+		"res\\texture\\sponza\\vase_plant_spec.tga",		
+		"res\\texture\\sponza\\vase_round_spec.tga"		
 	],
 
 	"Material" :
@@ -40,7 +53,7 @@
 			"Name" : "leaf",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -48,14 +61,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "0",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "34"
 		},
 
 		{
 			"Name" : "vase_round",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -63,14 +76,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "1",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "36"
 		},
 
 		{
 			"Name" : "Material__57",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -78,14 +91,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "2",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "35"
 		},
 
 		{
 			"Name" : "Material__298",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -100,7 +113,7 @@
 			"Name" : "bricks",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -108,14 +121,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "4",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "24"
 		},
 
 		{
 			"Name" : "arch",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -123,14 +136,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "5",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "25"
 		},
 
 		{
 			"Name" : "ceiling",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -138,14 +151,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "6",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "26"
 		},
 
 		{
 			"Name" : "column_a",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -153,14 +166,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "7",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "27"
 		},
 
 		{
 			"Name" : "floor",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -168,14 +181,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "8",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "33"
 		},
 
 		{
 			"Name" : "column_c",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -183,14 +196,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "9",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "29"
 		},
 
 		{
 			"Name" : "details",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -198,14 +211,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "10",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "30"
 		},
 
 		{
 			"Name" : "column_b",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -213,14 +226,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "11",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "28"
 		},
 
 		{
 			"Name" : "Material__47",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -235,7 +248,7 @@
 			"Name" : "flagpole",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -243,14 +256,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "12",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "32"
 		},
 
 		{
 			"Name" : "fabric_e",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -258,14 +271,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "13",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "fabric_d",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -273,14 +286,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "14",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "fabric_a",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -288,14 +301,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "15",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "fabric_g",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -303,14 +316,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "16",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "fabric_c",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -318,14 +331,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "17",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "fabric_f",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -333,14 +346,14 @@
 			"AbsorptionCoef" : "0.0 0.0 0.0",
 			"ReducedScatteringCoef" : "0.0 0.0 0.0",
 			"DiffuseTextureId" : "18",
-			"SpecularTextureId" : "-1"
+			"SpecularTextureId" : "31"
 		},
 
 		{
 			"Name" : "chain",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -355,7 +368,7 @@
 			"Name" : "vase_hanging",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -370,7 +383,7 @@
 			"Name" : "vase",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -385,7 +398,7 @@
 			"Name" : "Material__25",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
@@ -400,7 +413,7 @@
 			"Name" : "roof",
 			"Diffuse" : "0.5880 0.5880 0.5880",
 			"Emission" : "0.0 0.0 0.0",
-			"Specular" : "0.0 0.0 0.0",
+			"Specular" : "0.5880 0.5880 0.5880",
 			"Transparent" : "false",
 			"Roughness" : "0.01",
 			"RefractionIndex" : "1.416",
