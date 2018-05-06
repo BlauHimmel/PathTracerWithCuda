@@ -6,6 +6,22 @@
 		"Format" : "jpg"
 	},
 
+	"Material" :
+	[
+		{
+			"Name" : "DragonGreen",
+			"Diffuse" : "0.0 0.0 0.0",
+			"Emission" : "0.0 0.0 0.0",
+			"Specular" : "1.0 1.0 1.0",
+			"Transparent" : "true",
+			"Roughness" : "0.01",
+			"RefractionIndex" : "1.33",
+			"ExtinctionCoef" : "0.0",
+			"AbsorptionCoef" : "40.0 3.0 14.0",
+			"ReducedScatteringCoef" : "400.0 400.0 400.0"
+		}
+	],
+
 	"Mesh" :
 	[
 		{
@@ -17,7 +33,7 @@
 		},
 
 		{
-			"Material" : ["silver"],
+			"Material" : ["DragonGreen", "copper"],
 			"Path" : "res\\obj\\dragon_on_table.obj",
 			"Position" : "0.0 0.0 0.0",
 			"Scale" : "1.0 1.0 1.0",

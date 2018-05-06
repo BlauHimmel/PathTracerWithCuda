@@ -15,13 +15,43 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_00EBFB7C2ACF480C8E54406C4B3AE277"
+        "MsmKey" = "8:_006AEB21F9C749CAB7FDF9CAB8E0C482"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_02E24C5B07A94FD89CDBEE6B94A27409"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_04D3AA65AB9E4AC1A3E95D730945724E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_04E7BD04A6A4419F8458E5B7BE9B636E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_06654D8D2B094E6E9F2CE070213411B2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0720A8BB84EE4C988A141AF189C2EB4D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_09C013D511A7470A83F613FB17918411"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,7 +69,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0A6E45226B24491EBDF97B1CC302DBFB"
+        "MsmKey" = "8:_116DFA25C8734FD9BFA51BA54CB878BD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_132722AEBCEF4FA399A81872766C57FB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_13F87AF1D31C49D7ACF96AED5AE8BA58"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -51,13 +93,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_15EDAC1B40324A1BA22BF53F59844D02"
+        "MsmKey" = "8:_16F9754CA2E44F668E4A085CCABAE8AC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_196DCD2411944186A9E94336FFA8E96F"
+        "MsmKey" = "8:_1A0BE936224441D18A14E98F60087B92"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1A3697D2B2ED4BEAADEFD5DE1890D48E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -69,19 +117,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1D04F03054B74D3D9EA13351A67301AA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1D1A5429E57A49E492F4EF3820C2BB67"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1D76493451AF46BFB7877DE527D0F3E5"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1EBD776D15354A37955A619FAE753F23"
+        "MsmKey" = "8:_20C4B403E1704FCFBF0178CF824D4DD3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -111,7 +159,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_329CA357C8C2469C9F16BE11D961BD65"
+        "MsmKey" = "8:_2F9E3D9ACF0349C1B910B222E18FCFDB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2FB6A4CE7861488384346D6ED2E3F43A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -123,7 +177,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3466E5D59DBE4EC299D4FEE454BA612E"
+        "MsmKey" = "8:_34C968336217440CB709606DC6FB2C17"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_35B3A5AEB4B149DDA063838B546C15ED"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -141,19 +201,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_380EE8A8A9D04646AD12D31D4600B441"
+        "MsmKey" = "8:_367E49CA1C944ABFA1267A65ED2F4C3B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_393FCEBAE7E9479993DE4CBFABB5165D"
+        "MsmKey" = "8:_38ADE61723994F5E82A1D9B7558405E5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3BB8B5AF8FD14875A50E9A67862C46E5"
+        "MsmKey" = "8:_3D96840AC76847B09376C44C80E1A1C1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -165,31 +225,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3F557D38DA434746B8B44926C82AB588"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3F80943682B24914B64F08BA72C8A30A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3FA8B66E58454F019C64DB2F7ED45717"
+        "MsmKey" = "8:_416BB0BFE94A40F58C65A39B4D53770C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4138E9001F7246B596C5F8AE64B9E6C3"
+        "MsmKey" = "8:_4223F9BD08FC48909187F01BC0569574"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4286806BE7424C22ACCF19D2057AD1FC"
+        "MsmKey" = "8:_44C1DE81E971436B84405DFAFF53A171"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -201,25 +255,37 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_477320EFA9C849EEB8C66926DF6F84D2"
+        "MsmKey" = "8:_48CD39B339CB4950A8E8B21516750562"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_47D3A3D9D5834B24981F89E91C155E72"
+        "MsmKey" = "8:_4E96DEBFF2114278AAC66C39C51051CC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4E7587EE79064B29909684627DA81A32"
+        "MsmKey" = "8:_4EE0D1DC764D4C35B42BC8B2DF52F802"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_50C377BC66324844BCEEAD9510991F84"
+        "MsmKey" = "8:_4F2CFEC5496F490CB18FBA7B94B73CDB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4FF9D23957544249BD38E27DE18D9ABD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_53F2A70FCFE543B9A8CFC28F194514DC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -231,7 +297,25 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_59056328CF14456894FA78B1B29C02E3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5920347103E74D4AA638B16828EE5698"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5979EFD876D34631B3DDB3833C8F2478"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5BEC358117F44E6AB8185C01D7D7A321"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -243,19 +327,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5E7E095C070C410890CB9514B8CC925C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6061BE67D8F542308FB4F8ACE64C82A5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_60B5C50840A74AF79AB247BB4163BB48"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_60E2AF584EB14B58A30E6384FC4108F2"
+        "MsmKey" = "8:_6291DE05B4A34D928EEFE41D5CCF3CCF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -267,25 +351,31 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_67ED0B0048C34C1BBC2F798F1F6219DF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_691CE5BBBE1A468893F1274976D2E10E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6DE3588EB3554BD4A0AA3EC8A6736FD7"
+        "MsmKey" = "8:_6B74D9F6CD61438D9FE96228E2A4D0B4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6EB877277D464B2CA831DF18F9B6C11B"
+        "MsmKey" = "8:_6FDEE623ABB647FDBFD7631177B54AD7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6F43C78AEEFF4E728EE72B6FB6F3A6E9"
+        "MsmKey" = "8:_7036B4917D594BA88D4E538A79B14B0A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -303,25 +393,37 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7127BF6FACEC4C638FFD4AC8853DE102"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7133863A673548F4AAD1F9DA18019D67"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_71C4FC2FB70C4A2D995B48C5058DD82B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_72DF8490C99144BFAD79EA23EA8CB4D4"
+        "MsmKey" = "8:_7305D90656BE416D97C5A4BA057AC19E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_731728853B9D4B98A1E87A8E82625605"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_744A600EC07C4263BC287492683C36F7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_753450F6B3A545D8973F8CA3D10A396F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_76D211E42F00422FACB251DC2BF6DEBE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -333,25 +435,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_798082DCC04F4CADB8AC85F9A23B7A01"
+        "MsmKey" = "8:_787854C7DC114233AA371CEA6690675D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7CE6A0F355DB44F4862B5B13CDB0B0AC"
+        "MsmKey" = "8:_7907C33151124B16A111E2194D385190"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7E7E62DF7D4B4682943196FB2F5AEDDC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_83E45E4DA3924E659A2BF330B8926BC8"
+        "MsmKey" = "8:_811F0AF48A2F4252BF53E4BBF6D1BB9C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -363,19 +459,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_844542E21A48465398674ABD7858CFA9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_84880A64A72240599A8BD5934A0FB0B8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_856017312450488796D1F794FA593CC4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8923B69BBCEB45E2A8D143CFA8532FCD"
+        "MsmKey" = "8:_887A4FAFF9244FC49B7332CB2FDE4C3D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -393,19 +489,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8D632CFFD9184D3CB77088AF0AE826A5"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8F990C669731412997CCC38E6C56C06F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9298F66B4D4448D1886D6FC77DCEC299"
+        "MsmKey" = "8:_8ECC2BDFB01C4FC9BA1FE5030A2F105B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -423,13 +507,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9A9A3DC26CDC4FAC9C55730C0E2AA5B1"
+        "MsmKey" = "8:_98120EE43BA748318BAB089F9DB4501B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9C3B83A3569746D1B951B717776D067E"
+        "MsmKey" = "8:_9B95E2F6B4E5450CA5DECCA3064DBA52"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9D65EFA4EAEC42CC827C719C22AFBFE9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -441,25 +531,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9E83AC74128E4326B2C0331EB938C816"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A14E212535944DE79391B9FD42FA3388"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A23FE9FE7CDB42BBA64D34F6AFFB9B36"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A46F7AF19D654C078D21C35FD99BC1AA"
+        "MsmKey" = "8:_A39A49DD0D90475982A8D606E9F4DF42"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5E711C6CF9F409D8AB65D21EDC9C7C0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -483,12 +567,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A9E9288E3411488480403E0ECC4CF3CC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A9E9CB46F6E744499C02268FF2DF6D04"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -501,7 +579,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AD2CCC0FD1A046A6B6C07B178B8C9A14"
+        "MsmKey" = "8:_ACBBB213BAB947A8BEAA1A1A8295795A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ACF364AD022F41C1AAB95A9A0DDF1415"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AEAEC6825870494BBCB6402E01AF7E2F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -513,43 +603,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B5468903EA914D90BB920E2824449F4D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B6F1F7760B67416E91EC530743C045C9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BA805091704947E098C947E211B5F92C"
+        "MsmKey" = "8:_BCD180941D364BF98D7F1DE2B0489340"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BB9FB6680673446CBF7BC0FC9AA1B7F4"
+        "MsmKey" = "8:_C0105F8293B94A06A0C2A1CC18966E46"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C028A7643E6F4483A3C7EA41FB0CF255"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C449E9FEF00F468986412E6F3083A161"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C4C3C86709B94E1BA72BA52CFA70FE2C"
+        "MsmKey" = "8:_C4E13D3BEF3B490ABC9D26426F429691"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -567,19 +639,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C72806CDB2024C909B5E6C550001D062"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C82E9B6F4E284FE3897948D45396B0D8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CFDDE3BB86A54BE4BA71909556625791"
+        "MsmKey" = "8:_CB0468F1B8EB499EAEEB053A77B2320A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CB8BF1F888174E52B88800C3B0607742"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -591,7 +663,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D1F21B3F9D5F4102803CD4F4CFCD8928"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D23D3AB9AE98479DA1BA6D61A2188E96"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D2B5C1D2FA62498EB75D8BD688D365C6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -603,19 +687,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D476723B592E45F5AB775B1D76493B41"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D5B1B47DBE5E4BB8A9A6B1B2DE4CB601"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D5D173BCE57449ABBB3ED6A32E85B0C8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D63C9A8D01704FFFB0B0B380E9FC36AC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D74E51585A784A719E193ED52ED96603"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -639,19 +723,49 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DBD5FD00F85849B293F3A99B16C6F5B9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DD1CD87A9DE8455DB4E7E3DBE95AC202"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DDAE06AA5C18432C8E24E9614CF8B764"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DDDF9610DBB44DC7BB5E71259571B3A5"
+        "MsmKey" = "8:_DDBA867C96C24206906C0DD76CE5A71A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DDF6E9D94F32490789C7C29CD8143011"
+        "MsmKey" = "8:_DDD7D2B57A8D4E8CBC6ECE6FC8984ED3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DEEFE1AE7CC3437B9E60130D71D425DF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DFF87492DECA46268B0D882546C3D584"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E2BD85F17480430E87C8B5A01F0A7C7C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -669,13 +783,25 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E3DD8902123B48708F9556F8810F29E5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E50C9FCAD01D4E68AF6598C2ABD10080"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E58FF956278C482E8C1F7C5A5C9569A6"
+        "MsmKey" = "8:_E6BCF32FE69A49498F4223BC6B9F2522"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E6F1754833DB424CBCF2E1349C2277F4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -687,25 +813,31 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EA8DE2FA11AD4F3482C117BA479212E6"
+        "MsmKey" = "8:_E8D5FB80551E49289A6BD3D1F8A23AAA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F04DA91434DF41C58A5C94BE6B564D4C"
+        "MsmKey" = "8:_E90A5D476CCA4C8FA96FB7BF9D6D70F5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F11E5F08DE204881AE2349E13F74E517"
+        "MsmKey" = "8:_E913E711B34940A7AD5A7AEBD3978880"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F380CE7A996E46AA9D81720366CF7459"
+        "MsmKey" = "8:_F017ABBE40F94736929EAB8BBBF18ABA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F2C6BED11F6243BC8E025AC0A2F5A5C0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -723,13 +855,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_FCD7C1C6B16744CD840AE860F5FB0DB9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FD1EDF6E42B64F9E8EDE3B8969C70D4A"
+        "MsmKey" = "8:_FD3C54C845374AC09EBB9C1677DF6697"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -815,12 +941,12 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00EBFB7C2ACF480C8E54406C4B3AE277"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_006AEB21F9C749CAB7FDF9CAB8E0C482"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cube.obj"
-            "TargetName" = "8:cube.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\spnza_bricks_a_spec.tga"
+            "TargetName" = "8:spnza_bricks_a_spec.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -841,6 +967,106 @@
             "TargetName" = "8:c005_05.tga"
             "Tag" = "8:"
             "Folder" = "8:_353682D11EC64EFFA78B17E8C2EE4355"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04D3AA65AB9E4AC1A3E95D730945724E"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_blue_diff.tga"
+            "TargetName" = "8:sponza_fabric_blue_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04E7BD04A6A4419F8458E5B7BE9B636E"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\buddaha.15k.obj"
+            "TargetName" = "8:buddaha.15k.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_06654D8D2B094E6E9F2CE070213411B2"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\vanille.json"
+            "TargetName" = "8:vanille.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0720A8BB84EE4C988A141AF189C2EB4D"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_roof_diff.tga"
+            "TargetName" = "8:sponza_roof_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09C013D511A7470A83F613FB17918411"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\horse.json"
+            "TargetName" = "8:horse.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -895,12 +1121,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A6E45226B24491EBDF97B1CC302DBFB"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_116DFA25C8734FD9BFA51BA54CB878BD"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\vanille.obj"
-            "TargetName" = "8:vanille.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\horse.obj"
+            "TargetName" = "8:horse.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_132722AEBCEF4FA399A81872766C57FB"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\lucy.json"
+            "TargetName" = "8:lucy.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_13F87AF1D31C49D7ACF96AED5AE8BA58"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_b_diff.tga"
+            "TargetName" = "8:sponza_column_b_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -935,12 +1201,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_15EDAC1B40324A1BA22BF53F59844D02"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_16F9754CA2E44F668E4A085CCABAE8AC"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\horse.obj"
-            "TargetName" = "8:horse.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_arch_spec.tga"
+            "TargetName" = "8:sponza_arch_spec.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -955,10 +1221,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_196DCD2411944186A9E94336FFA8E96F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1A0BE936224441D18A14E98F60087B92"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dragon.obj"
-            "TargetName" = "8:dragon.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_ceiling_a_spec.tga"
+            "TargetName" = "8:sponza_ceiling_a_spec.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1A3697D2B2ED4BEAADEFD5DE1890D48E"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\Buddha.obj"
+            "TargetName" = "8:Buddha.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -995,6 +1281,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1D04F03054B74D3D9EA13351A67301AA"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\fresnel.json"
+            "TargetName" = "8:fresnel.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1D1A5429E57A49E492F4EF3820C2BB67"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lycksele\\xpos.jpg"
@@ -1015,30 +1321,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1D76493451AF46BFB7877DE527D0F3E5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_20C4B403E1704FCFBF0178CF824D4DD3"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_blue_diff.tga"
-            "TargetName" = "8:sponza_fabric_blue_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1EBD776D15354A37955A619FAE753F23"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\diamond.obj"
-            "TargetName" = "8:diamond.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cow.obj"
+            "TargetName" = "8:cow.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1135,12 +1421,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_329CA357C8C2469C9F16BE11D961BD65"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2F9E3D9ACF0349C1B910B222E18FCFDB"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\teapot.obj"
-            "TargetName" = "8:teapot.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\vanille_nude.obj"
+            "TargetName" = "8:vanille_nude.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2FB6A4CE7861488384346D6ED2E3F43A"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\skybox.json"
+            "TargetName" = "8:skybox.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1175,12 +1481,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3466E5D59DBE4EC299D4FEE454BA612E"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_34C968336217440CB709606DC6FB2C17"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\tex_cube.obj"
-            "TargetName" = "8:tex_cube.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_round_spec.tga"
+            "TargetName" = "8:vase_round_spec.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_35B3A5AEB4B149DDA063838B546C15ED"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\subsurface_scattering_s.json"
+            "TargetName" = "8:subsurface_scattering_s.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1235,12 +1561,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_380EE8A8A9D04646AD12D31D4600B441"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_367E49CA1C944ABFA1267A65ED2F4C3B"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\configuration\\config.json"
-            "TargetName" = "8:config.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\teapot.obj"
+            "TargetName" = "8:teapot.obj"
             "Tag" = "8:"
-            "Folder" = "8:_A96969AB5AB44F5A8061F00DC59D918F"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1255,10 +1581,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_393FCEBAE7E9479993DE4CBFABB5165D"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_38ADE61723994F5E82A1D9B7558405E5"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_ceiling_a_diff.tga"
-            "TargetName" = "8:sponza_ceiling_a_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_details_spec.tga"
+            "TargetName" = "8:sponza_details_spec.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -1275,12 +1601,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3BB8B5AF8FD14875A50E9A67862C46E5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3D96840AC76847B09376C44C80E1A1C1"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\sponza.json"
-            "TargetName" = "8:sponza.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_diff.tga"
+            "TargetName" = "8:sponza_fabric_diff.tga"
             "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1315,26 +1641,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F557D38DA434746B8B44926C82AB588"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\vanille_nude.json"
-            "TargetName" = "8:vanille_nude.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F80943682B24914B64F08BA72C8A30A"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lancellotti_chapel\\zneg.bmp"
@@ -1355,12 +1661,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3FA8B66E58454F019C64DB2F7ED45717"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_416BB0BFE94A40F58C65A39B4D53770C"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_details_diff.tga"
-            "TargetName" = "8:sponza_details_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\tex_cube.obj"
+            "TargetName" = "8:tex_cube.obj"
             "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1375,12 +1681,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4138E9001F7246B596C5F8AE64B9E6C3"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4223F9BD08FC48909187F01BC0569574"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\depth_of_view.json"
-            "TargetName" = "8:depth_of_view.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dragon.obj"
+            "TargetName" = "8:dragon.obj"
             "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1395,7 +1701,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4286806BE7424C22ACCF19D2057AD1FC"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44C1DE81E971436B84405DFAFF53A171"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\human.obj"
             "TargetName" = "8:human.obj"
@@ -1435,10 +1741,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_477320EFA9C849EEB8C66926DF6F84D2"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_48CD39B339CB4950A8E8B21516750562"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_roof_diff.tga"
-            "TargetName" = "8:sponza_roof_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_plant.tga"
+            "TargetName" = "8:vase_plant.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -1455,12 +1761,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_47D3A3D9D5834B24981F89E91C155E72"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E96DEBFF2114278AAC66C39C51051CC"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\monkey.obj"
-            "TargetName" = "8:monkey.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_thorn_diff.tga"
+            "TargetName" = "8:sponza_thorn_diff.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1475,12 +1781,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E7587EE79064B29909684627DA81A32"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4EE0D1DC764D4C35B42BC8B2DF52F802"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cup.obj"
-            "TargetName" = "8:cup.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_c_spec.tga"
+            "TargetName" = "8:sponza_column_c_spec.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1495,12 +1801,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_50C377BC66324844BCEEAD9510991F84"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4F2CFEC5496F490CB18FBA7B94B73CDB"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\bunny.fine.obj"
-            "TargetName" = "8:bunny.fine.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_floor_a_spec.tga"
+            "TargetName" = "8:sponza_floor_a_spec.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4FF9D23957544249BD38E27DE18D9ABD"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\teapot_63k.json"
+            "TargetName" = "8:teapot_63k.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_53F2A70FCFE543B9A8CFC28F194514DC"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\refractive_index.json"
+            "TargetName" = "8:refractive_index.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1535,12 +1881,72 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_59056328CF14456894FA78B1B29C02E3"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_plant_spec.tga"
+            "TargetName" = "8:vase_plant_spec.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5920347103E74D4AA638B16828EE5698"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\depth_of_view.json"
+            "TargetName" = "8:depth_of_view.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5979EFD876D34631B3DDB3833C8F2478"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\xneg.bmp"
             "TargetName" = "8:xneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5BEC358117F44E6AB8185C01D7D7A321"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\configuration\\config.json"
+            "TargetName" = "8:config.json"
+            "Tag" = "8:"
+            "Folder" = "8:_A96969AB5AB44F5A8061F00DC59D918F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1575,6 +1981,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5E7E095C070C410890CB9514B8CC925C"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\vanille.obj"
+            "TargetName" = "8:vanille.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6061BE67D8F542308FB4F8ACE64C82A5"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lobby\\ypos.bmp"
@@ -1595,30 +2021,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_60B5C50840A74AF79AB247BB4163BB48"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6291DE05B4A34D928EEFE41D5CCF3CCF"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\fresnel.json"
-            "TargetName" = "8:fresnel.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_60E2AF584EB14B58A30E6384FC4108F2"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\subsurface_scattering_a.json"
-            "TargetName" = "8:subsurface_scattering_a.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\tex_cube.json"
+            "TargetName" = "8:tex_cube.json"
             "Tag" = "8:"
             "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
@@ -1655,6 +2061,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_67ED0B0048C34C1BBC2F798F1F6219DF"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_flagpole_spec.tga"
+            "TargetName" = "8:sponza_flagpole_spec.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_691CE5BBBE1A468893F1274976D2E10E"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\ypos.bmp"
@@ -1675,10 +2101,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6DE3588EB3554BD4A0AA3EC8A6736FD7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B74D9F6CD61438D9FE96228E2A4D0B4"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\micro_surface.json"
-            "TargetName" = "8:micro_surface.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_green_diff.tga"
+            "TargetName" = "8:sponza_fabric_green_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6FDEE623ABB647FDBFD7631177B54AD7"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\bunny.json"
+            "TargetName" = "8:bunny.json"
             "Tag" = "8:"
             "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
@@ -1695,32 +2141,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6EB877277D464B2CA831DF18F9B6C11B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7036B4917D594BA88D4E538A79B14B0A"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\vanille.json"
-            "TargetName" = "8:vanille.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\monkey.obj"
+            "TargetName" = "8:monkey.obj"
             "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F43C78AEEFF4E728EE72B6FB6F3A6E9"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\subsurface_scattering_s.json"
-            "TargetName" = "8:subsurface_scattering_s.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1775,46 +2201,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7127BF6FACEC4C638FFD4AC8853DE102"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\cornell_box.json"
-            "TargetName" = "8:cornell_box.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7133863A673548F4AAD1F9DA18019D67"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\refractive_index.json"
-            "TargetName" = "8:refractive_index.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_71C4FC2FB70C4A2D995B48C5058DD82B"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\xneg.bmp"
@@ -1835,10 +2221,90 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_72DF8490C99144BFAD79EA23EA8CB4D4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7305D90656BE416D97C5A4BA057AC19E"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cow.obj"
-            "TargetName" = "8:cow.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\dragon_on_table_jade.json"
+            "TargetName" = "8:dragon_on_table_jade.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_731728853B9D4B98A1E87A8E82625605"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_a_spec.tga"
+            "TargetName" = "8:sponza_column_a_spec.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_744A600EC07C4263BC287492683C36F7"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\diamond.obj"
+            "TargetName" = "8:diamond.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_753450F6B3A545D8973F8CA3D10A396F"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_hanging.tga"
+            "TargetName" = "8:vase_hanging.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76D211E42F00422FACB251DC2BF6DEBE"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cornell.obj"
+            "TargetName" = "8:cornell.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -1875,72 +2341,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_798082DCC04F4CADB8AC85F9A23B7A01"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_787854C7DC114233AA371CEA6690675D"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_diff.tga"
-            "TargetName" = "8:sponza_fabric_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CE6A0F355DB44F4862B5B13CDB0B0AC"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_floor_a_diff.tga"
-            "TargetName" = "8:sponza_floor_a_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E7E62DF7D4B4682943196FB2F5AEDDC"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\tex_cube.json"
-            "TargetName" = "8:tex_cube.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_83E45E4DA3924E659A2BF330B8926BC8"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\lucy.obj"
-            "TargetName" = "8:lucy.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cup.obj"
+            "TargetName" = "8:cup.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7907C33151124B16A111E2194D385190"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\chain_texture.tga"
+            "TargetName" = "8:chain_texture.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_811F0AF48A2F4252BF53E4BBF6D1BB9C"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\dinosaur.json"
+            "TargetName" = "8:dinosaur.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1975,6 +2421,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_844542E21A48465398674ABD7858CFA9"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_flagpole_diff.tga"
+            "TargetName" = "8:sponza_flagpole_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_84880A64A72240599A8BD5934A0FB0B8"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\tex_cube\\uv.png"
@@ -1995,32 +2461,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_856017312450488796D1F794FA593CC4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_887A4FAFF9244FC49B7332CB2FDE4C3D"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_arch_diff.tga"
-            "TargetName" = "8:sponza_arch_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cube.obj"
+            "TargetName" = "8:cube.obj"
             "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8923B69BBCEB45E2A8D143CFA8532FCD"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_b_diff.tga"
-            "TargetName" = "8:sponza_column_b_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2075,50 +2521,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D632CFFD9184D3CB77088AF0AE826A5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8ECC2BDFB01C4FC9BA1FE5030A2F105B"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\armadillo.obj"
-            "TargetName" = "8:armadillo.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F990C669731412997CCC38E6C56C06F"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\Buddha.obj"
-            "TargetName" = "8:Buddha.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9298F66B4D4448D1886D6FC77DCEC299"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dinosaur.obj"
-            "TargetName" = "8:dinosaur.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\teapot_63k.obj"
+            "TargetName" = "8:teapot_63k.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
@@ -2175,12 +2581,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A9A3DC26CDC4FAC9C55730C0E2AA5B1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_98120EE43BA748318BAB089F9DB4501B"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_dif.tga"
-            "TargetName" = "8:vase_dif.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\buddha.json"
+            "TargetName" = "8:buddha.json"
             "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2195,10 +2601,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C3B83A3569746D1B951B717776D067E"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B95E2F6B4E5450CA5DECCA3064DBA52"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_blue_diff.tga"
-            "TargetName" = "8:sponza_curtain_blue_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\sponza.json"
+            "TargetName" = "8:sponza.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9D65EFA4EAEC42CC827C719C22AFBFE9"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_round.tga"
+            "TargetName" = "8:vase_round.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2235,46 +2661,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E83AC74128E4326B2C0331EB938C816"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\dragon_on_table.json"
-            "TargetName" = "8:dragon_on_table.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A14E212535944DE79391B9FD42FA3388"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\spnza_bricks_a_diff.tga"
-            "TargetName" = "8:spnza_bricks_a_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A23FE9FE7CDB42BBA64D34F6AFFB9B36"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lycksele\\zpos.jpg"
@@ -2295,12 +2681,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A46F7AF19D654C078D21C35FD99BC1AA"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A39A49DD0D90475982A8D606E9F4DF42"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\skeleton_hand.obj"
-            "TargetName" = "8:skeleton_hand.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\subsurface_scattering_a.json"
+            "TargetName" = "8:subsurface_scattering_a.json"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A5E711C6CF9F409D8AB65D21EDC9C7C0"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_green_diff.tga"
+            "TargetName" = "8:sponza_curtain_green_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2375,26 +2781,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A9E9288E3411488480403E0ECC4CF3CC"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\buddaha.15k.obj"
-            "TargetName" = "8:buddaha.15k.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A9E9CB46F6E744499C02268FF2DF6D04"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\ypos.bmp"
@@ -2435,12 +2821,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD2CCC0FD1A046A6B6C07B178B8C9A14"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ACBBB213BAB947A8BEAA1A1A8295795A"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_c_diff.tga"
-            "TargetName" = "8:sponza_column_c_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_thorn_spec.tga"
+            "TargetName" = "8:sponza_thorn_spec.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ACF364AD022F41C1AAB95A9A0DDF1415"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\cornell_box_simple.json"
+            "TargetName" = "8:cornell_box_simple.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AEAEC6825870494BBCB6402E01AF7E2F"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dragon_on_table.obj"
+            "TargetName" = "8:dragon_on_table.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2475,26 +2901,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B5468903EA914D90BB920E2824449F4D"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_a_diff.tga"
-            "TargetName" = "8:sponza_column_a_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B6F1F7760B67416E91EC530743C045C9"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\vanille_nude\\c595_05.tga"
@@ -2515,12 +2921,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BA805091704947E098C947E211B5F92C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCD180941D364BF98D7F1DE2B0489340"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\bunny.json"
-            "TargetName" = "8:bunny.json"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\skeleton_hand.obj"
+            "TargetName" = "8:skeleton_hand.obj"
             "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2535,30 +2941,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB9FB6680673446CBF7BC0FC9AA1B7F4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C0105F8293B94A06A0C2A1CC18966E46"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\skybox.json"
-            "TargetName" = "8:skybox.json"
-            "Tag" = "8:"
-            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C028A7643E6F4483A3C7EA41FB0CF255"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_hanging.tga"
-            "TargetName" = "8:vase_hanging.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_spec.tga"
+            "TargetName" = "8:sponza_fabric_spec.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2575,30 +2961,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C449E9FEF00F468986412E6F3083A161"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4E13D3BEF3B490ABC9D26426F429691"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_green_diff.tga"
-            "TargetName" = "8:sponza_curtain_green_diff.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4C3C86709B94E1BA72BA52CFA70FE2C"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_thorn_diff.tga"
-            "TargetName" = "8:sponza_thorn_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_diff.tga"
+            "TargetName" = "8:sponza_curtain_diff.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2655,26 +3021,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C72806CDB2024C909B5E6C550001D062"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dragon_on_table.obj"
-            "TargetName" = "8:dragon_on_table.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C82E9B6F4E284FE3897948D45396B0D8"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\hexagon\\yneg.bmp"
@@ -2695,10 +3041,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFDDE3BB86A54BE4BA71909556625791"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB0468F1B8EB499EAEEB053A77B2320A"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\background.tga"
-            "TargetName" = "8:background.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_arch_diff.tga"
+            "TargetName" = "8:sponza_arch_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB8BF1F888174E52B88800C3B0607742"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_a_diff.tga"
+            "TargetName" = "8:sponza_column_a_diff.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2735,12 +3101,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D1F21B3F9D5F4102803CD4F4CFCD8928"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\spnza_bricks_a_diff.tga"
+            "TargetName" = "8:spnza_bricks_a_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D23D3AB9AE98479DA1BA6D61A2188E96"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lake\\zneg.bmp"
             "TargetName" = "8:zneg.bmp"
             "Tag" = "8:"
             "Folder" = "8:_D22AF428297040A0B6E96C2DA1690917"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D2B5C1D2FA62498EB75D8BD688D365C6"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\lucy.obj"
+            "TargetName" = "8:lucy.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2775,30 +3181,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5D173BCE57449ABBB3ED6A32E85B0C8"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D476723B592E45F5AB775B1D76493B41"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lobby\\zneg.bmp"
-            "TargetName" = "8:zneg.bmp"
-            "Tag" = "8:"
-            "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D63C9A8D01704FFFB0B0B380E9FC36AC"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\lion.tga"
-            "TargetName" = "8:lion.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_b_spec.tga"
+            "TargetName" = "8:sponza_column_b_spec.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2815,12 +3201,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D74E51585A784A719E193ED52ED96603"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5B1B47DBE5E4BB8A9A6B1B2DE4CB601"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\sponza.obj"
-            "TargetName" = "8:sponza.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_blue_diff.tga"
+            "TargetName" = "8:sponza_curtain_blue_diff.tga"
             "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5D173BCE57449ABBB3ED6A32E85B0C8"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lobby\\zneg.bmp"
+            "TargetName" = "8:zneg.bmp"
+            "Tag" = "8:"
+            "Folder" = "8:_00809BA2A2C8498CA364F228C514F6EB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2895,6 +3301,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DBD5FD00F85849B293F3A99B16C6F5B9"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\micro_surface.json"
+            "TargetName" = "8:micro_surface.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DD1CD87A9DE8455DB4E7E3DBE95AC202"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\dinosaur.obj"
+            "TargetName" = "8:dinosaur.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDAE06AA5C18432C8E24E9614CF8B764"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\lycksele\\xneg.jpg"
@@ -2915,10 +3361,50 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDDF9610DBB44DC7BB5E71259571B3A5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDBA867C96C24206906C0DD76CE5A71A"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_curtain_diff.tga"
-            "TargetName" = "8:sponza_curtain_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\vanille_nude.json"
+            "TargetName" = "8:vanille_nude.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDD7D2B57A8D4E8CBC6ECE6FC8984ED3"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\dragon_on_table.json"
+            "TargetName" = "8:dragon_on_table.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DEEFE1AE7CC3437B9E60130D71D425DF"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\background.tga"
+            "TargetName" = "8:background.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2935,10 +3421,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDF6E9D94F32490789C7C29CD8143011"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DFF87492DECA46268B0D882546C3D584"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_fabric_green_diff.tga"
-            "TargetName" = "8:sponza_fabric_green_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\armadillo.json"
+            "TargetName" = "8:armadillo.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2BD85F17480430E87C8B5A01F0A7C7C"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_dif.tga"
+            "TargetName" = "8:vase_dif.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -2995,6 +3501,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E3DD8902123B48708F9556F8810F29E5"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\lion.tga"
+            "TargetName" = "8:lion.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E50C9FCAD01D4E68AF6598C2ABD10080"
             {
             "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\vanille\\c005_09.tga"
@@ -3015,10 +3541,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E58FF956278C482E8C1F7C5A5C9569A6"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6BCF32FE69A49498F4223BC6B9F2522"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_flagpole_diff.tga"
-            "TargetName" = "8:sponza_flagpole_diff.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\armadillo.obj"
+            "TargetName" = "8:armadillo.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6F1754833DB424CBCF2E1349C2277F4"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_floor_a_diff.tga"
+            "TargetName" = "8:sponza_floor_a_diff.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -3055,50 +3601,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA8DE2FA11AD4F3482C117BA479212E6"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E8D5FB80551E49289A6BD3D1F8A23AAA"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\vanille_nude.obj"
-            "TargetName" = "8:vanille_nude.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F04DA91434DF41C58A5C94BE6B564D4C"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\teapot_63k.obj"
-            "TargetName" = "8:teapot_63k.obj"
-            "Tag" = "8:"
-            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F11E5F08DE204881AE2349E13F74E517"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\chain_texture.tga"
-            "TargetName" = "8:chain_texture.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_ceiling_a_diff.tga"
+            "TargetName" = "8:sponza_ceiling_a_diff.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
             "Condition" = "8:"
@@ -3115,12 +3621,72 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F380CE7A996E46AA9D81720366CF7459"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E90A5D476CCA4C8FA96FB7BF9D6D70F5"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_plant.tga"
-            "TargetName" = "8:vase_plant.tga"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\scene\\cornell_box_fine.json"
+            "TargetName" = "8:cornell_box_fine.json"
+            "Tag" = "8:"
+            "Folder" = "8:_37D4D11F868B431094EE7A506F1D3FCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E913E711B34940A7AD5A7AEBD3978880"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_column_c_diff.tga"
+            "TargetName" = "8:sponza_column_c_diff.tga"
             "Tag" = "8:"
             "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F017ABBE40F94736929EAB8BBBF18ABA"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\sponza_details_diff.tga"
+            "TargetName" = "8:sponza_details_diff.tga"
+            "Tag" = "8:"
+            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F2C6BED11F6243BC8E025AC0A2F5A5C0"
+            {
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\sponza.obj"
+            "TargetName" = "8:sponza.obj"
+            "Tag" = "8:"
+            "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3175,30 +3741,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FCD7C1C6B16744CD840AE860F5FB0DB9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FD3C54C845374AC09EBB9C1677DF6697"
             {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\texture\\sponza\\vase_round.tga"
-            "TargetName" = "8:vase_round.tga"
-            "Tag" = "8:"
-            "Folder" = "8:_E89CD3E635224C7D8BF57E64E00A6E50"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FD1EDF6E42B64F9E8EDE3B8969C70D4A"
-            {
-            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\cornell.obj"
-            "TargetName" = "8:cornell.obj"
+            "SourcePath" = "8:..\\..\\..\\gpu_path_tracer\\res\\obj\\bunny.fine.obj"
+            "TargetName" = "8:bunny.fine.obj"
             "Tag" = "8:"
             "Folder" = "8:_CEA0CAFDEBDA4928B744E62F35DE63C4"
             "Condition" = "8:"
